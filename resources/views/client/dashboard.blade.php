@@ -26,7 +26,7 @@
                                     <span class="badge bg-primary rounded-pill">{{ $activeReservations ?? 0 }}</span>
                                 </div>
                                 <p class="card-text">Manage your current car reservations</p>
-                                <a href="{{ route('reservations.index') }}" class="btn btn-sm btn-outline-primary">View
+                                <a href="{{ route('client.reservations.index') }}" class="btn btn-sm btn-outline-primary">View
                                     Reservations</a>
                             </div>
                         </div>
@@ -53,7 +53,7 @@
                                     <span class="badge bg-secondary rounded-pill">{{ $pastReservations ?? 0 }}</span>
                                 </div>
                                 <p class="card-text">View your past rental history and invoices</p>
-                                <a href="{{ route('reservations.history') }}" class="btn btn-sm btn-outline-primary">View
+                                <a href="{{ route('client.reservations.history') }}" class="btn btn-sm btn-outline-primary">View
                                     History</a>
                             </div>
                         </div>

@@ -48,7 +48,7 @@
                                     class="profile-image">
                             @else
                                 <div class="profile-image d-flex align-items-center justify-content-center bg-light">
-                                    <i class="bi bi-person-fill display-4 text-secondary"></i>
+                                    <i class="fas fa-user-circle display-4 text-secondary"></i>
                                 </div>
                             @endif
                         </div>
@@ -86,6 +86,17 @@
                             @enderror
                         </div>
 
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone Number</label>
+                            <input id="phone" type="tel" class="form-control @error('phone') is-invalid @enderror"
+                                name="phone" value="{{ old('phone', $user->phone) }}" autocomplete="tel">
+                            @error('phone')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+
                         <div class="mb-4">
                             <label for="photo" class="form-label">Profile Photo</label>
                             <input id="photo" type="file" class="form-control @error('photo') is-invalid @enderror"
@@ -95,7 +106,13 @@
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
-                            <div class="form-text">Leave empty to keep current photo</div>
+                            <div class="form-text">Allowed formats: JPG, PNG, GIF. Max size: 2MB.</div>
+                            
+                            <div class="mt-2" id="preview-container" style="{{ $user->photo ? '' : 'display: none;' }}">
+                                <img id="preview-image" src="{{ $user->photo ? asset('storage/' . $user->photo) : '' }}" alt="Preview" 
+                                    class="img-thumbnail" style="max-height: 100px;">
+                                <small class="d-block mt-1">Image preview</small>
+                            </div>
                         </div>
 
                         <div class="d-grid gap-2">
@@ -108,4 +125,28 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+<script>
+    // Preview the selected image
+    document.getElementById('photo').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        const previewContainer = document.getElementById('preview-container');
+        const previewImage = document.getElementById('preview-image');
+        
+        if (file) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+                previewContainer.style.display = 'block';
+            };
+            
+            reader.readAsDataURL(file);
+        } else {
+            previewContainer.style.display = 'none';
+        }
+    });
+</script>
 @endsection

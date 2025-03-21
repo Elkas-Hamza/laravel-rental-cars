@@ -7,9 +7,14 @@ use App\Models\Car;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller as BaseController;
 
-class ReservationController extends Controller
+class ReservationController extends BaseController
 {
+    use AuthorizesRequests, ValidatesRequests;
+
     /**
      * Create a new controller instance.
      */

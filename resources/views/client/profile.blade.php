@@ -9,8 +9,8 @@
                 <div class="card shadow-sm">
                     <div class="card-body text-center">
                         <div class="profile-img-container mb-3">
-                            @if (auth()->user()->profile_photo)
-                                <img src="{{ asset(auth()->user()->profile_photo) }}" alt="Profile Image"
+                            @if (auth()->user()->photo)
+                                <img src="{{ asset('storage/' . auth()->user()->photo) }}" alt="Profile Image"
                                     class="rounded-circle img-fluid" style="width: 120px; height: 120px; object-fit: cover;">
                             @else
                                 <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center mx-auto"
@@ -98,10 +98,18 @@
 
                                     <div class="mb-3">
                                         <label for="profile_photo" class="form-label">Profile Photo</label>
-                                        <input type="file" class="form-control" id="profile_photo" name="profile_photo">
-                                        @error('profile_photo')
+                                        <input type="file" class="form-control" id="profile_photo" name="photo">
+                                        <small class="form-text text-muted">Allowed formats: JPG, PNG, GIF. Max size: 2MB.</small>
+                                        @error('photo')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
+                                        
+                                        @if(auth()->user()->photo)
+                                            <div class="mt-2">
+                                                <img src="{{ asset('storage/' . auth()->user()->photo) }}" alt="Current Profile Photo" class="img-thumbnail" style="max-height: 100px;">
+                                                <small class="d-block mt-1">Current photo</small>
+                                            </div>
+                                        @endif
                                     </div>
 
                                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">

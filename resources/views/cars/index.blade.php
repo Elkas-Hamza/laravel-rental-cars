@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'All Cars - Car Rental System')
+@section('title', 'Browse Our Fleet - Car Rental System')
 
 @section('content')
     <section class="section-padding">
@@ -12,7 +12,7 @@
                 </div>
 
                 <div class="col-lg-3 col-md-4 col-12">
-                    <div class="custom-block-filter">
+                    <div class="custom-block-filter shadow-sm p-4 rounded">
                         <h5 class="mb-4">Filter by</h5>
 
                         <form action="{{ route('cars.filter') }}" method="GET" id="filter-form">
@@ -62,21 +62,19 @@
                         @if ($cars->count() > 0)
                             @foreach ($cars as $car)
                                 <div class="col-lg-4 col-md-6 col-12 mb-4">
-                                    <div class="card h-100">
+                                    <div class="card h-100 shadow-sm">
                                         <img src="{{ $car->image ? asset('images/cars/' . $car->image) : asset('images/no-image.jpg') }}"
-                                            class="card-img-top" alt="{{ $car->marque }} {{ $car->model }}">
+                                            class="card-img-top" alt="{{ $car->marque }} {{ $car->model }}" style="height: 200px; object-fit: cover;">
                                         <div class="card-body">
                                             <h5 class="card-title">{{ $car->marque }} {{ $car->model }}</h5>
-                                            <p class="card-text">
-                                                <strong>Year:</strong> {{ $car->year }}<br>
-                                                <strong>Color:</strong> {{ $car->color }}<br>
-                                                <strong>Fuel:</strong> {{ $car->fuel_type }}<br>
-                                                <strong>Price per day:</strong>
-                                                ${{ number_format($car->prix_journalier, 2) }}
+                                            <p class="card-text mb-3">
+                                                <div class="car-feature"><i class="fas fa-calendar-alt"></i> {{ $car->year }}</div>
+                                                <div class="car-feature"><i class="fas fa-palette"></i> {{ $car->color }}</div>
+                                                <div class="car-feature"><i class="fas fa-gas-pump"></i> {{ $car->fuel_type }}</div>
+                                                <div class="car-feature"><i class="fas fa-dollar-sign"></i> ${{ number_format($car->prix_journalier, 2) }}/day</div>
                                             </p>
-                                            <div class="mt-auto">
-                                                <a href="{{ route('cars.show', $car) }}" class="btn btn-primary">View
-                                                    Details</a>
+                                            <div class="d-grid">
+                                                <a href="{{ route('cars.show', $car) }}" class="btn btn-primary">View Details</a>
                                             </div>
                                         </div>
                                         <div class="card-footer text-center">
@@ -89,7 +87,9 @@
                             @endforeach
                         @else
                             <div class="col-12 text-center">
-                                <p>No cars available at the moment.</p>
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle me-2"></i> No cars available at the moment.
+                                </div>
                             </div>
                         @endif
                     </div>
@@ -143,17 +143,17 @@
 
                         const carCard = `
                         <div class="col-lg-4 col-md-6 col-12 mb-4">
-                            <div class="card h-100">
-                                <img src="${carImage}" class="card-img-top" alt="${car.marque} ${car.model}">
+                            <div class="card h-100 shadow-sm">
+                                <img src="${carImage}" class="card-img-top" alt="${car.marque} ${car.model}" style="height: 200px; object-fit: cover;">
                                 <div class="card-body">
                                     <h5 class="card-title">${car.marque} ${car.model}</h5>
-                                    <p class="card-text">
-                                        <strong>Year:</strong> ${car.year}<br>
-                                        <strong>Color:</strong> ${car.color}<br>
-                                        <strong>Fuel:</strong> ${car.fuel_type}<br>
-                                        <strong>Price per day:</strong> $${parseFloat(car.prix_journalier).toFixed(2)}
+                                    <p class="card-text mb-3">
+                                        <div class="car-feature"><i class="fas fa-calendar-alt"></i> ${car.year}</div>
+                                        <div class="car-feature"><i class="fas fa-palette"></i> ${car.color}</div>
+                                        <div class="car-feature"><i class="fas fa-gas-pump"></i> ${car.fuel_type}</div>
+                                        <div class="car-feature"><i class="fas fa-dollar-sign"></i> $${parseFloat(car.prix_journalier).toFixed(2)}/day</div>
                                     </p>
-                                    <div class="mt-auto">
+                                    <div class="d-grid">
                                         <a href="/cars/${car.id}" class="btn btn-primary">View Details</a>
                                     </div>
                                 </div>
@@ -171,7 +171,9 @@
                 } else {
                     carsContainer.innerHTML = `
                     <div class="col-12 text-center">
-                        <p>No cars available with the selected filters.</p>
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i> No cars available with the selected filters.
+                        </div>
                     </div>
                 `;
                 }

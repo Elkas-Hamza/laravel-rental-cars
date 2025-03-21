@@ -66,6 +66,24 @@
             visibility: visible !important;
             opacity: 1 !important;
         }
+        
+        /* Ensure dropdown is visible */
+        .dropdown-menu {
+            display: block;
+            visibility: visible !important;
+            opacity: 1 !important;
+            z-index: 2000 !important;
+        }
+        
+        /* Only show dropdown when parent is either hovered or has show class */
+        .dropdown:not(:hover):not(.show) > .dropdown-menu {
+            display: none;
+        }
+        
+        /* Show dropdown on hover as well as click */
+        .dropdown:hover > .dropdown-menu {
+            display: block;
+        }
 
         /* Icon styles */
         .fas,
@@ -215,15 +233,6 @@
                                 <i class="fas fa-check-circle me-1"></i>Available Cars
                             </a>
                         </li>
-
-                        @auth
-                            <li class="nav-item">
-                                <a class="nav-link {{ Request::is('reservations*') ? 'active' : '' }}"
-                                    href="{{ route('reservations.index') }}">
-                                    <i class="fas fa-calendar-check me-1"></i>My Reservations
-                                </a>
-                            </li>
-                        @endauth
                     </ul>
 
                     <ul class="navbar-nav ms-auto">
@@ -242,34 +251,68 @@
                                 </a>
                             </li>
                         @else
+                            @if (auth()->user()->isAdmin())
+                                <!-- Admin Dropdown -->
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-user-shield me-1"></i>Admin
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminDropdown">
+                                        <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}"><i
+                                                    class="fas fa-tachometer-alt me-1"></i>Dashboard</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="{{ route('admin.cars.index') }}"><i
+                                                    class="fas fa-car me-1"></i>Manage Cars</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="{{ route('admin.reservations.index') }}"><i
+                                                    class="fas fa-calendar-alt me-1"></i>Manage Reservations</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="{{ route('admin.users.index') }}"><i
+                                                    class="fas fa-users me-1"></i>Manage Users</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            @endif
+
+                            <!-- User Dropdown -->
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-user-circle me-1"></i>{{ Auth::user()->name }}
+                                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false" style="font-weight: bold; font-size: 1.05rem;">
+                                    @if(Auth::user()->photo)
+                                        <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="{{ Auth::user()->name }}" class="rounded-circle me-2" style="width: 32px; height: 32px; object-fit: cover;">
+                                    @else
+                                        <i class="fas fa-user-circle me-1 fs-5"></i>
+                                    @endif
+                                    <span>{{ Auth::user()->name }}</span>
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="userDropdown" style="min-width: 200px; z-index: 2000 !important;">
+                                    <li class="px-3 py-2 bg-light border-bottom">
+                                        <div class="d-flex flex-column">
+                                            <span class="fw-bold">{{ Auth::user()->name }}</span>
+                                            <small class="text-muted">{{ Auth::user()->email }}</small>
+                                        </div>
+                                    </li>
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('profile') }}">
-                                            <i class="fas fa-user-cog me-2"></i>Profile
+                                        <a class="dropdown-item py-2" href="{{ route('profile') }}">
+                                            <i class="fas fa-user-cog me-2 text-primary"></i>Profile Settings
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('reservations.index') }}">
-                                            <i class="fas fa-calendar-check me-2"></i>My Reservations
+                                        <a class="dropdown-item py-2" href="{{ route('client.reservations.index') }}">
+                                            <i class="fas fa-calendar-check me-2 text-primary"></i>My Reservations
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('client.reservations.history') }}">
-                                            <i class="fas fa-history me-2"></i>Rental History
+                                        <a class="dropdown-item py-2" href="{{ route('client.reservations.history') }}">
+                                            <i class="fas fa-history me-2 text-primary"></i>Rental History
                                         </a>
                                     </li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
                                     <li>
                                         <form action="{{ route('logout') }}" method="POST">
                                             @csrf
-                                            <button type="submit" class="dropdown-item">
+                                            <button type="submit" class="dropdown-item py-2 text-danger">
                                                 <i class="fas fa-sign-out-alt me-2"></i>Logout
                                             </button>
                                         </form>

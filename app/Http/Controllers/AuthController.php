@@ -97,22 +97,30 @@ class AuthController extends Controller
     }
 
     /**
-     * Update the user profile
+     * Update the user's profile.
      */
     public function updateProfile(Request $request)
     {
-        $user = Auth::user();
-
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
+            'email' => 'required|string|email|max:255|unique:users,email,' . Auth::id(),
+            'phone' => 'nullable|string|max:15',
             'photo' => 'nullable|image|max:2048',
+            'profile_photo' => 'nullable|image|max:2048', // Add support for both field names
         ]);
+
+        $user = Auth::user();
 
         // Handle photo upload
         if ($request->hasFile('photo')) {
             $photoPath = $request->file('photo')->store('profile', 'public');
             $validatedData['photo'] = $photoPath;
+        }
+        
+        // Handle profile_photo upload (alternative field name)
+        if ($request->hasFile('profile_photo')) {
+            $photoPath = $request->file('profile_photo')->store('profile', 'public');
+            $validatedData['photo'] = $photoPath; // Store in the photo field
         }
 
         $user->update($validatedData);

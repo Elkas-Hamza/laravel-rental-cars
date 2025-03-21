@@ -108,6 +108,46 @@
                                                 <span>${{ number_format($reservation->return_fee, 2) }}</span>
                                             </div>
                                             @endif
+                                            
+                                            <!-- Accessories section -->
+                                            @if($reservation->add_gps || $reservation->add_wifi || $reservation->add_baby_seat || $reservation->add_full_tank)
+                                                <div class="mt-2 mb-1">
+                                                    <strong>Selected Accessories:</strong>
+                                                </div>
+                                                
+                                                
+                                                <div class="d-flex justify-content-between mt-2">
+                                                    <span><strong>Accessories Subtotal:</strong></span>
+                                                    <span><strong>${{ number_format($reservation->accessories_fee, 2) }}</strong></span>
+                                                </div>
+                                                @endif
+                                                @if($reservation->add_gps)
+                                                <div class="d-flex justify-content-between">
+                                                    <span><i class="fas fa-map-marker-alt me-1"></i> GPS Navigation:</span>
+                                                    <span>$20.00</span>
+                                                </div>
+                                                @endif
+                                                
+                                                @if($reservation->add_wifi)
+                                                <div class="d-flex justify-content-between">
+                                                    <span><i class="fas fa-wifi me-1"></i> In-car WiFi:</span>
+                                                    <span>${{ number_format(2 * $days, 2) }}</span>
+                                                </div>
+                                                @endif
+                                                
+                                                @if($reservation->add_baby_seat)
+                                                <div class="d-flex justify-content-between">
+                                                    <span><i class="fas fa-baby me-1"></i> Baby/Child Seat:</span>
+                                                    <span>$10.00</span>
+                                                </div>
+                                                @endif
+                                                
+                                                @if($reservation->add_full_tank)
+                                                <div class="d-flex justify-content-between">
+                                                    <span><i class="fas fa-gas-pump me-1"></i> Full Fuel Tank:</span>
+                                                    <span>$45.00</span>
+                                                </div>
+                                                @endif
                                         </div>
                                         
                                         <p><strong>Total Amount:</strong> <span class="fw-bold text-primary">${{ number_format($reservation->prix_total, 2) }}</span></p>
@@ -138,6 +178,7 @@
                                         <div class="mb-3">
                                             <label for="card_number" class="form-label">Card Number</label>
                                             <input type="text" class="form-control" id="card_number" name="card_number" placeholder="1234 5678 9012 3456" required>
+                                            <div class="form-text">Enter any card number - no verification is done for testing purposes.</div>
                                         </div>
                                         
                                         <div class="mb-3">
@@ -166,6 +207,9 @@
                                                         </select>
                                                     </div>
                                                 </div>
+                                                @error('expiry_date')
+                                                    <div class="text-danger mt-1">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                             
                                             <div class="col-md-6 mb-3">
@@ -238,29 +282,31 @@
 
 @section('scripts')
     <script>
+        // Format card number input with spaces for better readability
         document.addEventListener('DOMContentLoaded', function() {
-            // Card number formatting
-            document.getElementById('card_number').addEventListener('input', function(e) {
-                // Remove non-digits
-                let value = this.value.replace(/\D/g, '');
+            const cardNumberInput = document.getElementById('card_number');
+            
+            cardNumberInput.addEventListener('input', function(e) {
+                // Remove all non-digit characters
+                let value = e.target.value.replace(/\D/g, '');
                 
-                // Add a space after every 4 digits
-                if (value.length > 0) {
-                    value = value.match(new RegExp('.{1,4}', 'g')).join(' ');
+                // Add space after every 4 digits
+                let formattedValue = '';
+                for (let i = 0; i < value.length; i++) {
+                    if (i > 0 && i % 4 === 0) {
+                        formattedValue += ' ';
+                    }
+                    formattedValue += value[i];
                 }
                 
-                // Update the input value
-                this.value = value;
-                
-                // Limit to 19 characters (16 digits + 3 spaces)
-                if (this.value.length > 19) {
-                    this.value = this.value.substr(0, 19);
-                }
+                // Update input value
+                e.target.value = formattedValue;
             });
             
-            // CVV formatting - only allow 3 digits
-            document.getElementById('cvv').addEventListener('input', function(e) {
-                this.value = this.value.replace(/\D/g, '').substr(0, 3);
+            // Format CVV to allow only digits
+            const cvvInput = document.getElementById('cvv');
+            cvvInput.addEventListener('input', function(e) {
+                e.target.value = e.target.value.replace(/\D/g, '');
             });
         });
     </script>

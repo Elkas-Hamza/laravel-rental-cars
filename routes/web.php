@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
     Route::get('/reservations/history', [ReservationController::class, 'history'])->name('reservations.history');
     Route::get('/reservations/create/{car}', [ReservationController::class, 'create'])->name('reservations.create');
+    Route::get('/reservations/{reservation}', [ReservationController::class, 'show'])->name('reservations.show');
     Route::post('/reservations/{car}', [ReservationController::class, 'store'])->name('reservations.store');
     Route::put('/reservations/{reservation}/cancel', [ReservationController::class, 'cancel'])->name('reservations.cancel');
 

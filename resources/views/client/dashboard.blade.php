@@ -84,7 +84,7 @@
                     <div class="card-body">
                         <div class="row text-center">
                             <div class="col-md-3 col-6 mb-3">
-                                <a href="{{ route('reservations.create') }}" class="text-decoration-none">
+                                <a href="{{ route('cars.index') }}" class="text-decoration-none">
                                     <div class="p-3 rounded bg-light">
                                         <i class="fas fa-plus-circle fs-1 text-primary"></i>
                                         <p class="mt-2 mb-0">New Reservation</p>

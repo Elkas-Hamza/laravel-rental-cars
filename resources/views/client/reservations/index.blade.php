@@ -81,10 +81,10 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>My Reservations</h2>
             <div>
-                <a href="{{ route('reservations.history') }}" class="btn btn-outline-primary me-2">
+                <a href="{{ route('client.reservations.history') }}" class="btn btn-outline-primary me-2">
                     <i class="fas fa-history me-2"></i>View History
                 </a>
-                <a href="{{ route('reservations.create') }}" class="btn btn-primary">
+                <a href="{{ route('cars.index') }}" class="btn btn-primary">
                     <i class="fas fa-plus-circle me-2"></i>New Reservation
                 </a>
             </div>
@@ -172,8 +172,8 @@
                                 <i class="fas fa-car display-1 text-muted"></i>
                                 <h4 class="mt-3">No active reservations</h4>
                                 <p class="text-muted">You don't have any active car rentals at the moment.</p>
-                                <a href="{{ route('reservations.create') }}" class="btn btn-primary mt-2">
-                                    <i class="fas fa-plus-circle me-2"></i>Make a Reservation
+                                <a href="{{ route('cars.index') }}" class="btn btn-primary mt-2">
+                                    <i class="fas fa-plus-circle me-2"></i>Browse Cars
                                 </a>
                             </div>
                         @endif
@@ -229,8 +229,8 @@
                                 <i class="fas fa-calendar display-1 text-muted"></i>
                                 <h4 class="mt-3">No upcoming reservations</h4>
                                 <p class="text-muted">You don't have any upcoming car rentals scheduled.</p>
-                                <a href="{{ route('reservations.create') }}" class="btn btn-primary mt-2">
-                                    <i class="fas fa-plus-circle me-2"></i>Schedule a Reservation
+                                <a href="{{ route('cars.index') }}" class="btn btn-primary mt-2">
+                                    <i class="fas fa-plus-circle me-2"></i>Browse Cars
                                 </a>
                             </div>
                         @endif
@@ -285,9 +285,9 @@
                             <div class="text-center py-5">
                                 <i class="fas fa-check-circle display-1 text-muted"></i>
                                 <h4 class="mt-3">No completed reservations</h4>
-                                <p class="text-muted">You don't have any completed car rentals yet.</p>
-                                <a href="{{ route('reservations.create') }}" class="btn btn-primary mt-2">
-                                    <i class="fas fa-plus-circle me-2"></i>Make a Reservation
+                                <p class="text-muted">You haven't completed any car rentals yet.</p>
+                                <a href="{{ route('cars.index') }}" class="btn btn-primary mt-2">
+                                    <i class="fas fa-plus-circle me-2"></i>Browse Cars
                                 </a>
                             </div>
                         @endif
@@ -343,8 +343,8 @@
                                 <i class="fas fa-times-circle display-1 text-muted"></i>
                                 <h4 class="mt-3">No cancelled reservations</h4>
                                 <p class="text-muted">You don't have any cancelled car rentals.</p>
-                                <a href="{{ route('reservations.create') }}" class="btn btn-primary mt-2">
-                                    <i class="fas fa-plus-circle me-2"></i>Make a Reservation
+                                <a href="{{ route('cars.index') }}" class="btn btn-primary mt-2">
+                                    <i class="fas fa-car me-2"></i>Browse Cars
                                 </a>
                             </div>
                         @endif

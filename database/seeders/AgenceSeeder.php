@@ -15,8 +15,8 @@ class AgenceSeeder extends Seeder
     {
         Agence::create([
             'name' => 'Car Rental Center',
-            'adresse' => '123 Main Street, New York, NY 10001',
-            'tele' => '+1 (555) 123-4567',
+            'adresse' => 'Avenue Hassan II, Casablanca, Morocco',
+            'tele' => '+212 52000123',
             'email' => 'contact@carrentalcenter.com',
             'temp_debut' => '08:00:00',
             'temp_fin' => '20:00:00',

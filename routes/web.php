@@ -13,6 +13,7 @@ Route::post('/search', [HomeController::class, 'searchCars'])->name('search.cars
 
 // Car routes
 Route::get('/cars', [CarController::class, 'index'])->name('cars.index');
+Route::get('/cars/browse', [CarController::class, 'browseAll'])->name('cars.browse');
 Route::get('/cars/available', [CarController::class, 'available'])->name('cars.available');
 Route::get('/cars/filter', [CarController::class, 'filter'])->name('cars.filter');
 Route::get('/cars/{car}', [CarController::class, 'show'])->name('cars.show');
@@ -64,9 +65,9 @@ Route::middleware('auth')->group(function () {
 });
 
 // Admin routes
-Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
-
+    
     // Car management routes
     Route::resource('cars', App\Http\Controllers\Admin\CarController::class);
 

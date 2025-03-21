@@ -82,14 +82,27 @@ class CarController extends Controller
     /**
      * Display a listing of available cars based on date range in session
      */
-    public function available()
+    public function available(Request $request)
     {
-        if (!session('date_de_location') || !session('date_de_retour')) {
-            return redirect()->route('home')->with('error', 'Please select dates first');
-        }
-
         $startDate = session('date_de_location');
         $endDate = session('date_de_retour');
+        $showDateSelector = false;
+        
+        // If dates are provided in the request, update session and use them
+        if ($request->has('date_de_location') && $request->has('date_de_retour')) {
+            $startDate = $request->date_de_location;
+            $endDate = $request->date_de_retour;
+            
+            // Store in session
+            session(['date_de_location' => $startDate, 'date_de_retour' => $endDate]);
+        }
+
+        // If dates are still not available, show cars but include date selector
+        if (!$startDate || !$endDate) {
+            $showDateSelector = true;
+            $cars = Car::where('disponible', true)->paginate(12);
+            return view('cars.available', compact('cars', 'showDateSelector'));
+        }
 
         // Find cars that are not reserved in the given date range
         $reservedCarIds = Reservation::where(function ($query) use ($startDate, $endDate) {
@@ -105,7 +118,7 @@ class CarController extends Controller
                    ->whereNotIn('id', $reservedCarIds)
                    ->paginate(12);
 
-        return view('cars.available', compact('cars', 'startDate', 'endDate'));
+        return view('cars.available', compact('cars', 'startDate', 'endDate', 'showDateSelector'));
     }
 
     /**
@@ -303,5 +316,54 @@ class CarController extends Controller
         
         // Redirect to login page
         return redirect()->route('login');
+    }
+
+    /**
+     * Display a listing of all cars without date restrictions 
+     * for browsing purposes only
+     */
+    public function browseAll(Request $request)
+    {
+        $query = Car::query()->where('disponible', true);
+
+        // Search functionality
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('brand', 'like', '%' . $search . '%')
+                  ->orWhere('model', 'like', '%' . $search . '%')
+                  ->orWhere('year', 'like', '%' . $search . '%')
+                  ->orWhere('description', 'like', '%' . $search . '%');
+            });
+        }
+
+        // Apply filters if they exist
+        if ($request->has('brand') && !empty($request->brand)) {
+            $query->where('brand', $request->brand);
+        }
+
+        if ($request->has('model') && !empty($request->model)) {
+            $query->where('model', $request->model);
+        }
+
+        if ($request->has('category') && !empty($request->category)) {
+            $query->where('category', $request->category);
+        }
+
+        if ($request->has('fuel_type') && !empty($request->fuel_type)) {
+            $query->where('fuel_type', $request->fuel_type);
+        }
+
+        if ($request->has('price_min') && !empty($request->price_min)) {
+            $query->where('price_per_day', '>=', $request->price_min);
+        }
+
+        if ($request->has('price_max') && !empty($request->price_max)) {
+            $query->where('price_per_day', '<=', $request->price_max);
+        }
+
+        $cars = $query->latest()->paginate(12);
+        
+        return view('cars.browse', compact('cars'));
     }
 }

@@ -67,7 +67,8 @@
                     <span class="status-badge {{ $car->disponible ? 'bg-success' : 'bg-danger' }}">
                         {{ $car->disponible ? 'Available' : 'Not Available' }}
                     </span>
-                    <img src="{{ $car->image ? asset('images/cars/' . $car->image) : asset('images/no-image.jpg') }}" class="car-image card-img-top" alt="{{ $car->marque }} {{ $car->model }}">
+                    <img src="{{ $car->image ? asset('images/cars/' . $car->image) : asset('images/no-image.jpg') }}"
+                        class="car-image card-img-top" alt="{{ $car->marque }} {{ $car->model }}">
                     <div class="card-body">
                         <h4 class="card-title mb-3">{{ $car->marque }} {{ $car->model }} ({{ $car->year }})</h4>
                         <div class="mb-4">
@@ -136,7 +137,7 @@
                                 <p class="mb-0">{{ $car->year }}</p>
                             </div>
                         </div>
-                        
+
                         <div class="spec-item d-flex align-items-center">
                             <div class="spec-icon">
                                 <i class="fas fa-palette"></i>
@@ -164,16 +165,19 @@
                         @if ($car->disponible)
                             @auth
                                 <div class="mt-4">
-                                    <a href="{{ route('client.reservations.create', $car->id) }}" class="btn btn-primary w-100">
+                                    <a href="{{ route('client.reservations.create', $car->id) }}"
+                                        class="btn btn-primary w-100">
                                         <i class="fas fa-calendar-plus me-2"></i>Rent This Car
                                     </a>
                                 </div>
                             @else
                                 <div class="mt-4">
-                                    <a href="{{ route('login') }}" class="btn btn-outline-primary w-100" onclick="event.preventDefault(); document.getElementById('store-car-form').submit();">
+                                    <a href="{{ route('login') }}" class="btn btn-outline-primary w-100"
+                                        onclick="event.preventDefault(); document.getElementById('store-car-form').submit();">
                                         <i class="fas fa-sign-in-alt me-2"></i>Login to Rent
                                     </a>
-                                    <form id="store-car-form" action="{{ route('store.car.session') }}" method="POST" style="display: none;">
+                                    <form id="store-car-form" action="{{ route('store.car.session') }}" method="POST"
+                                        style="display: none;">
                                         @csrf
                                         <input type="hidden" name="car_id" value="{{ $car->id }}">
                                     </form>

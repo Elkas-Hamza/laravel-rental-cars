@@ -53,4 +53,40 @@ class HomeController extends Controller
 
         return redirect()->route('cars.available');
     }
+
+    /**
+     * Display the support page
+     */
+    public function support()
+    {
+        $agence = Agence::first();
+        return view('pages.support', compact('agence'));
+    }
+
+    /**
+     * Display the FAQ page
+     */
+    public function faq()
+    {
+        $agence = Agence::first();
+        return view('pages.faq', compact('agence'));
+    }
+
+    /**
+     * Display the about page
+     */
+    public function about()
+    {
+        $agence = Agence::first();
+        return view('pages.about', compact('agence'));
+    }
+
+    /**
+     * Display the contact page
+     */
+    public function contact()
+    {
+        $agence = Agence::first();
+        return view('pages.contact', compact('agence'));
+    }
 }

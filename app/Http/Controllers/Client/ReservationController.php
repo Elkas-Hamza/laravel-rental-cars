@@ -1,19 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Client;
 
+use App\Http\Controllers\Controller;
 use App\Models\Car;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller as BaseController;
 
-class ReservationController extends BaseController
+class ReservationController extends Controller
 {
-    use AuthorizesRequests, ValidatesRequests;
-
     /**
      * Create a new controller instance.
      */
@@ -82,12 +78,7 @@ class ReservationController extends BaseController
             ->latest()
             ->get();
 
-        // If no completed reservations, let's make sure we have an empty collection rather than null
-        if (!$completedReservations) {
-            $completedReservations = collect();
-        }
-
-        \Log::info('History page: ' . $completedReservations->count() . ' reservations found');
+        \Log::info('History page accessed: ' . $completedReservations->count() . ' reservations found');
 
         return view('client.reservations.history', compact('completedReservations'));
     }
@@ -130,7 +121,7 @@ class ReservationController extends BaseController
         $reservation->status = 'pending';
         $reservation->save();
 
-        return redirect()->route('reservations.index')->with('success', 'Reservation created successfully!');
+        return redirect()->route('client.reservations.index')->with('success', 'Reservation created successfully!');
     }
 
     /**
@@ -140,12 +131,12 @@ class ReservationController extends BaseController
     {
         // Make sure the user can only cancel their own reservations
         if ($reservation->user_id !== Auth::id()) {
-            return redirect()->route('reservations.index')->with('error', 'Unauthorized action');
+            return redirect()->route('client.reservations.index')->with('error', 'Unauthorized action');
         }
 
         $reservation->status = 'cancelled';
         $reservation->save();
 
-        return redirect()->route('reservations.index')->with('success', 'Reservation cancelled successfully!');
+        return redirect()->route('client.reservations.index')->with('success', 'Reservation cancelled successfully!');
     }
 }

@@ -80,9 +80,14 @@
     <div class="container my-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>My Reservations</h2>
-            <a href="{{ route('reservations.create') }}" class="btn btn-primary">
-                <i class="fas fa-plus-circle me-2"></i>New Reservation
-            </a>
+            <div>
+                <a href="{{ route('reservations.history') }}" class="btn btn-outline-primary me-2">
+                    <i class="fas fa-history me-2"></i>View History
+                </a>
+                <a href="{{ route('reservations.create') }}" class="btn btn-primary">
+                    <i class="fas fa-plus-circle me-2"></i>New Reservation
+                </a>
+            </div>
         </div>
 
         <div class="card shadow-sm mb-4">

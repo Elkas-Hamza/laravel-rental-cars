@@ -60,6 +60,13 @@
             z-index: 1000;
         }
 
+        /* Ensure navbar items are visible */
+        .navbar-nav .nav-link {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+
         /* Icon styles */
         .fas,
         .fa,
@@ -179,7 +186,7 @@
         <nav class="navbar navbar-expand-lg bg-light shadow-lg">
             <div class="container">
                 <a class="navbar-brand" href="{{ route('home') }}">
-                    Car Rental
+                    <i class="fas fa-car-alt me-2"></i>Car Rental
                 </a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -188,73 +195,86 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::is('/') ? 'active' : '' }}" href="{{ route('home') }}">
+                                <i class="fas fa-home me-1"></i>Home
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::is('cars*') ? 'active' : '' }}"
+                                href="{{ route('cars.index') }}">
+                                <i class="fas fa-car me-1"></i>Browse Cars
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::is('cars/available') ? 'active' : '' }}"
+                                href="{{ route('cars.available') }}">
+                                <i class="fas fa-check-circle me-1"></i>Available Cars
+                            </a>
+                        </li>
+
+                        @auth
+                            <li class="nav-item">
+                                <a class="nav-link {{ Request::is('reservations*') ? 'active' : '' }}"
+                                    href="{{ route('reservations.index') }}">
+                                    <i class="fas fa-calendar-check me-1"></i>My Reservations
+                                </a>
+                            </li>
+                        @endauth
+                    </ul>
+
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link click-scroll" href="{{ route('home') }}"><i
-                                    class="fas fa-home me-1"></i>Home</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link click-scroll" href="#section_2"><i
-                                    class="fas fa-info-circle me-1"></i>About</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('cars.index') }}"><i
-                                    class="fas fa-car me-1"></i>Cars</a>
-                        </li>
-
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('register') }}"><i
-                                        class="fas fa-user-plus me-1"></i>Sign up</a>
+                                <a class="nav-link {{ Request::is('login') ? 'active' : '' }}"
+                                    href="{{ route('login') }}">
+                                    <i class="fas fa-sign-in-alt me-1"></i>Login
+                                </a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}"><i
-                                        class="fas fa-sign-in-alt me-1"></i>Login</a>
+                                <a class="nav-link {{ Request::is('register') ? 'active' : '' }}"
+                                    href="{{ route('register') }}">
+                                    <i class="fas fa-user-plus me-1"></i>Sign up
+                                </a>
                             </li>
                         @else
-                            @if (auth()->user()->isAdmin())
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fas fa-user-shield me-1"></i>Admin
-                                    </a>
-                                    <ul class="dropdown-menu" aria-labelledby="adminDropdown">
-                                        <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}"><i
-                                                    class="fas fa-tachometer-alt me-1"></i>Dashboard</a>
-                                        </li>
-                                        <li><a class="dropdown-item" href="{{ route('admin.cars.index') }}"><i
-                                                    class="fas fa-car me-1"></i>Manage Cars</a>
-                                        </li>
-                                        <li><a class="dropdown-item" href="{{ route('admin.reservations.index') }}"><i
-                                                    class="fas fa-calendar-alt me-1"></i>Manage Reservations</a>
-                                        </li>
-                                        <li><a class="dropdown-item" href="{{ route('users.index') }}"><i
-                                                    class="fas fa-users me-1"></i>Manage Users</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            @endif
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('reservations.index') }}"><i
-                                        class="fas fa-calendar-check me-1"></i>My Reservations</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('profile') }}"><i
-                                        class="fas fa-user-circle me-1"></i>Profile</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <form action="{{ route('logout') }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="nav-link btn btn-link"
-                                        onclick="return confirm('Are you sure?')"><i
-                                            class="fas fa-sign-out-alt me-1"></i>Logout</button>
-                                </form>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user-circle me-1"></i>{{ Auth::user()->name }}
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('profile') }}">
+                                            <i class="fas fa-user-cog me-2"></i>Profile
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('reservations.index') }}">
+                                            <i class="fas fa-calendar-check me-2"></i>My Reservations
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('client.reservations.history') }}">
+                                            <i class="fas fa-history me-2"></i>Rental History
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li>
+                                        <form action="{{ route('logout') }}" method="POST">
+                                            @csrf
+                                            <button type="submit" class="dropdown-item">
+                                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
                             </li>
                         @endguest
                     </ul>
@@ -341,19 +361,25 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 col-12 mb-4">
-                    <h5 class="site-footer-title mb-3">Links</h5>
+                    <h5 class="site-footer-title mb-3">Quick Links</h5>
 
                     <ul class="footer-menu">
                         <li class="footer-menu-item"><a href="{{ route('home') }}" class="footer-menu-link">Home</a>
                         </li>
                         <li class="footer-menu-item"><a href="{{ route('cars.index') }}"
-                                class="footer-menu-link">Cars</a></li>
+                                class="footer-menu-link">Browse Cars</a></li>
+                        <li class="footer-menu-item"><a href="{{ route('cars.available') }}"
+                                class="footer-menu-link">Available Cars</a></li>
                         @auth
                             <li class="footer-menu-item"><a href="{{ route('reservations.index') }}"
                                     class="footer-menu-link">My Reservations</a></li>
+                            <li class="footer-menu-item"><a href="{{ route('profile') }}" class="footer-menu-link">My
+                                    Profile</a></li>
                         @else
                             <li class="footer-menu-item"><a href="{{ route('login') }}"
                                     class="footer-menu-link">Login</a></li>
+                            <li class="footer-menu-item"><a href="{{ route('register') }}" class="footer-menu-link">Sign
+                                    Up</a></li>
                         @endauth
                     </ul>
                 </div>
@@ -377,6 +403,25 @@
                             {{ $agence->adresse }}
                         </p>
                     </div>
+                @else
+                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                        <h5 class="site-footer-title mb-3">Contact</h5>
+
+                        <p class="text-white d-flex mb-2">
+                            <i class="fas fa-phone me-2"></i>
+                            <a href="tel:+1234567890" class="site-footer-link">+1 (234) 567-890</a>
+                        </p>
+
+                        <p class="text-white d-flex">
+                            <i class="fas fa-envelope me-2"></i>
+                            <a href="mailto:info@carrentals.com" class="site-footer-link">info@carrentals.com</a>
+                        </p>
+
+                        <p class="text-white d-flex mt-3">
+                            <i class="fas fa-map-marker-alt me-2"></i>
+                            123 Rental Street, City, Country
+                        </p>
+                    </div>
                 @endif
 
                 <div class="col-lg-4 col-md-6 col-12 mx-auto">
@@ -394,6 +439,12 @@
                         <li class="social-icon-item"><a href="#" class="social-icon-link"><i
                                     class="fab fa-youtube"></i></a></li>
                     </ul>
+
+                    <h5 class="site-footer-title mb-3 mt-4">Need Help?</h5>
+                    <p class="text-white d-flex">
+                        <a href="#" class="btn btn-outline-light mt-2"><i
+                                class="fas fa-question-circle me-2"></i>FAQ & Support</a>
+                    </p>
                 </div>
             </div>
         </div>
@@ -402,7 +453,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6 col-md-7 col-12">
-                        <p class="copyright-text mb-0">© {{ date('Y') }} <strong>Car Rental System</strong></p>
+                        <p class="copyright-text mb-0">© {{ date('Y') }} <strong>Car Rental System</strong> - All
+                            Rights Reserved</p>
                     </div>
                 </div>
             </div>

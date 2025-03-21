@@ -17,6 +17,12 @@ Route::get('/cars/available', [CarController::class, 'available'])->name('cars.a
 Route::get('/cars/filter', [CarController::class, 'filter'])->name('cars.filter');
 Route::get('/cars/{car}', [CarController::class, 'show'])->name('cars.show');
 
+// Static Pages
+Route::get('/support', [HomeController::class, 'support'])->name('support');
+Route::get('/faq', [HomeController::class, 'faq'])->name('faq');
+Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+
 // Auth routes
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -36,11 +42,21 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
     Route::put('/profile', [AuthController::class, 'updateProfile'])->name('profile.update');
 
-    // Reservation routes
+    // Reservation routes - legacy
     Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
+    Route::get('/reservations/history', [ReservationController::class, 'history'])->name('reservations.history');
     Route::get('/reservations/create/{car}', [ReservationController::class, 'create'])->name('reservations.create');
     Route::post('/reservations/{car}', [ReservationController::class, 'store'])->name('reservations.store');
     Route::put('/reservations/{reservation}/cancel', [ReservationController::class, 'cancel'])->name('reservations.cancel');
+
+    // Client reservation routes with dedicated controller
+    Route::prefix('client')->name('client.')->group(function() {
+        Route::get('/reservations', [App\Http\Controllers\Client\ReservationController::class, 'index'])->name('reservations.index');
+        Route::get('/reservations/history', [App\Http\Controllers\Client\ReservationController::class, 'history'])->name('reservations.history');
+        Route::get('/reservations/create/{car}', [App\Http\Controllers\Client\ReservationController::class, 'create'])->name('reservations.create');
+        Route::post('/reservations/{car}', [App\Http\Controllers\Client\ReservationController::class, 'store'])->name('reservations.store');
+        Route::put('/reservations/{reservation}/cancel', [App\Http\Controllers\Client\ReservationController::class, 'cancel'])->name('reservations.cancel');
+    });
 });
 
 // Admin routes

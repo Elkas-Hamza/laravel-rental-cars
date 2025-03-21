@@ -6,16 +6,35 @@
     <section class="section-padding">
         <div class="container">
             <div class="row">
-                <div class="col-12 text-center mb-5">
+                <div class="col-12 text-center mb-4">
                     <h1>Our Cars</h1>
                     <p>Browse our complete fleet of vehicles available for rent</p>
                 </div>
 
+                <!-- Search Bar -->
+                <div class="col-12 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <form action="{{ route('cars.index') }}" method="GET" class="row g-3 align-items-center">
+                                <div class="col-md-8">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white"><i class="fas fa-search"></i></span>
+                                        <input type="text" class="form-control" name="search" placeholder="Search by brand, model, or year..." value="{{ request('search') }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search me-2"></i>Search</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="col-lg-3 col-md-4 col-12">
                     <div class="custom-block-filter shadow-sm p-4 rounded">
-                        <h5 class="mb-4">Filter by</h5>
+                        <h5 class="mb-4"><i class="fas fa-filter me-2"></i>Filter Cars</h5>
 
-                        <form action="{{ route('cars.filter') }}" method="GET" id="filter-form">
+                        <form action="{{ route('cars.index') }}" method="GET" id="filter-form">
                             <div class="mb-3">
                                 <label for="marque" class="form-label">Brand</label>
                                 <select class="form-select" id="marque" name="marque">
@@ -24,7 +43,7 @@
                                         $brands = $cars->pluck('marque')->unique()->sort();
                                     @endphp
                                     @foreach ($brands as $brand)
-                                        <option value="{{ $brand }}">{{ $brand }}</option>
+                                        <option value="{{ $brand }}" {{ request('marque') == $brand ? 'selected' : '' }}>{{ $brand }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -37,27 +56,62 @@
                                         $models = $cars->pluck('model')->unique()->sort();
                                     @endphp
                                     @foreach ($models as $model)
-                                        <option value="{{ $model }}">{{ $model }}</option>
+                                        <option value="{{ $model }}" {{ request('model') == $model ? 'selected' : '' }}>{{ $model }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="fuel_type" class="form-label">Fuel Type</label>
+                                <select class="form-select" id="fuel_type" name="fuel_type">
+                                    <option value="">All Types</option>
+                                    @php
+                                        $fuelTypes = $cars->pluck('fuel_type')->unique()->sort();
+                                    @endphp
+                                    @foreach ($fuelTypes as $type)
+                                        <option value="{{ $type }}" {{ request('fuel_type') == $type ? 'selected' : '' }}>{{ ucfirst($type) }}</option>
                                     @endforeach
                                 </select>
                             </div>
 
+                            <hr>
+                            <h6 class="mb-3">Price Range (per day)</h6>
                             <div class="mb-3">
-                                <label for="price_min" class="form-label">Min Price (per day)</label>
-                                <input type="number" class="form-control" id="price_min" name="price_min" min="0">
+                                <label for="price_min" class="form-label">Min Price ($)</label>
+                                <input type="number" class="form-control" id="price_min" name="price_min" min="0" value="{{ request('price_min') }}">
                             </div>
 
                             <div class="mb-3">
-                                <label for="price_max" class="form-label">Max Price (per day)</label>
-                                <input type="number" class="form-control" id="price_max" name="price_max" min="0">
+                                <label for="price_max" class="form-label">Max Price ($)</label>
+                                <input type="number" class="form-control" id="price_max" name="price_max" min="0" value="{{ request('price_max') }}">
                             </div>
 
-                            <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-filter me-2"></i>Apply Filters</button>
+                                <a href="{{ route('cars.index') }}" class="btn btn-outline-secondary"><i class="fas fa-redo me-2"></i>Reset Filters</a>
+                            </div>
                         </form>
                     </div>
                 </div>
 
                 <div class="col-lg-9 col-md-8 col-12">
+                    @if(request('search') || request('marque') || request('model') || request('fuel_type') || request('price_min') || request('price_max'))
+                        <div class="mb-3">
+                            <div class="alert alert-info">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        Showing filtered results. 
+                                        <strong>{{ $cars->count() }}</strong> car(s) found.
+                                    </div>
+                                    <a href="{{ route('cars.index') }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-times me-1"></i>Clear Filters
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                
                     <div class="row">
                         @if ($cars->count() > 0)
                             @foreach ($cars as $car)
@@ -88,7 +142,7 @@
                         @else
                             <div class="col-12 text-center">
                                 <div class="alert alert-info">
-                                    <i class="fas fa-info-circle me-2"></i> No cars available at the moment.
+                                    <i class="fas fa-info-circle me-2"></i> No cars found matching your criteria. Please try different filters.
                                 </div>
                             </div>
                         @endif
@@ -115,7 +169,7 @@
                         searchParams.append(pair[0], pair[1]);
                     }
 
-                    fetch(`{{ route('cars.filter') }}?${searchParams.toString()}`, {
+                    fetch(`{{ route('cars.index') }}?${searchParams.toString()}`, {
                             headers: {
                                 'X-Requested-With': 'XMLHttpRequest'
                             }
@@ -172,7 +226,7 @@
                     carsContainer.innerHTML = `
                     <div class="col-12 text-center">
                         <div class="alert alert-info">
-                            <i class="fas fa-info-circle me-2"></i> No cars available with the selected filters.
+                            <i class="fas fa-info-circle me-2"></i> No cars found matching your criteria. Please try different filters.
                         </div>
                     </div>
                 `;

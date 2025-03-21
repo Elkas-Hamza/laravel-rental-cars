@@ -11,12 +11,72 @@ use Illuminate\Support\Facades\Storage;
 class CarController extends Controller
 {
     /**
-     * Display a listing of all cars
+     * Display a listing of all cars with search and filter capabilities
      */
-    public function index()
+    public function index(Request $request)
     {
-        $cars = Car::latest()->paginate(12);
-        return view('admin.cars.index', compact('cars'));
+        $query = Car::query();
+
+        // Search functionality
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('marque', 'like', '%' . $search . '%')
+                  ->orWhere('model', 'like', '%' . $search . '%')
+                  ->orWhere('year', 'like', '%' . $search . '%')
+                  ->orWhere('description', 'like', '%' . $search . '%');
+            });
+        }
+
+        // Apply filters if they exist
+        if ($request->has('marque') && !empty($request->marque)) {
+            $query->where('marque', $request->marque);
+        }
+
+        if ($request->has('model') && !empty($request->model)) {
+            $query->where('model', $request->model);
+        }
+
+        if ($request->has('fuel_type') && !empty($request->fuel_type)) {
+            $query->where('fuel_type', $request->fuel_type);
+        }
+
+        if ($request->has('price_min') && !empty($request->price_min)) {
+            $query->where('prix_journalier', '>=', $request->price_min);
+        }
+
+        if ($request->has('price_max') && !empty($request->price_max)) {
+            $query->where('prix_journalier', '<=', $request->price_max);
+        }
+
+        $cars = $query->latest()->get();
+        
+        // Handle AJAX requests
+        if ($request->ajax()) {
+            $carsData = $cars->map(function($car) {
+                return [
+                    'id' => $car->id,
+                    'marque' => $car->marque,
+                    'model' => $car->model,
+                    'description' => $car->description,
+                    'prix_journalier' => $car->prix_journalier,
+                    'year' => $car->year,
+                    'seats' => $car->seats,
+                    'transmission' => $car->transmission,
+                    'fuel_type' => $car->fuel_type,
+                    'color' => $car->color,
+                    'image' => $car->image,
+                    'disponible' => $car->disponible,
+                ];
+            });
+            
+            return response()->json([
+                'cars' => $carsData,
+                'count' => $carsData->count()
+            ]);
+        }
+        
+        return view('cars.index', compact('cars'));
     }
 
     /**
@@ -53,7 +113,7 @@ class CarController extends Controller
      */
     public function show(Car $car)
     {
-        return view('admin.cars.show', compact('car'));
+        return view('cars.show', compact('car'));
     }
 
     /**
@@ -61,112 +121,63 @@ class CarController extends Controller
      */
     public function filter(Request $request)
     {
-        \Log::info('Filter request received:', $request->all());
-
         $query = Car::query();
 
-        // Search by name
+        // Search by name, model, etc.
         if ($request->has('search') && !empty($request->search)) {
-            $query->where('name', 'like', '%' . $request->search . '%');
-            \Log::info('Filtering by search:', ['term' => $request->search]);
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('marque', 'like', '%' . $search . '%')
+                  ->orWhere('model', 'like', '%' . $search . '%')
+                  ->orWhere('year', 'like', '%' . $search . '%')
+                  ->orWhere('description', 'like', '%' . $search . '%');
+            });
         }
 
-        // Filter by category
-        if ($request->has('categories')) {
-            \Log::info('Categories data:', ['categories' => $request->categories, 'type' => gettype($request->categories)]);
-            if (is_array($request->categories) && count($request->categories) > 0) {
-                $query->whereIn('category', $request->categories);
-                \Log::info('Filtering by categories:', ['categories' => $request->categories]);
-            }
+        // Filter by brand
+        if ($request->has('marque') && !empty($request->marque)) {
+            $query->where('marque', $request->marque);
         }
 
-        // Filter by transmission
-        if ($request->has('transmissions')) {
-            \Log::info('Transmissions data:', ['transmissions' => $request->transmissions, 'type' => gettype($request->transmissions)]);
-            if (is_array($request->transmissions) && count($request->transmissions) > 0) {
-                $query->whereIn('transmission', $request->transmissions);
-                \Log::info('Filtering by transmissions:', ['transmissions' => $request->transmissions]);
-            }
+        // Filter by model
+        if ($request->has('model') && !empty($request->model)) {
+            $query->where('model', $request->model);
         }
 
         // Filter by fuel type
-        if ($request->has('fuel_types')) {
-            \Log::info('Fuel types data:', ['fuel_types' => $request->fuel_types, 'type' => gettype($request->fuel_types)]);
-            if (is_array($request->fuel_types) && count($request->fuel_types) > 0) {
-                $query->whereIn('fuel_type', $request->fuel_types);
-                \Log::info('Filtering by fuel types:', ['fuel_types' => $request->fuel_types]);
-            }
+        if ($request->has('fuel_type') && !empty($request->fuel_type)) {
+            $query->where('fuel_type', $request->fuel_type);
         }
 
         // Filter by price range
         if ($request->has('price_min') && !empty($request->price_min)) {
-            $query->where('price_per_day', '>=', $request->price_min);
-            \Log::info('Filtering by min price:', ['price_min' => $request->price_min]);
+            $query->where('prix_journalier', '>=', $request->price_min);
         }
 
         if ($request->has('price_max') && !empty($request->price_max)) {
-            $query->where('price_per_day', '<=', $request->price_max);
-            \Log::info('Filtering by max price:', ['price_max' => $request->price_max]);
+            $query->where('prix_journalier', '<=', $request->price_max);
         }
 
-        // Filter by seats
-        if ($request->has('seats') && !empty($request->seats)) {
-            $query->where('seats', '>=', $request->seats);
-            \Log::info('Filtering by seats:', ['seats' => $request->seats]);
-        }
-
-        // Sort results
-        if ($request->has('sort') && !empty($request->sort)) {
-            \Log::info('Sorting by:', ['sort' => $request->sort]);
-            switch ($request->sort) {
-                case 'price_asc':
-                    $query->orderBy('price_per_day', 'asc');
-                    break;
-                case 'price_desc':
-                    $query->orderBy('price_per_day', 'desc');
-                    break;
-                case 'name_asc':
-                    $query->orderBy('name', 'asc');
-                    break;
-                case 'name_desc':
-                    $query->orderBy('name', 'desc');
-                    break;
-                case 'year_asc':
-                    $query->orderBy('year', 'asc');
-                    break;
-                case 'year_desc':
-                    $query->orderBy('year', 'desc');
-                    break;
-                default:
-                    $query->latest();
-                    break;
-            }
-        } else {
-            $query->latest();
-        }
-
-        // Get available cars only
-        $cars = $query->where('disponible', true)->get();
+        // Get cars
+        $cars = $query->latest()->get();
 
         // Prepare data for response
         $carsData = $cars->map(function($car) {
             return [
                 'id' => $car->id,
-                'name' => $car->name,
-                'category' => $car->category,
+                'marque' => $car->marque,
+                'model' => $car->model,
                 'description' => $car->description,
-                'price_per_day' => $car->price_per_day,
+                'prix_journalier' => $car->prix_journalier,
                 'year' => $car->year,
                 'seats' => $car->seats,
                 'transmission' => $car->transmission,
                 'fuel_type' => $car->fuel_type,
-                'license_plate' => $car->license_plate,
-                'image_url' => asset($car->image_url),
-                'status' => $car->status ?? 'available',
+                'color' => $car->color,
+                'image' => $car->image,
+                'disponible' => $car->disponible,
             ];
         });
-
-        \Log::info('Filter results count:', ['count' => $carsData->count()]);
 
         if ($request->ajax()) {
             return response()->json([

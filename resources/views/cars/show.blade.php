@@ -81,9 +81,9 @@
                         <h5 class="mb-0">Car Details</h5>
                     </div>
                     <div class="card-body">
-                        <div class="spec-item d-flex align-items-center">
+                        <div class="spec-item d-flex align-items-center car-feature">
                             <div class="spec-icon">
-                                <i class="bi bi-currency-dollar"></i>
+                                <i class="fas fa-dollar-sign"></i>
                             </div>
                             <div>
                                 <h6 class="mb-0">Daily Rate</h6>
@@ -91,9 +91,9 @@
                             </div>
                         </div>
 
-                        <div class="spec-item d-flex align-items-center">
+                        <div class="spec-item d-flex align-items-center car-feature">
                             <div class="spec-icon">
-                                <i class="bi bi-gear-fill"></i>
+                                <i class="fas fa-cogs"></i>
                             </div>
                             <div>
                                 <h6 class="mb-0">Transmission</h6>
@@ -101,9 +101,9 @@
                             </div>
                         </div>
 
-                        <div class="spec-item d-flex align-items-center">
+                        <div class="spec-item d-flex align-items-center car-feature">
                             <div class="spec-icon">
-                                <i class="bi bi-fuel-pump-fill"></i>
+                                <i class="fas fa-gas-pump"></i>
                             </div>
                             <div>
                                 <h6 class="mb-0">Fuel Type</h6>
@@ -111,9 +111,9 @@
                             </div>
                         </div>
 
-                        <div class="spec-item d-flex align-items-center">
+                        <div class="spec-item d-flex align-items-center car-feature">
                             <div class="spec-icon">
-                                <i class="bi bi-people-fill"></i>
+                                <i class="fas fa-users"></i>
                             </div>
                             <div>
                                 <h6 class="mb-0">Seating Capacity</h6>
@@ -121,9 +121,9 @@
                             </div>
                         </div>
 
-                        <div class="spec-item d-flex align-items-center">
+                        <div class="spec-item d-flex align-items-center car-feature">
                             <div class="spec-icon">
-                                <i class="bi bi-calendar-event"></i>
+                                <i class="fas fa-calendar-alt"></i>
                             </div>
                             <div>
                                 <h6 class="mb-0">Model Year</h6>

@@ -70,7 +70,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="mb-0">Car Management</h1>
             <a href="{{ route('admin.cars.create') }}" class="btn btn-primary">
-                <i class="bi bi-plus-lg me-2"></i>Add New Car
+                <i class="fas fa-plus me-2"></i>Add New Car
             </a>
         </div>
 
@@ -79,7 +79,7 @@
                 <div class="row g-3">
                     <div class="col-md-3">
                         <div class="input-group">
-                            <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                            <span class="input-group-text bg-white"><i class="fas fa-search"></i></span>
                             <input type="text" id="searchInput" class="form-control border-start-0"
                                 placeholder="Search cars...">
                         </div>
@@ -119,14 +119,14 @@
                     <div class="col-md-3 text-md-end">
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-outline-primary active" id="gridViewBtn">
-                                <i class="bi bi-grid-3x3-gap-fill"></i>
+                                <i class="fas fa-th"></i>
                             </button>
                             <button type="button" class="btn btn-outline-primary" id="listViewBtn">
-                                <i class="bi bi-list-ul"></i>
+                                <i class="fas fa-list"></i>
                             </button>
                         </div>
                         <button type="button" class="btn btn-outline-primary ms-2" id="downloadCarList">
-                            <i class="bi bi-download me-2"></i>Export
+                            <i class="fas fa-download me-2"></i>Export
                         </button>
                     </div>
                 </div>
@@ -174,15 +174,15 @@
                         <div class="card-footer bg-white border-top-0">
                             <div class="d-flex justify-content-between">
                                 <a href="{{ route('admin.cars.show', $car->id) }}" class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-eye me-1"></i>View
+                                    <i class="fas fa-eye me-1"></i>View
                                 </a>
                                 <a href="{{ route('admin.cars.edit', $car->id) }}" class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-pencil me-1"></i>Edit
+                                    <i class="fas fa-pencil-alt me-1"></i>Edit
                                 </a>
                                 <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
                                     data-bs-target="#deleteCarModal" data-car-id="{{ $car->id }}"
                                     data-car-name="{{ $car->name }}">
-                                    <i class="bi bi-trash me-1"></i>Delete
+                                    <i class="fas fa-trash-alt me-1"></i>Delete
                                 </button>
                             </div>
                         </div>
@@ -265,15 +265,15 @@
                             <div class="card-footer bg-white border-top-0">
                                 <div class="d-flex justify-content-between">
                                     <a href="#" class="btn btn-sm btn-outline-primary">
-                                        <i class="bi bi-eye me-1"></i>View
+                                        <i class="fas fa-eye me-1"></i>View
                                     </a>
                                     <a href="#" class="btn btn-sm btn-outline-primary">
-                                        <i class="bi bi-pencil me-1"></i>Edit
+                                        <i class="fas fa-pencil-alt me-1"></i>Edit
                                     </a>
                                     <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal"
                                         data-bs-target="#deleteCarModal" data-car-id="{{ $i }}"
                                         data-car-name="Car Sample {{ $i }}">
-                                        <i class="bi bi-trash me-1"></i>Delete
+                                        <i class="fas fa-trash-alt me-1"></i>Delete
                                     </button>
                                 </div>
                             </div>
@@ -323,16 +323,16 @@
                                         <div class="btn-group" role="group">
                                             <a href="{{ route('admin.cars.show', $car->id) }}"
                                                 class="btn btn-sm btn-outline-primary">
-                                                <i class="bi bi-eye"></i>
+                                                <i class="fas fa-eye"></i>
                                             </a>
                                             <a href="{{ route('admin.cars.edit', $car->id) }}"
                                                 class="btn btn-sm btn-outline-primary">
-                                                <i class="bi bi-pencil"></i>
+                                                <i class="fas fa-pencil-alt"></i>
                                             </a>
                                             <button type="button" class="btn btn-sm btn-outline-danger"
                                                 data-bs-toggle="modal" data-bs-target="#deleteCarModal"
                                                 data-car-id="{{ $car->id }}" data-car-name="{{ $car->name }}">
-                                                <i class="bi bi-trash"></i>
+                                                <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </div>
                                     </td>
@@ -400,16 +400,16 @@
                                         <td>
                                             <div class="btn-group" role="group">
                                                 <a href="#" class="btn btn-sm btn-outline-primary">
-                                                    <i class="bi bi-eye"></i>
+                                                    <i class="fas fa-eye"></i>
                                                 </a>
                                                 <a href="#" class="btn btn-sm btn-outline-primary">
-                                                    <i class="bi bi-pencil"></i>
+                                                    <i class="fas fa-pencil-alt"></i>
                                                 </a>
                                                 <button type="button" class="btn btn-sm btn-outline-danger"
                                                     data-bs-toggle="modal" data-bs-target="#deleteCarModal"
                                                     data-car-id="{{ $i }}"
                                                     data-car-name="Car Sample {{ $i }}">
-                                                    <i class="bi bi-trash"></i>
+                                                    <i class="fas fa-trash-alt"></i>
                                                 </button>
                                             </div>
                                         </td>

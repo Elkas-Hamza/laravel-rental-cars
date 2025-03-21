@@ -18,7 +18,8 @@
     <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;300;400;600;700&display=swap"
         rel="stylesheet">
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
     <link href="{{ asset('css/owl.carousel.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/tooplate-moso-interior.css') }}" rel="stylesheet">
     <link rel="shortcut icon" type="x-icon" href="{{ asset('icon/car-rental.png') }}">
@@ -58,6 +59,82 @@
         .navbar {
             z-index: 1000;
         }
+
+        /* Icon styles */
+        .fas,
+        .fa,
+        .far,
+        .fab,
+        .bi {
+            vertical-align: middle;
+        }
+
+        /* Car feature icons */
+        .car-feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .car-feature i {
+            margin-right: 8px;
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Icon colors for admin dashboard */
+        .border-left-primary {
+            border-left: 4px solid #4e73df;
+        }
+
+        .border-left-success {
+            border-left: 4px solid #1cc88a;
+        }
+
+        .border-left-info {
+            border-left: 4px solid #36b9cc;
+        }
+
+        .border-left-warning {
+            border-left: 4px solid #f6c23e;
+        }
+
+        /* Social media icons styling */
+        .social-icon {
+            display: flex;
+            flex-wrap: wrap;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .social-icon-item {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .social-icon-link {
+            background: #f0f0f0;
+            border-radius: 50%;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon-link:hover {
+            background: #333;
+            color: #fff;
+        }
+
+        .social-icon-link i {
+            font-size: 1.2rem;
+        }
     </style>
     @yield('styles')
 </head>
@@ -87,7 +164,7 @@
                                     <div class="standard_dropdown top_bar_dropdown">
                                         <a target="_blank"
                                             href="https://maps.google.com/?q={{ urlencode($agence->adresse) }}">
-                                            <i class="bi bi-geo-alt me-1"></i>{{ $agence->adresse }}
+                                            <i class="fas fa-map-marker-alt me-1"></i>{{ $agence->adresse }}
                                         </a>
                                     </div>
                                 </div>
@@ -113,54 +190,70 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link click-scroll" href="{{ route('home') }}">Home</a>
+                            <a class="nav-link click-scroll" href="{{ route('home') }}"><i
+                                    class="fas fa-home me-1"></i>Home</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link click-scroll" href="#section_2">About</a>
+                            <a class="nav-link click-scroll" href="#section_2"><i
+                                    class="fas fa-info-circle me-1"></i>About</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('cars.index') }}">Cars</a>
+                            <a class="nav-link" href="{{ route('cars.index') }}"><i
+                                    class="fas fa-car me-1"></i>Cars</a>
                         </li>
 
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('register') }}">Sign up</a>
+                                <a class="nav-link" href="{{ route('register') }}"><i
+                                        class="fas fa-user-plus me-1"></i>Sign up</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">Login</a>
+                                <a class="nav-link" href="{{ route('login') }}"><i
+                                        class="fas fa-sign-in-alt me-1"></i>Login</a>
                             </li>
                         @else
                             @if (auth()->user()->isAdmin())
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button"
                                         data-bs-toggle="dropdown" aria-expanded="false">
-                                        Admin
+                                        <i class="fas fa-user-shield me-1"></i>Admin
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="adminDropdown">
-                                        <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">Dashboard</a>
+                                        <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}"><i
+                                                    class="fas fa-tachometer-alt me-1"></i>Dashboard</a>
                                         </li>
-                                        <li><a class="dropdown-item" href="{{ route('admin.cars.index') }}">Manage Cars</a>
+                                        <li><a class="dropdown-item" href="{{ route('admin.cars.index') }}"><i
+                                                    class="fas fa-car me-1"></i>Manage Cars</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="{{ route('admin.reservations.index') }}"><i
+                                                    class="fas fa-calendar-alt me-1"></i>Manage Reservations</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="{{ route('users.index') }}"><i
+                                                    class="fas fa-users me-1"></i>Manage Users</a>
                                         </li>
                                     </ul>
                                 </li>
                             @endif
 
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('reservations.index') }}">My Reservations</a>
+                                <a class="nav-link" href="{{ route('reservations.index') }}"><i
+                                        class="fas fa-calendar-check me-1"></i>My Reservations</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('profile') }}">Profile</a>
+                                <a class="nav-link" href="{{ route('profile') }}"><i
+                                        class="fas fa-user-circle me-1"></i>Profile</a>
                             </li>
 
                             <li class="nav-item">
                                 <form action="{{ route('logout') }}" method="POST">
                                     @csrf
                                     <button type="submit" class="nav-link btn btn-link"
-                                        onclick="return confirm('Are you sure?')">Logout</button>
+                                        onclick="return confirm('Are you sure?')"><i
+                                            class="fas fa-sign-out-alt me-1"></i>Logout</button>
                                 </form>
                             </li>
                         @endguest
@@ -270,17 +363,17 @@
                         <h5 class="site-footer-title mb-3">Contact</h5>
 
                         <p class="text-white d-flex mb-2">
-                            <i class="bi-telephone me-2"></i>
+                            <i class="fas fa-phone me-2"></i>
                             <a href="tel:{{ $agence->tele }}" class="site-footer-link">{{ $agence->tele }}</a>
                         </p>
 
                         <p class="text-white d-flex">
-                            <i class="bi-envelope me-2"></i>
+                            <i class="fas fa-envelope me-2"></i>
                             <a href="mailto:{{ $agence->email }}" class="site-footer-link">{{ $agence->email }}</a>
                         </p>
 
                         <p class="text-white d-flex mt-3">
-                            <i class="bi-geo-alt me-2"></i>
+                            <i class="fas fa-map-marker-alt me-2"></i>
                             {{ $agence->adresse }}
                         </p>
                     </div>
@@ -290,12 +383,16 @@
                     <h5 class="site-footer-title mb-3">Follow Us</h5>
 
                     <ul class="social-icon">
-                        <li class="social-icon-item"><a href="#" class="social-icon-link bi-facebook"></a></li>
-                        <li class="social-icon-item"><a href="#" class="social-icon-link bi-twitter"></a></li>
-                        <li class="social-icon-item"><a href="#" class="social-icon-link bi-instagram"></a>
-                        </li>
-                        <li class="social-icon-item"><a href="#" class="social-icon-link bi-linkedin"></a></li>
-                        <li class="social-icon-item"><a href="#" class="social-icon-link bi-youtube"></a></li>
+                        <li class="social-icon-item"><a href="#" class="social-icon-link"><i
+                                    class="fab fa-facebook-f"></i></a></li>
+                        <li class="social-icon-item"><a href="#" class="social-icon-link"><i
+                                    class="fab fa-twitter"></i></a></li>
+                        <li class="social-icon-item"><a href="#" class="social-icon-link"><i
+                                    class="fab fa-instagram"></i></a></li>
+                        <li class="social-icon-item"><a href="#" class="social-icon-link"><i
+                                    class="fab fa-linkedin-in"></i></a></li>
+                        <li class="social-icon-item"><a href="#" class="social-icon-link"><i
+                                    class="fab fa-youtube"></i></a></li>
                     </ul>
                 </div>
             </div>

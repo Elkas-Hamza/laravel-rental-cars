@@ -49,14 +49,14 @@
                     <h1 class="mb-0">{{ $car->name }}</h1>
                     <div>
                         <a href="{{ route('admin.cars.index') }}" class="btn btn-outline-secondary me-2">
-                            <i class="bi bi-arrow-left me-1"></i>Back to Cars
+                            <i class="fas fa-arrow-left me-1"></i>Back to Cars
                         </a>
                         <a href="{{ route('admin.cars.edit', $car->id) }}" class="btn btn-primary me-2">
-                            <i class="bi bi-pencil me-1"></i>Edit
+                            <i class="fas fa-pencil-alt me-1"></i>Edit
                         </a>
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                             data-bs-target="#deleteCarModal">
-                            <i class="bi bi-trash me-1"></i>Delete
+                            <i class="fas fa-trash-alt me-1"></i>Delete
                         </button>
                     </div>
                 </div>
@@ -90,7 +90,7 @@
                     <div class="card-body">
                         <div class="spec-item d-flex align-items-center">
                             <div class="spec-icon">
-                                <i class="bi bi-currency-dollar"></i>
+                                <i class="fas fa-dollar-sign"></i>
                             </div>
                             <div>
                                 <h6 class="mb-0">Daily Rate</h6>
@@ -100,7 +100,7 @@
 
                         <div class="spec-item d-flex align-items-center">
                             <div class="spec-icon">
-                                <i class="bi bi-gear-fill"></i>
+                                <i class="fas fa-cog"></i>
                             </div>
                             <div>
                                 <h6 class="mb-0">Transmission</h6>
@@ -110,7 +110,7 @@
 
                         <div class="spec-item d-flex align-items-center">
                             <div class="spec-icon">
-                                <i class="bi bi-fuel-pump-fill"></i>
+                                <i class="fas fa-gas-pump"></i>
                             </div>
                             <div>
                                 <h6 class="mb-0">Fuel Type</h6>
@@ -120,7 +120,7 @@
 
                         <div class="spec-item d-flex align-items-center">
                             <div class="spec-icon">
-                                <i class="bi bi-people-fill"></i>
+                                <i class="fas fa-users"></i>
                             </div>
                             <div>
                                 <h6 class="mb-0">Seating Capacity</h6>
@@ -130,7 +130,7 @@
 
                         <div class="spec-item d-flex align-items-center">
                             <div class="spec-icon">
-                                <i class="bi bi-calendar-event"></i>
+                                <i class="fas fa-calendar-alt"></i>
                             </div>
                             <div>
                                 <h6 class="mb-0">Model Year</h6>
@@ -140,7 +140,7 @@
 
                         <div class="spec-item d-flex align-items-center">
                             <div class="spec-icon">
-                                <i class="bi bi-tag-fill"></i>
+                                <i class="fas fa-tag"></i>
                             </div>
                             <div>
                                 <h6 class="mb-0">License Plate</h6>

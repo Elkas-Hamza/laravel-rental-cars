@@ -133,6 +133,21 @@
                                 <a class="nav-link" href="{{ route('login') }}">Login</a>
                             </li>
                         @else
+                            @if (auth()->user()->isAdmin())
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        Admin
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                                        <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">Dashboard</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="{{ route('admin.cars.index') }}">Manage Cars</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            @endif
+
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('reservations.index') }}">My Reservations</a>
                             </li>

@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AgenceSeeder::class,
             CarSeeder::class,
+            AdminUserSeeder::class,
         ]);
 
         // Create a default user

@@ -45,12 +45,16 @@ Route::middleware('auth')->group(function () {
 
 // Admin routes
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
 
     // Car management routes
     Route::resource('cars', App\Http\Controllers\Admin\CarController::class);
+
+    // Reservation management routes
+    Route::resource('reservations', App\Http\Controllers\Admin\ReservationController::class);
+
+    // User management routes
+    Route::resource('users', App\Http\Controllers\Admin\UserController::class)->except(['create', 'store']);
 });
 
 // Public routes

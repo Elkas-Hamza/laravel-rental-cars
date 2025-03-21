@@ -22,6 +22,8 @@ class User extends Authenticatable
         'email',
         'password',
         'photo',
+        'phone',
+        'is_admin',
     ];
 
     /**
@@ -44,6 +46,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_admin' => 'boolean',
         ];
     }
 
@@ -53,5 +56,15 @@ class User extends Authenticatable
     public function reservations()
     {
         return $this->hasMany(Reservation::class);
+    }
+
+    /**
+     * Check if the user is an admin.
+     *
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+        return $this->is_admin === true;
     }
 }

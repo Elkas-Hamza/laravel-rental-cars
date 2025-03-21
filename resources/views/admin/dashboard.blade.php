@@ -60,44 +60,57 @@
         .activity-timeline .timeline-content {
             padding-bottom: 10px;
         }
+
+        .border-left-primary {
+            border-left: 4px solid #4e73df;
+        }
+
+        .border-left-success {
+            border-left: 4px solid #1cc88a;
+        }
+
+        .border-left-info {
+            border-left: 4px solid #36b9cc;
+        }
+
+        .border-left-warning {
+            border-left: 4px solid #f6c23e;
+        }
+
+        .chart-pie {
+            position: relative;
+            height: 15rem;
+            width: 100%;
+        }
     </style>
 @endsection
 
 @section('content')
-    <div class="container-fluid my-4">
-        <div class="row mb-4 align-items-center">
-            <div class="col-md-6">
-                <h1 class="mb-0">Welcome, {{ auth()->user()->name }}</h1>
-                <p class="text-muted">Dashboard Overview</p>
-            </div>
-            <div class="col-md-6 text-md-end">
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                        data-bs-target="#reportModal">
-                        <i class="bi bi-file-earmark-bar-graph me-2"></i>Generate Report
-                    </button>
-                    <a href="{{ route('admin.settings') }}" class="btn btn-outline-primary">
-                        <i class="bi bi-gear me-2"></i>Settings
+    <div class="container py-4">
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h1 class="mb-0">Admin Dashboard</h1>
+                    <a href="{{ route('admin.cars.create') }}" class="btn btn-primary">
+                        <i class="fas fa-plus-circle me-1"></i> Add New Car
                     </a>
                 </div>
+                <hr>
             </div>
         </div>
 
         <div class="row mb-4">
             <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card dashboard-card border-0 shadow-sm h-100">
+                <div class="card border-left-primary shadow h-100 py-2">
                     <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="text-muted mb-1">Total Revenue</h6>
-                                <h2 class="mb-0">${{ number_format($totalRevenue ?? 25840, 2) }}</h2>
-                                <p class="text-success mb-0">
-                                    <i class="bi bi-arrow-up-right"></i>
-                                    <span>{{ $revenueGrowth ?? 12.5 }}%</span> since last month
-                                </p>
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    Total Cars</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalCars ?? 0 }}</div>
                             </div>
-                            <div class="dashboard-icon">
-                                <i class="bi bi-currency-dollar"></i>
+                            <div class="col-auto">
+                                <i class="fas fa-car fa-2x text-gray-300"></i>
                             </div>
                         </div>
                     </div>
@@ -105,19 +118,16 @@
             </div>
 
             <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card dashboard-card border-0 shadow-sm h-100">
+                <div class="card border-left-success shadow h-100 py-2">
                     <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="text-muted mb-1">Active Reservations</h6>
-                                <h2 class="mb-0">{{ $activeReservations ?? 42 }}</h2>
-                                <p class="text-success mb-0">
-                                    <i class="bi bi-arrow-up-right"></i>
-                                    <span>{{ $reservationGrowth ?? 8.3 }}%</span> since last month
-                                </p>
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Available Cars</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $availableCars ?? 0 }}</div>
                             </div>
-                            <div class="dashboard-icon">
-                                <i class="bi bi-calendar-check"></i>
+                            <div class="col-auto">
+                                <i class="fas fa-check-circle fa-2x text-gray-300"></i>
                             </div>
                         </div>
                     </div>
@@ -125,19 +135,16 @@
             </div>
 
             <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card dashboard-card border-0 shadow-sm h-100">
+                <div class="card border-left-info shadow h-100 py-2">
                     <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="text-muted mb-1">Total Cars</h6>
-                                <h2 class="mb-0">{{ $totalCars ?? 156 }}</h2>
-                                <p class="text-danger mb-0">
-                                    <i class="bi bi-arrow-down-right"></i>
-                                    <span>{{ $carsAvailable ?? 78 }}</span> available now
-                                </p>
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                    Active Reservations</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $activeReservations ?? 0 }}</div>
                             </div>
-                            <div class="dashboard-icon">
-                                <i class="bi bi-car-front"></i>
+                            <div class="col-auto">
+                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
                             </div>
                         </div>
                     </div>
@@ -145,19 +152,16 @@
             </div>
 
             <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card dashboard-card border-0 shadow-sm h-100">
+                <div class="card border-left-warning shadow h-100 py-2">
                     <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="text-muted mb-1">Total Customers</h6>
-                                <h2 class="mb-0">{{ $totalCustomers ?? 872 }}</h2>
-                                <p class="text-success mb-0">
-                                    <i class="bi bi-arrow-up-right"></i>
-                                    <span>{{ $newCustomers ?? 15 }}</span> new this week
-                                </p>
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                    Total Users</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalUsers ?? 0 }}</div>
                             </div>
-                            <div class="dashboard-icon">
-                                <i class="bi bi-people"></i>
+                            <div class="col-auto">
+                                <i class="fas fa-users fa-2x text-gray-300"></i>
                             </div>
                         </div>
                     </div>
@@ -165,143 +169,50 @@
             </div>
         </div>
 
-        <div class="row mb-4">
-            <div class="col-lg-8">
-                <div class="card shadow-sm mb-4">
-                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Revenue Overview</h5>
-                        <div class="dropdown">
-                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
-                                id="revenueTimeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                Last 6 Months
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="revenueTimeDropdown">
-                                <li><a class="dropdown-item" href="#">Last 30 Days</a></li>
-                                <li><a class="dropdown-item" href="#">Last 6 Months</a></li>
-                                <li><a class="dropdown-item" href="#">Last Year</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <canvas id="revenueChart" height="300"></canvas>
-                    </div>
-                </div>
-
-                <div class="card shadow-sm">
-                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Recent Reservations</h5>
+        <div class="row">
+            <div class="col-xl-8 col-lg-7">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Recent Reservations</h6>
                         <a href="{{ route('admin.reservations.index') }}" class="btn btn-sm btn-primary">View All</a>
                     </div>
-                    <div class="card-body p-0">
+                    <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-hover mb-0">
-                                <thead class="table-light">
+                            <table class="table table-bordered">
+                                <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Customer</th>
+                                        <th>User</th>
                                         <th>Car</th>
-                                        <th>Pickup Date</th>
-                                        <th>Return Date</th>
+                                        <th>Dates</th>
                                         <th>Status</th>
-                                        <th>Amount</th>
-                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($recentReservations ?? [] as $reservation)
+                                    @if (isset($recentReservations) && count($recentReservations) > 0)
+                                        @foreach ($recentReservations as $reservation)
+                                            <tr>
+                                                <td>{{ $reservation->id }}</td>
+                                                <td>{{ $reservation->user->name }}</td>
+                                                <td>{{ $reservation->car->name }}</td>
+                                                <td>{{ $reservation->start_date->format('M d, Y') }} -
+                                                    {{ $reservation->end_date->format('M d, Y') }}</td>
+                                                <td>
+                                                    @if ($reservation->status == 'active')
+                                                        <span class="badge bg-success">Active</span>
+                                                    @elseif($reservation->status == 'pending')
+                                                        <span class="badge bg-warning">Pending</span>
+                                                    @elseif($reservation->status == 'cancelled')
+                                                        <span class="badge bg-danger">Cancelled</span>
+                                                    @elseif($reservation->status == 'completed')
+                                                        <span class="badge bg-info">Completed</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @else
                                         <tr>
-                                            <td>{{ $reservation->id }}</td>
-                                            <td>{{ $reservation->user->name }}</td>
-                                            <td>{{ $reservation->car->name }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($reservation->pickup_date)->format('M d, Y') }}
-                                            </td>
-                                            <td>{{ \Carbon\Carbon::parse($reservation->return_date)->format('M d, Y') }}
-                                            </td>
-                                            <td>
-                                                <span
-                                                    class="badge bg-{{ $reservation->status_color }}">{{ $reservation->status }}</span>
-                                            </td>
-                                            <td>${{ number_format($reservation->total_price, 2) }}</td>
-                                            <td>
-                                                <a href="{{ route('admin.reservations.show', $reservation->id) }}"
-                                                    class="btn btn-sm btn-outline-primary">
-                                                    <i class="bi bi-eye"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-
-                                    <!-- Sample data if no reservations are provided -->
-                                    @if (empty($recentReservations))
-                                        <tr>
-                                            <td>#RES-5439</td>
-                                            <td>John Smith</td>
-                                            <td>Toyota Camry</td>
-                                            <td>Mar 15, 2025</td>
-                                            <td>Mar 18, 2025</td>
-                                            <td><span class="badge bg-success">Active</span></td>
-                                            <td>$243.00</td>
-                                            <td>
-                                                <a href="#" class="btn btn-sm btn-outline-primary">
-                                                    <i class="bi bi-eye"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>#RES-5438</td>
-                                            <td>Sarah Johnson</td>
-                                            <td>Honda Civic</td>
-                                            <td>Mar 14, 2025</td>
-                                            <td>Mar 21, 2025</td>
-                                            <td><span class="badge bg-success">Active</span></td>
-                                            <td>$480.00</td>
-                                            <td>
-                                                <a href="#" class="btn btn-sm btn-outline-primary">
-                                                    <i class="bi bi-eye"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>#RES-5437</td>
-                                            <td>Michael Brown</td>
-                                            <td>Mercedes-Benz E-Class</td>
-                                            <td>Mar 12, 2025</td>
-                                            <td>Mar 19, 2025</td>
-                                            <td><span class="badge bg-warning">Pending</span></td>
-                                            <td>$1,250.00</td>
-                                            <td>
-                                                <a href="#" class="btn btn-sm btn-outline-primary">
-                                                    <i class="bi bi-eye"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>#RES-5436</td>
-                                            <td>Emily Wilson</td>
-                                            <td>Kia Sportage</td>
-                                            <td>Mar 10, 2025</td>
-                                            <td>Mar 13, 2025</td>
-                                            <td><span class="badge bg-primary">Completed</span></td>
-                                            <td>$210.00</td>
-                                            <td>
-                                                <a href="#" class="btn btn-sm btn-outline-primary">
-                                                    <i class="bi bi-eye"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>#RES-5435</td>
-                                            <td>David Clark</td>
-                                            <td>Nissan Altima</td>
-                                            <td>Mar 08, 2025</td>
-                                            <td>Mar 11, 2025</td>
-                                            <td><span class="badge bg-danger">Cancelled</span></td>
-                                            <td>$180.00</td>
-                                            <td>
-                                                <a href="#" class="btn btn-sm btn-outline-primary">
-                                                    <i class="bi bi-eye"></i>
-                                                </a>
-                                            </td>
+                                            <td colspan="5" class="text-center">No recent reservations</td>
                                         </tr>
                                     @endif
                                 </tbody>
@@ -311,161 +222,29 @@
                 </div>
             </div>
 
-            <div class="col-lg-4">
-                <div class="card shadow-sm mb-4">
-                    <div class="card-header bg-white">
-                        <h5 class="mb-0">Car Availability</h5>
+            <div class="col-xl-4 col-lg-5">
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Car Categories</h6>
                     </div>
                     <div class="card-body">
-                        <canvas id="availabilityChart" height="260"></canvas>
-                    </div>
-                </div>
-
-                <div class="card shadow-sm mb-4">
-                    <div class="card-header bg-white">
-                        <h5 class="mb-0">Recent Activity</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="activity-timeline">
-                            @foreach ($recentActivities ?? [] as $activity)
-                                <div class="timeline-item">
-                                    <div class="timeline-point"></div>
-                                    <div class="timeline-content">
-                                        <p class="mb-1">{{ $activity->description }}</p>
-                                        <small class="text-muted">{{ $activity->created_at->diffForHumans() }}</small>
-                                    </div>
-                                </div>
-                            @endforeach
-
-                            <!-- Sample data if no activities are provided -->
-                            @if (empty($recentActivities))
-                                <div class="timeline-item">
-                                    <div class="timeline-point"></div>
-                                    <div class="timeline-content">
-                                        <p class="mb-1">New reservation created by <strong>John Smith</strong></p>
-                                        <small class="text-muted">10 minutes ago</small>
-                                    </div>
-                                </div>
-
-                                <div class="timeline-item">
-                                    <div class="timeline-point"></div>
-                                    <div class="timeline-content">
-                                        <p class="mb-1">Car <strong>Toyota Camry (ABC-123)</strong> returned</p>
-                                        <small class="text-muted">1 hour ago</small>
-                                    </div>
-                                </div>
-
-                                <div class="timeline-item">
-                                    <div class="timeline-point"></div>
-                                    <div class="timeline-content">
-                                        <p class="mb-1">New car <strong>Mercedes-Benz GLC</strong> added to fleet</p>
-                                        <small class="text-muted">3 hours ago</small>
-                                    </div>
-                                </div>
-
-                                <div class="timeline-item">
-                                    <div class="timeline-point"></div>
-                                    <div class="timeline-content">
-                                        <p class="mb-1">Payment received from <strong>Sarah Johnson</strong></p>
-                                        <small class="text-muted">5 hours ago</small>
-                                    </div>
-                                </div>
-
-                                <div class="timeline-item">
-                                    <div class="timeline-point"></div>
-                                    <div class="timeline-content">
-                                        <p class="mb-1">Maintenance scheduled for <strong>Honda Civic (XYZ-789)</strong>
-                                        </p>
-                                        <small class="text-muted">Yesterday</small>
-                                    </div>
-                                </div>
+                        <div class="chart-pie pt-4 pb-2">
+                            <canvas id="carCategoriesChart"></canvas>
+                        </div>
+                        <div class="mt-4 text-center small">
+                            @if (isset($carCategories) && count($carCategories) > 0)
+                                @foreach ($carCategories as $category)
+                                    <span class="mr-2">
+                                        <i class="fas fa-circle"
+                                            style="color: #{{ dechex(rand(0x000000, 0xffffff)) }}"></i>
+                                        {{ $category->name }}
+                                    </span>
+                                @endforeach
+                            @else
+                                <p>No categories available</p>
                             @endif
                         </div>
                     </div>
-                </div>
-
-                <div class="card shadow-sm">
-                    <div class="card-header bg-white">
-                        <h5 class="mb-0">Quick Actions</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-grid gap-2">
-                            <a href="{{ route('admin.cars.create') }}" class="btn btn-outline-primary">
-                                <i class="bi bi-plus-circle me-2"></i>Add New Car
-                            </a>
-                            <a href="{{ route('admin.reservations.create') }}" class="btn btn-outline-primary">
-                                <i class="bi bi-calendar-plus me-2"></i>Create Reservation
-                            </a>
-                            <a href="{{ route('admin.users.create') }}" class="btn btn-outline-primary">
-                                <i class="bi bi-person-plus me-2"></i>Add New User
-                            </a>
-                            <a href="{{ route('admin.maintenance.index') }}" class="btn btn-outline-primary">
-                                <i class="bi bi-tools me-2"></i>Schedule Maintenance
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Report Modal -->
-    <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="reportModalLabel">Generate Report</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="reportType" class="form-label">Report Type</label>
-                            <select class="form-select" id="reportType" required>
-                                <option value="">Select report type</option>
-                                <option value="revenue">Revenue Report</option>
-                                <option value="reservations">Reservations Report</option>
-                                <option value="cars">Car Utilization Report</option>
-                                <option value="customers">Customer Activity Report</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="dateRange" class="form-label">Date Range</label>
-                            <select class="form-select" id="dateRange" required>
-                                <option value="">Select date range</option>
-                                <option value="last_week">Last Week</option>
-                                <option value="last_month">Last Month</option>
-                                <option value="last_quarter">Last Quarter</option>
-                                <option value="last_year">Last Year</option>
-                                <option value="custom">Custom Range</option>
-                            </select>
-                        </div>
-
-                        <div class="row mb-3" id="customDateRange" style="display: none;">
-                            <div class="col-md-6">
-                                <label for="startDate" class="form-label">Start Date</label>
-                                <input type="date" class="form-control" id="startDate">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="endDate" class="form-label">End Date</label>
-                                <input type="date" class="form-control" id="endDate">
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="fileFormat" class="form-label">Format</label>
-                            <select class="form-select" id="fileFormat" required>
-                                <option value="pdf">PDF</option>
-                                <option value="excel">Excel</option>
-                                <option value="csv">CSV</option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary">Generate Report</button>
                 </div>
             </div>
         </div>
@@ -475,72 +254,64 @@
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        // Sample chart for car categories
         document.addEventListener('DOMContentLoaded', function() {
-            // Revenue Chart
-            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-            const revenueChart = new Chart(revenueCtx, {
-                type: 'line',
-                data: {
-                    labels: ['October', 'November', 'December', 'January', 'February', 'March'],
-                    datasets: [{
-                        label: 'Revenue',
-                        data: [4500, 5200, 7800, 6200, 8100, 9300],
-                        borderColor: '#0d6efd',
-                        backgroundColor: 'rgba(13, 110, 253, 0.1)',
-                        borderWidth: 2,
-                        fill: true,
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
+            const ctx = document.getElementById('carCategoriesChart');
+
+            // Check if car categories data exists
+            @if (isset($carCategories) && count($carCategories) > 0)
+                const categoryNames = {!! json_encode($carCategories->pluck('name')) !!};
+                const categoryCounts = {!! json_encode($carCategories->pluck('count')) !!};
+
+                // Generate random colors
+                const backgroundColors = [];
+                for (let i = 0; i < categoryNames.length; i++) {
+                    backgroundColors.push('#' + Math.floor(Math.random() * 16777215).toString(16));
+                }
+
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: categoryNames,
+                        datasets: [{
+                            data: categoryCounts,
+                            backgroundColor: backgroundColors,
+                            hoverOffset: 4
+                        }]
                     },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function(value) {
-                                    return '$' + value;
-                                }
+                    options: {
+                        maintainAspectRatio: false,
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
                             }
                         }
                     }
-                }
-            });
-
-            // Car Availability Chart
-            const availabilityCtx = document.getElementById('availabilityChart').getContext('2d');
-            const availabilityChart = new Chart(availabilityCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Available', 'Rented', 'Maintenance'],
-                    datasets: [{
-                        data: [78, 42, 36],
-                        backgroundColor: ['#0d6efd', '#dc3545', '#ffc107'],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
+                });
+            @else
+                // Display "No Data" message if no car categories
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['No Data Available'],
+                        datasets: [{
+                            data: [1],
+                            backgroundColor: ['#d1d1d1'],
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        maintainAspectRatio: false,
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
                         }
                     }
-                }
-            });
-
-            // Show custom date range when custom option is selected
-            document.getElementById('dateRange').addEventListener('change', function() {
-                const customDateRange = document.getElementById('customDateRange');
-                customDateRange.style.display = this.value === 'custom' ? 'flex' : 'none';
-            });
+                });
+            @endif
         });
     </script>
 @endsection

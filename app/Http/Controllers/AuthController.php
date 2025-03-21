@@ -31,6 +31,14 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $request->remember)) {
             $request->session()->regenerate();
+            
+            // Check if there's a car_id in the session to redirect to
+            if ($request->session()->has('car_id')) {
+                $carId = $request->session()->get('car_id');
+                $request->session()->forget('car_id');
+                return redirect()->route('cars.show', $carId);
+            }
+            
             return redirect()->intended('/');
         }
 

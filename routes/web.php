@@ -16,6 +16,7 @@ Route::get('/cars', [CarController::class, 'index'])->name('cars.index');
 Route::get('/cars/available', [CarController::class, 'available'])->name('cars.available');
 Route::get('/cars/filter', [CarController::class, 'filter'])->name('cars.filter');
 Route::get('/cars/{car}', [CarController::class, 'show'])->name('cars.show');
+Route::post('/cars/store-session', [CarController::class, 'storeCarSession'])->name('store.car.session');
 
 // Static Pages
 Route::get('/support', [HomeController::class, 'support'])->name('support');
@@ -50,11 +51,13 @@ Route::middleware('auth')->group(function () {
     Route::put('/reservations/{reservation}/cancel', [ReservationController::class, 'cancel'])->name('reservations.cancel');
 
     // Client reservation routes with dedicated controller
-    Route::prefix('client')->name('client.')->group(function() {
+    Route::middleware('auth')->prefix('client')->name('client.')->group(function () {
         Route::get('/reservations', [App\Http\Controllers\Client\ReservationController::class, 'index'])->name('reservations.index');
         Route::get('/reservations/history', [App\Http\Controllers\Client\ReservationController::class, 'history'])->name('reservations.history');
         Route::get('/reservations/create/{car}', [App\Http\Controllers\Client\ReservationController::class, 'create'])->name('reservations.create');
         Route::post('/reservations/{car}', [App\Http\Controllers\Client\ReservationController::class, 'store'])->name('reservations.store');
+        Route::get('/reservations/{reservation}/payment', [App\Http\Controllers\Client\ReservationController::class, 'payment'])->name('reservations.payment');
+        Route::post('/reservations/{reservation}/payment', [App\Http\Controllers\Client\ReservationController::class, 'processPayment'])->name('reservations.processPayment');
         Route::put('/reservations/{reservation}/cancel', [App\Http\Controllers\Client\ReservationController::class, 'cancel'])->name('reservations.cancel');
     });
 });

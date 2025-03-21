@@ -285,4 +285,23 @@ class CarController extends Controller
         return redirect()->route('admin.cars.index')
             ->with('success', 'Car deleted successfully.');
     }
+
+    /**
+     * Store car ID in session before redirecting to login
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storeCarSession(Request $request)
+    {
+        $request->validate([
+            'car_id' => 'required|exists:cars,id'
+        ]);
+        
+        // Store car ID in session
+        $request->session()->put('car_id', $request->car_id);
+        
+        // Redirect to login page
+        return redirect()->route('login');
+    }
 }

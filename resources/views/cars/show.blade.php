@@ -170,9 +170,13 @@
                                 </div>
                             @else
                                 <div class="mt-4">
-                                    <a href="{{ route('login') }}" class="btn btn-outline-primary w-100">
+                                    <a href="{{ route('login') }}" class="btn btn-outline-primary w-100" onclick="event.preventDefault(); document.getElementById('store-car-form').submit();">
                                         <i class="fas fa-sign-in-alt me-2"></i>Login to Rent
                                     </a>
+                                    <form id="store-car-form" action="{{ route('store.car.session') }}" method="POST" style="display: none;">
+                                        @csrf
+                                        <input type="hidden" name="car_id" value="{{ $car->id }}">
+                                    </form>
                                 </div>
                             @endauth
                         @else

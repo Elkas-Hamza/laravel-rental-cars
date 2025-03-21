@@ -6,37 +6,39 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
         .car-image {
-            height: 200px;
+            height: 300px;
             object-fit: cover;
-            width: 100%;
+            border-radius: 8px;
         }
-
-        .car-card {
+        
+        .reservation-form {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        
+        .car-details {
             transition: all 0.3s;
-            cursor: pointer;
         }
-
-        .car-card:hover {
+        
+        .car-details:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
         }
-
-        .car-card.selected {
-            border: 2px solid var(--primary-color);
-        }
-
-        .car-features {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .car-feature {
+        
+        .feature-icon {
+            width: 32px;
+            height: 32px;
+            background-color: #e9ecef;
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 5px;
-            font-size: 0.9rem;
-            color: #6c757d;
+            justify-content: center;
+            margin-right: 10px;
+        }
+        
+        .feature-icon i {
+            color: var(--primary-color);
         }
     </style>
 @endsection
@@ -44,152 +46,155 @@
 @section('content')
     <div class="container my-5">
         <div class="row">
-            <div class="col-12">
-                <h2 class="mb-4">Book a Car</h2>
-
-                <div class="card shadow-sm mb-4">
+            <div class="col-12 mb-4">
+                <h1>Rent a Car</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('cars.index') }}">Cars</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('cars.show', $car) }}">{{ $car->marque }} {{ $car->model }}</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">New Reservation</li>
+                    </ol>
+                </nav>
+            </div>
+            
+            <!-- Car Details Section -->
+            <div class="col-lg-5 mb-4">
+                <div class="card shadow-sm car-details h-100">
                     <div class="card-body">
-                        <h5 class="card-title"><i class="bi bi-calendar-date me-2"></i>Reservation Details</h5>
+                        <h5 class="card-title">Selected Vehicle</h5>
                         <hr>
-
-                        <form action="{{ route('reservations.store') }}" method="POST" id="reservationForm">
+                        <div class="text-center mb-3">
+                            <img src="{{ $car->image ? asset('images/cars/' . $car->image) : asset('images/no-image.jpg') }}" 
+                                 class="car-image img-fluid" alt="{{ $car->marque }} {{ $car->model }}">
+                        </div>
+                        <h4 class="mt-3">{{ $car->marque }} {{ $car->model }} ({{ $car->year }})</h4>
+                        <p class="text-muted">{{ $car->description }}</p>
+                        
+                        <div class="mt-4">
+                            <h5>Car Specifications</h5>
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="feature-icon">
+                                    <i class="fas fa-dollar-sign"></i>
+                                </div>
+                                <div>
+                                    <strong>Price:</strong> ${{ number_format($car->prix_journalier, 2) }} per day
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="feature-icon">
+                                    <i class="fas fa-gas-pump"></i>
+                                </div>
+                                <div>
+                                    <strong>Fuel Type:</strong> {{ ucfirst($car->fuel_type) }}
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="feature-icon">
+                                    <i class="fas fa-cogs"></i>
+                                </div>
+                                <div>
+                                    <strong>Transmission:</strong> {{ ucfirst($car->transmission) }}
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="feature-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div>
+                                    <strong>Seats:</strong> {{ $car->seats }} passengers
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Reservation Form Section -->
+            <div class="col-lg-7">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Reservation Details</h5>
+                        <hr>
+                        
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                        
+                        <form action="{{ route('client.reservations.store', $car) }}" method="POST">
                             @csrf
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label for="pickup_date" class="form-label">Pickup Date & Time</label>
+                                    <label for="date_debut" class="form-label">Pick-up Date</label>
                                     <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-calendar"></i></span>
-                                        <input type="text" class="form-control" id="pickup_date" name="pickup_date"
-                                            placeholder="Select date and time" required>
+                                        <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                        <input type="text" class="form-control" id="date_debut" name="date_debut" 
+                                               placeholder="Select date" value="{{ $startDate ?? '' }}" required>
                                     </div>
-                                    @error('pickup_date')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
                                 </div>
-
+                                
                                 <div class="col-md-6 mb-3">
-                                    <label for="return_date" class="form-label">Return Date & Time</label>
+                                    <label for="date_fin" class="form-label">Return Date</label>
                                     <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-calendar"></i></span>
-                                        <input type="text" class="form-control" id="return_date" name="return_date"
-                                            placeholder="Select date and time" required>
+                                        <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                        <input type="text" class="form-control" id="date_fin" name="date_fin" 
+                                               placeholder="Select date" value="{{ $endDate ?? '' }}" required>
                                     </div>
-                                    @error('return_date')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
                                 </div>
-
+                                
                                 <div class="col-md-6 mb-3">
-                                    <label for="pickup_location" class="form-label">Pickup Location</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
-                                        <select class="form-select" id="pickup_location" name="pickup_location" required>
-                                            <option value="">Select location</option>
-                                            @foreach ($locations ?? [] as $location)
-                                                <option value="{{ $location->id }}">{{ $location->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    @error('pickup_location')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
+                                    <label for="pickup_location" class="form-label">Pick-up Location</label>
+                                    <select class="form-select" id="pickup_location" name="pickup_location" required>
+                                        <option value="">Select location</option>
+                                        <option value="Main Office">Main Office - 123 Main St</option>
+                                        <option value="Airport">Airport Terminal</option>
+                                        <option value="Downtown">Downtown Branch - 456 City Center</option>
+                                    </select>
                                 </div>
-
+                                
                                 <div class="col-md-6 mb-3">
                                     <label for="return_location" class="form-label">Return Location</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
-                                        <select class="form-select" id="return_location" name="return_location" required>
-                                            <option value="">Select location</option>
-                                            @foreach ($locations ?? [] as $location)
-                                                <option value="{{ $location->id }}">{{ $location->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    @error('return_location')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
+                                    <select class="form-select" id="return_location" name="return_location" required>
+                                        <option value="">Select location</option>
+                                        <option value="Main Office">Main Office - 123 Main St</option>
+                                        <option value="Airport">Airport Terminal</option>
+                                        <option value="Downtown">Downtown Branch - 456 City Center</option>
+                                    </select>
                                 </div>
                             </div>
-
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
-                                <button type="button" id="checkAvailability" class="btn btn-primary">
-                                    <i class="bi bi-search me-2"></i>Check Availability
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <div id="availableCars" class="mt-4" style="display: none;">
-                    <h3 class="mb-3">Available Cars</h3>
-                    <div class="row" id="carList">
-                        <!-- Car items will be loaded here -->
-                    </div>
-                </div>
-
-                <div id="bookingDetails" class="card shadow-sm mt-4" style="display: none;">
-                    <div class="card-body">
-                        <h5 class="card-title"><i class="bi bi-receipt me-2"></i>Booking Summary</h5>
-                        <hr>
-
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div id="selectedCarDetails">
-                                    <!-- Selected car details will appear here -->
-                                </div>
-
-                                <div class="mt-4">
-                                    <h6>Rental Period</h6>
-                                    <p><strong>Pickup:</strong> <span id="summaryPickupDate"></span> at <span
-                                            id="summaryPickupLocation"></span></p>
-                                    <p><strong>Return:</strong> <span id="summaryReturnDate"></span> at <span
-                                            id="summaryReturnLocation"></span></p>
-                                    <p><strong>Duration:</strong> <span id="summaryDuration"></span></p>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="card">
+                            
+                            <div class="mt-4" id="price-calculation">
+                                <h5>Price Calculation</h5>
+                                <div class="card bg-light">
                                     <div class="card-body">
-                                        <h6 class="card-title">Price Details</h6>
                                         <div class="d-flex justify-content-between mb-2">
-                                            <span>Base Rate:</span>
-                                            <span id="baseRate">$0.00</span>
+                                            <span>Daily Rate:</span>
+                                            <span>${{ number_format($car->prix_journalier, 2) }}</span>
                                         </div>
                                         <div class="d-flex justify-content-between mb-2">
-                                            <span>Insurance:</span>
-                                            <span id="insurance">$0.00</span>
-                                        </div>
-                                        <div class="d-flex justify-content-between mb-2">
-                                            <span>Taxes & Fees:</span>
-                                            <span id="taxes">$0.00</span>
+                                            <span>Number of Days:</span>
+                                            <span id="duration">{{ $days ?? 0 }}</span>
                                         </div>
                                         <hr>
                                         <div class="d-flex justify-content-between fw-bold">
-                                            <span>Total:</span>
-                                            <span id="totalPrice">$0.00</span>
+                                            <span>Total Price:</span>
+                                            <span id="total-price">${{ isset($totalPrice) ? number_format($totalPrice, 2) : '0.00' }}</span>
                                         </div>
                                     </div>
                                 </div>
-
-                                <form action="{{ route('reservations.store') }}" method="POST" class="mt-3">
-                                    @csrf
-                                    <input type="hidden" name="car_id" id="car_id">
-                                    <input type="hidden" name="pickup_date" id="form_pickup_date">
-                                    <input type="hidden" name="return_date" id="form_return_date">
-                                    <input type="hidden" name="pickup_location" id="form_pickup_location">
-                                    <input type="hidden" name="return_location" id="form_return_location">
-                                    <input type="hidden" name="total_price" id="form_total_price">
-
-                                    <div class="d-grid">
-                                        <button type="submit" class="btn btn-primary btn-lg">
-                                            <i class="bi bi-check-circle me-2"></i>Confirm Booking
-                                        </button>
-                                    </div>
-                                </form>
+                                <input type="hidden" name="prix_total" id="prix_total" value="{{ $totalPrice ?? 0 }}">
                             </div>
-                        </div>
+                            
+                            <div class="d-grid mt-4">
+                                <button type="submit" class="btn btn-primary btn-lg">Continue to Payment</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -202,188 +207,43 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize date pickers
-            flatpickr("#pickup_date", {
-                enableTime: true,
-                dateFormat: "Y-m-d H:i",
+            const pickupDatePicker = flatpickr("#date_debut", {
+                enableTime: false,
+                dateFormat: "Y-m-d",
                 minDate: "today",
-                defaultHour: 10
+                onChange: calculatePrice
             });
-
-            flatpickr("#return_date", {
-                enableTime: true,
-                dateFormat: "Y-m-d H:i",
+            
+            const returnDatePicker = flatpickr("#date_fin", {
+                enableTime: false,
+                dateFormat: "Y-m-d",
                 minDate: "today",
-                defaultHour: 10
+                onChange: calculatePrice
             });
-
-            // Check availability button click handler
-            document.getElementById('checkAvailability').addEventListener('click', function() {
-                // This would normally be an AJAX call to the server
-                // For now, we'll just show some sample cars
-                document.getElementById('availableCars').style.display = 'block';
-
-                // Sample car data - in a real app, this would come from the server
-                const cars = [{
-                        id: 1,
-                        name: 'Toyota Camry',
-                        image: '/images/cars/camry.jpg',
-                        price: 45,
-                        year: 2023,
-                        fuel: 'Gasoline',
-                        transmission: 'Automatic',
-                        seats: 5,
-                        luggage: 3
-                    },
-                    {
-                        id: 2,
-                        name: 'Honda Civic',
-                        image: '/images/cars/civic.jpg',
-                        price: 40,
-                        year: 2022,
-                        fuel: 'Gasoline',
-                        transmission: 'Automatic',
-                        seats: 5,
-                        luggage: 2
-                    },
-                    {
-                        id: 3,
-                        name: 'Mercedes-Benz E-Class',
-                        image: '/images/slideshow/mercidice.jpeg',
-                        price: 85,
-                        year: 2023,
-                        fuel: 'Hybrid',
-                        transmission: 'Automatic',
-                        seats: 5,
-                        luggage: 4
-                    }
-                ];
-
-                const carList = document.getElementById('carList');
-                carList.innerHTML = '';
-
-                // Generate the HTML for each car
-                cars.forEach(car => {
-                    const carCard = document.createElement('div');
-                    carCard.className = 'col-md-4 mb-4';
-                    carCard.innerHTML = `
-                    <div class="card car-card shadow-sm" data-car-id="${car.id}" data-car-name="${car.name}" data-car-price="${car.price}">
-                        <img src="${car.image}" class="card-img-top car-image" alt="${car.name}">
-                        <div class="card-body">
-                            <h5 class="card-title">${car.name}</h5>
-                            <p class="text-primary fw-bold">$${car.price} / day</p>
-                            <div class="car-features">
-                                <div class="car-feature"><i class="bi bi-calendar-event"></i> ${car.year}</div>
-                                <div class="car-feature"><i class="bi bi-fuel-pump"></i> ${car.fuel}</div>
-                                <div class="car-feature"><i class="bi bi-gear"></i> ${car.transmission}</div>
-                            </div>
-                            <div class="car-features">
-                                <div class="car-feature"><i class="bi bi-people"></i> ${car.seats} Seats</div>
-                                <div class="car-feature"><i class="bi bi-briefcase"></i> ${car.luggage} Luggage</div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                    carList.appendChild(carCard);
-
-                    // Add click event to select a car
-                    carCard.querySelector('.car-card').addEventListener('click', function() {
-                        // Remove selected class from all cars
-                        document.querySelectorAll('.car-card').forEach(card => {
-                            card.classList.remove('selected');
-                        });
-
-                        // Add selected class to the clicked car
-                        this.classList.add('selected');
-
-                        // Show booking details section
-                        document.getElementById('bookingDetails').style.display = 'block';
-
-                        // Calculate rental details
-                        const pickupDate = new Date(document.getElementById('pickup_date')
-                            .value);
-                        const returnDate = new Date(document.getElementById('return_date')
-                            .value);
-                        const days = Math.ceil((returnDate - pickupDate) / (1000 * 60 * 60 *
-                            24));
-
-                        // Update form fields
-                        document.getElementById('car_id').value = car.id;
-                        document.getElementById('form_pickup_date').value = document
-                            .getElementById('pickup_date').value;
-                        document.getElementById('form_return_date').value = document
-                            .getElementById('return_date').value;
-                        document.getElementById('form_pickup_location').value = document
-                            .getElementById('pickup_location').value;
-                        document.getElementById('form_return_location').value = document
-                            .getElementById('return_location').value;
-
-                        // Update summary details
-                        const pickupLocationText = document.getElementById(
-                            'pickup_location').options[document.getElementById(
-                            'pickup_location').selectedIndex].text;
-                        const returnLocationText = document.getElementById(
-                            'return_location').options[document.getElementById(
-                            'return_location').selectedIndex].text;
-
-                        document.getElementById('summaryPickupDate').textContent =
-                            formatDate(pickupDate);
-                        document.getElementById('summaryPickupLocation').textContent =
-                            pickupLocationText;
-                        document.getElementById('summaryReturnDate').textContent =
-                            formatDate(returnDate);
-                        document.getElementById('summaryReturnLocation').textContent =
-                            returnLocationText;
-                        document.getElementById('summaryDuration').textContent = days + (
-                            days === 1 ? ' day' : ' days');
-
-                        // Update selected car details
-                        document.getElementById('selectedCarDetails').innerHTML = `
-                        <h6>Selected Vehicle</h6>
-                        <div class="d-flex align-items-center">
-                            <img src="${car.image}" alt="${car.name}" style="width: 100px; height: 60px; object-fit: cover; border-radius: 4px;">
-                            <div class="ms-3">
-                                <h5 class="mb-0">${car.name}</h5>
-                                <div class="d-flex mt-1">
-                                    <span class="badge bg-light text-dark me-2"><i class="bi bi-people"></i> ${car.seats} Seats</span>
-                                    <span class="badge bg-light text-dark me-2"><i class="bi bi-gear"></i> ${car.transmission}</span>
-                                    <span class="badge bg-light text-dark"><i class="bi bi-fuel-pump"></i> ${car.fuel}</span>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-
-                        // Calculate and update price details
-                        const baseRate = car.price * days;
-                        const insurance = baseRate * 0.1; // 10% of base rate
-                        const taxes = baseRate * 0.05; // 5% of base rate
-                        const totalPrice = baseRate + insurance + taxes;
-
-                        document.getElementById('baseRate').textContent = '$' + baseRate
-                            .toFixed(2);
-                        document.getElementById('insurance').textContent = '$' + insurance
-                            .toFixed(2);
-                        document.getElementById('taxes').textContent = '$' + taxes.toFixed(
-                            2);
-                        document.getElementById('totalPrice').textContent = '$' + totalPrice
-                            .toFixed(2);
-                        document.getElementById('form_total_price').value = totalPrice
-                            .toFixed(2);
-                    });
-                });
-            });
-
-            // Helper function to format dates
-            function formatDate(date) {
-                const options = {
-                    weekday: 'short',
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                };
-                return date.toLocaleDateString('en-US', options);
+            
+            // Calculate price based on selected dates
+            function calculatePrice() {
+                const pickupDate = new Date(document.getElementById('date_debut').value);
+                const returnDate = new Date(document.getElementById('date_fin').value);
+                
+                if (pickupDate && returnDate && pickupDate < returnDate) {
+                    // Calculate days difference
+                    const diffTime = Math.abs(returnDate - pickupDate);
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    
+                    // Update days and price
+                    document.getElementById('duration').textContent = diffDays;
+                    
+                    const dailyRate = {{ $car->prix_journalier }};
+                    const totalPrice = dailyRate * diffDays;
+                    
+                    document.getElementById('total-price').textContent = '$' + totalPrice.toFixed(2);
+                    document.getElementById('prix_total').value = totalPrice.toFixed(2);
+                }
             }
+            
+            // Calculate initial price if dates are pre-filled
+            calculatePrice();
         });
     </script>
 @endsection

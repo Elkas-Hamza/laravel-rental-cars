@@ -114,19 +114,77 @@ class ReservationController extends BaseController
      */
     public function store(Request $request, Car $car)
     {
+        // Validate the form data
         $validatedData = $request->validate([
             'date_debut' => 'required|date|after_or_equal:today',
             'date_fin' => 'required|date|after:date_debut',
             'prix_total' => 'required|numeric|min:0',
         ]);
 
+        // Create a new reservation
         $reservation = new Reservation($validatedData);
         $reservation->user_id = Auth::id();
         $reservation->car_id = $car->id;
         $reservation->status = 'pending';
         $reservation->save();
 
-        return redirect()->route('client.reservations.index')->with('success', 'Reservation created successfully!');
+        // Redirect to payment page
+        return redirect()->route('client.reservations.payment', $reservation)->with('success', 'Reservation created! Please complete payment.');
+    }
+
+    /**
+     * Show payment page for a reservation
+     */
+    public function payment(Reservation $reservation)
+    {
+        // Make sure the user can only access their own reservations
+        if ($reservation->user_id !== Auth::id()) {
+            return redirect()->route('client.reservations.index')->with('error', 'Unauthorized action');
+        }
+
+        // Load the car details to show on the payment page
+        $reservation->load('car');
+        
+        // Calculate reservation dates and duration
+        $startDate = new \DateTime($reservation->date_debut);
+        $endDate = new \DateTime($reservation->date_fin);
+        $interval = $startDate->diff($endDate);
+        $days = $interval->days ?: 1; // Minimum 1 day
+        
+        return view('client.reservations.payment', compact('reservation', 'days'));
+    }
+
+    /**
+     * Process payment for a reservation
+     */
+    public function processPayment(Request $request, Reservation $reservation)
+    {
+        // Make sure the user can only pay for their own reservations
+        if ($reservation->user_id !== Auth::id()) {
+            return redirect()->route('client.reservations.index')->with('error', 'Unauthorized action');
+        }
+        
+        // Validate payment details
+        $request->validate([
+            'card_number' => 'required|string|size:16',
+            'card_holder' => 'required|string|max:255',
+            'expiry_month' => 'required|string|size:2',
+            'expiry_year' => 'required|string|size:2',
+            'cvv' => 'required|string|size:3',
+        ]);
+        
+        // In a real application, you would process the payment with a payment gateway here
+        // For demo purposes, we'll just mark the reservation as confirmed
+        
+        $reservation->status = 'confirmed';
+        $reservation->save();
+        
+        // Mark the car as unavailable for the reservation period
+        $car = $reservation->car;
+        $car->disponible = false;
+        $car->save();
+        
+        return redirect()->route('client.reservations.index')->with('success', 'Payment processed successfully! Your reservation is confirmed.');
     }
 
     /**

@@ -181,14 +181,6 @@
                                             <span>Number of Days:</span>
                                             <span id="duration">{{ $days ?? 0 }}</span>
                                         </div>
-                                        <div class="d-flex justify-content-between mb-2">
-                                            <span>Pickup Location Fee:</span>
-                                            <span id="pickup-fee">$0.00</span>
-                                        </div>
-                                        <div class="d-flex justify-content-between mb-2">
-                                            <span>Return Location Fee:</span>
-                                            <span id="return-fee">$0.00</span>
-                                        </div>
                                         <hr>
                                         <div class="d-flex justify-content-between fw-bold">
                                             <span>Total Price:</span>
@@ -196,12 +188,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="mt-2 small text-muted">
-                                    <i class="fas fa-info-circle"></i> A displacement fee of $7.00 is applied for each pickup or return at locations other than the Main Office.
-                                </div>
                                 <input type="hidden" name="prix_total" id="prix_total" value="{{ $totalPrice ?? 0 }}">
-                                <input type="hidden" name="pickup_fee" id="pickup_fee_input" value="0">
-                                <input type="hidden" name="return_fee" id="return_fee_input" value="0">
                             </div>
                             
                             <div class="d-grid mt-4">
@@ -234,56 +221,25 @@
                 onChange: calculatePrice
             });
             
-            // Location fee handlers
-            const pickupLocationSelect = document.getElementById('pickup_location');
-            const returnLocationSelect = document.getElementById('return_location');
-            
-            pickupLocationSelect.addEventListener('change', calculatePrice);
-            returnLocationSelect.addEventListener('change', calculatePrice);
-            
-            // Calculate price based on selected dates and locations
+            // Calculate price based on selected dates
             function calculatePrice() {
                 const pickupDate = new Date(document.getElementById('date_debut').value);
                 const returnDate = new Date(document.getElementById('date_fin').value);
                 
-                // Calculate base price from dates
-                let totalPrice = 0;
-                let days = 0;
-                
                 if (pickupDate && returnDate && pickupDate < returnDate) {
                     // Calculate days difference
                     const diffTime = Math.abs(returnDate - pickupDate);
-                    days = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                     
-                    // Update days
-                    document.getElementById('duration').textContent = days;
+                    // Update days and price
+                    document.getElementById('duration').textContent = diffDays;
                     
-                    // Calculate base price
                     const dailyRate = {{ $car->prix_journalier }};
-                    totalPrice = dailyRate * days;
+                    const totalPrice = dailyRate * diffDays;
+                    
+                    document.getElementById('total-price').textContent = '$' + totalPrice.toFixed(2);
+                    document.getElementById('prix_total').value = totalPrice.toFixed(2);
                 }
-                
-                // Calculate location fees
-                const pickupLocation = pickupLocationSelect.value;
-                const returnLocation = returnLocationSelect.value;
-                
-                const pickupFee = (pickupLocation && pickupLocation !== 'Main Office') ? 7 : 0;
-                const returnFee = (returnLocation && returnLocation !== 'Main Office') ? 7 : 0;
-                
-                // Update fee displays
-                document.getElementById('pickup-fee').textContent = '$' + pickupFee.toFixed(2);
-                document.getElementById('return-fee').textContent = '$' + returnFee.toFixed(2);
-                
-                // Update hidden inputs
-                document.getElementById('pickup_fee_input').value = pickupFee;
-                document.getElementById('return_fee_input').value = returnFee;
-                
-                // Add fees to total
-                totalPrice += pickupFee + returnFee;
-                
-                // Update total price
-                document.getElementById('total-price').textContent = '$' + totalPrice.toFixed(2);
-                document.getElementById('prix_total').value = totalPrice.toFixed(2);
             }
             
             // Calculate initial price if dates are pre-filled

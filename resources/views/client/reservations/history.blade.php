@@ -102,7 +102,7 @@
                                                     <div class="d-flex align-items-center">
                                                         @if ($reservation->car->image)
                                                             <img src="{{ asset('storage/' . $reservation->car->image) }}"
-                                                                alt="{{ $reservation->car->marque }} {{ $reservation->car->model }}"
+                                                                alt="{{ $reservation->car->name }}"
                                                                 class="img-thumbnail me-2"
                                                                 style="width: 40px; height: 40px; object-fit: cover;">
                                                         @else
@@ -112,9 +112,9 @@
                                                             </div>
                                                         @endif
                                                         <div>
-                                                            <div class="fw-bold">{{ $reservation->car->marque }} {{ $reservation->car->model }}</div>
+                                                            <div class="fw-bold">{{ $reservation->car->name }}</div>
                                                             <small
-                                                                class="text-muted">{{ $reservation->car->license_plate ?? '' }}</small>
+                                                                class="text-muted">{{ $reservation->car->license_plate }}</small>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -194,11 +194,11 @@
                                                                     <div class="mb-3 text-center">
                                                                         @if ($reservation->car->image)
                                                                             <img src="{{ asset('storage/' . $reservation->car->image) }}"
-                                                                                alt="{{ $reservation->car->marque }} {{ $reservation->car->model }}"
+                                                                                alt="{{ $reservation->car->name }}"
                                                                                 class="img-fluid rounded mb-3"
                                                                                 style="max-height: 150px; object-fit: cover;">
                                                                         @endif
-                                                                        <h4>{{ $reservation->car->marque }} {{ $reservation->car->model }}</h4>
+                                                                        <h4>{{ $reservation->car->name }}</h4>
                                                                         <p class="text-muted">
                                                                             {{ $reservation->car->category }} |
                                                                             {{ $reservation->car->transmission }} |

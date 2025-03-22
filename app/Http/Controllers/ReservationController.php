@@ -148,26 +148,4 @@ class ReservationController extends BaseController
 
         return redirect()->route('reservations.index')->with('success', 'Reservation cancelled successfully!');
     }
-
-    /**
-     * Display a specific reservation
-     */
-    public function show(Reservation $reservation)
-    {
-        // Make sure the user can only view their own reservations
-        if ($reservation->user_id !== Auth::id()) {
-            return redirect()->route('reservations.index')->with('error', 'Unauthorized action');
-        }
-
-        // Load the car details
-        $reservation->load('car');
-        
-        // Calculate reservation dates and duration
-        $startDate = new \DateTime($reservation->date_debut);
-        $endDate = new \DateTime($reservation->date_fin);
-        $interval = $startDate->diff($endDate);
-        $days = $interval->days ?: 1; // Minimum 1 day
-        
-        return view('client.reservations.show', compact('reservation', 'days'));
-    }
 }

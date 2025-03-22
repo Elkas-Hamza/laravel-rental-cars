@@ -40,26 +40,6 @@
         .feature-icon i {
             color: var(--primary-color);
         }
-        
-        /* Accessory item styling */
-        #additional-options-fees {
-            font-size: 0.95rem;
-            color: #6c757d;
-            transition: all 0.3s ease;
-        }
-        
-        #additional-options-fees .d-flex {
-            padding: 3px 0;
-            border-bottom: 1px dotted #e9ecef;
-        }
-        
-        #additional-options-fees .d-flex:last-child {
-            border-bottom: none;
-        }
-        
-        #accessories-subtotal {
-            border-left: 3px solid #28a745;
-        }
     </style>
 @endsection
 
@@ -187,53 +167,6 @@
                                         <option value="Downtown">Downtown Branch - 456 City Center</option>
                                     </select>
                                 </div>
-
-                                <!-- Additional Options Section -->
-                                <div class="col-12 mt-2">
-                                    <h5 class="mb-3">Additional Options</h5>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-check mb-3">
-                                                <input class="form-check-input" type="checkbox" id="gps" name="add_gps" value="1">
-                                                <label class="form-check-label d-flex justify-content-between" for="gps">
-                                                    <span><i class="fas fa-map-marker-alt me-2"></i> GPS Navigation</span>
-                                                    <span class="fw-bold">$20/rental</span>
-                                                </label>
-                                                <div class="form-text">Never get lost with our GPS navigation system</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-check mb-3">
-                                                <input class="form-check-input" type="checkbox" id="wifi" name="add_wifi" value="1">
-                                                <label class="form-check-label d-flex justify-content-between" for="wifi">
-                                                    <span><i class="fas fa-wifi me-2"></i> In-car WiFi</span>
-                                                    <span class="fw-bold">$2/day</span>
-                                                </label>
-                                                <div class="form-text">Stay connected during your trip</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-check mb-3">
-                                                <input class="form-check-input" type="checkbox" id="baby_seat" name="add_baby_seat" value="1">
-                                                <label class="form-check-label d-flex justify-content-between" for="baby_seat">
-                                                    <span><i class="fas fa-baby me-2"></i> Baby/Child Seat</span>
-                                                    <span class="fw-bold">$10/rental</span>
-                                                </label>
-                                                <div class="form-text">Safety first for your little ones</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-check mb-3">
-                                                <input class="form-check-input" type="checkbox" id="full_tank" name="add_full_tank" value="1">
-                                                <label class="form-check-label d-flex justify-content-between" for="full_tank">
-                                                    <span><i class="fas fa-gas-pump me-2"></i> Full Fuel Tank</span>
-                                                    <span class="fw-bold">$45</span>
-                                                </label>
-                                                <div class="form-text">Skip the gas station on return</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                             
                             <div class="mt-4" id="price-calculation">
@@ -256,13 +189,6 @@
                                             <span>Return Location Fee:</span>
                                             <span id="return-fee">$0.00</span>
                                         </div>
-                                        <div id="accessories-subtotal" class="d-flex justify-content-between mb-2" style="display: none; padding: 8px; background-color: #f8f9fa; border-radius: 5px; margin-top: 10px;">
-                                            <span><strong>Accessories Subtotal:</strong></span>
-                                            <span class="text-success" id="accessories-total">$0.00</span>
-                                        </div>
-                                        <div id="additional-options-fees" style="padding-left: 15px; margin-top: 5px; border-left: 2px solid #e9ecef;">
-                                            <!-- Additional fees will be added dynamically here -->
-                                        </div>
                                         <hr>
                                         <div class="d-flex justify-content-between fw-bold">
                                             <span>Total Price:</span>
@@ -273,13 +199,9 @@
                                 <div class="mt-2 small text-muted">
                                     <i class="fas fa-info-circle"></i> A displacement fee of $7.00 is applied for each pickup or return at locations other than the Main Office.
                                 </div>
-                                <div id="price-summary" class="mt-2 alert alert-info" style="display:none;">
-                                    <i class="fas fa-info-circle"></i> <span id="price-summary-text"></span>
-                                </div>
                                 <input type="hidden" name="prix_total" id="prix_total" value="{{ $totalPrice ?? 0 }}">
                                 <input type="hidden" name="pickup_fee" id="pickup_fee_input" value="0">
                                 <input type="hidden" name="return_fee" id="return_fee_input" value="0">
-                                <input type="hidden" name="accessories_fee" id="accessories_fee_input" value="0">
                             </div>
                             
                             <div class="d-grid mt-4">
@@ -319,48 +241,6 @@
             pickupLocationSelect.addEventListener('change', calculatePrice);
             returnLocationSelect.addEventListener('change', calculatePrice);
             
-            // Initialize option change listeners
-            const gpsCheckbox = document.getElementById('gps');
-            const wifiCheckbox = document.getElementById('wifi');
-            const babySeatCheckbox = document.getElementById('baby_seat');
-            const fullTankCheckbox = document.getElementById('full_tank');
-            
-            // Add click event listeners to all checkboxes for immediate feedback
-            gpsCheckbox.addEventListener('change', function() {
-                highlightCheckboxLabel(this);
-                calculatePrice();
-            });
-            
-            wifiCheckbox.addEventListener('change', function() {
-                highlightCheckboxLabel(this);
-                calculatePrice();
-            });
-            
-            babySeatCheckbox.addEventListener('change', function() {
-                highlightCheckboxLabel(this);
-                calculatePrice();
-            });
-            
-            fullTankCheckbox.addEventListener('change', function() {
-                highlightCheckboxLabel(this);
-                calculatePrice();
-            });
-            
-            // Function to provide visual feedback when an option is selected
-            function highlightCheckboxLabel(checkbox) {
-                const label = checkbox.nextElementSibling;
-                if (checkbox.checked) {
-                    label.classList.add('text-primary');
-                    label.style.transition = 'all 0.2s';
-                    label.style.transform = 'scale(1.05)';
-                    setTimeout(() => {
-                        label.style.transform = 'scale(1)';
-                    }, 200);
-                } else {
-                    label.classList.remove('text-primary');
-                }
-            }
-            
             // Calculate price based on selected dates and locations
             function calculatePrice() {
                 const pickupDate = new Date(document.getElementById('date_debut').value);
@@ -398,147 +278,11 @@
                 document.getElementById('pickup_fee_input').value = pickupFee;
                 document.getElementById('return_fee_input').value = returnFee;
                 
-                // Calculate additional options fees
-                let additionalFees = 0;
-                let additionalFeesHtml = '';
-                
-                if (gpsCheckbox.checked) {
-                    const gpsFee = 20; // flat fee per rental
-                    additionalFees += gpsFee;
-                    additionalFeesHtml += `
-                        <div class="d-flex justify-content-between mb-2">
-                            <span><i class="fas fa-map-marker-alt text-muted me-1"></i> GPS Navigation (flat fee):</span>
-                            <span>$${gpsFee.toFixed(2)}</span>
-                        </div>
-                    `;
-                }
-                
-                if (wifiCheckbox.checked) {
-                    const wifiFee = 2 * days;
-                    additionalFees += wifiFee;
-                    additionalFeesHtml += `
-                        <div class="d-flex justify-content-between mb-2">
-                            <span><i class="fas fa-wifi text-muted me-1"></i> In-car WiFi ($2/day):</span>
-                            <span>$${wifiFee.toFixed(2)}</span>
-                        </div>
-                    `;
-                }
-                
-                if (babySeatCheckbox.checked) {
-                    const babySeatFee = 10;
-                    additionalFees += babySeatFee;
-                    additionalFeesHtml += `
-                        <div class="d-flex justify-content-between mb-2">
-                            <span><i class="fas fa-baby text-muted me-1"></i> Baby/Child Seat:</span>
-                            <span>$${babySeatFee.toFixed(2)}</span>
-                        </div>
-                    `;
-                }
-                
-                if (fullTankCheckbox.checked) {
-                    const fullTankFee = 45;
-                    additionalFees += fullTankFee;
-                    additionalFeesHtml += `
-                        <div class="d-flex justify-content-between mb-2">
-                            <span><i class="fas fa-gas-pump text-muted me-1"></i> Full Fuel Tank:</span>
-                            <span>$${fullTankFee.toFixed(2)}</span>
-                        </div>
-                    `;
-                }
-                
-                document.getElementById('additional-options-fees').innerHTML = additionalFeesHtml;
-                
-                // Show or hide accessories subtotal
-                const accessoriesSubtotal = document.getElementById('accessories-subtotal');
-                const additionalOptionsFeesDiv = document.getElementById('additional-options-fees');
-                
-                if (additionalFees > 0) {
-                    accessoriesSubtotal.style.display = 'flex';
-                    additionalOptionsFeesDiv.style.display = 'block';
-                    document.getElementById('accessories-total').textContent = '$' + additionalFees.toFixed(2);
-                } else {
-                    accessoriesSubtotal.style.display = 'none';
-                    additionalOptionsFeesDiv.style.display = 'none';
-                }
-                
-                // Update accessories fee hidden input
-                document.getElementById('accessories_fee_input').value = additionalFees.toFixed(2);
-                
-                // Flash the price calculation area if accessories have changed
-                const priceCard = document.querySelector('#price-calculation .card');
-                if (additionalFees > 0) {
-                    priceCard.style.transition = 'background-color 0.3s';
-                    priceCard.style.backgroundColor = '#e8f4ff';
-                    setTimeout(() => {
-                        priceCard.style.backgroundColor = '';
-                    }, 300);
-                }
-                
-                // Add fees to total - Ensure accessories are added
-                const oldTotalPrice = parseFloat(document.getElementById('prix_total').value) || 0;
-                
-                // Make sure additionalFees are included in the total
-                totalPrice = totalPrice + pickupFee + returnFee + additionalFees;
-                
-                // For debugging/verification - add an informative text to show calculations
-                console.log('Base price: ' + (totalPrice - pickupFee - returnFee - additionalFees));
-                console.log('Pickup fee: ' + pickupFee);
-                console.log('Return fee: ' + returnFee);
-                console.log('Accessories fee: ' + additionalFees);
-                console.log('Total price: ' + totalPrice);
-                
-                // Update the price summary text
-                const priceSummary = document.getElementById('price-summary');
-                const priceSummaryText = document.getElementById('price-summary-text');
-                
-                if (totalPrice !== oldTotalPrice) {
-                    const difference = totalPrice - oldTotalPrice;
-                    let summaryText = '';
-                    
-                    if (additionalFees > 0) {
-                        const accessories = [];
-                        if (gpsCheckbox.checked) accessories.push('GPS');
-                        if (wifiCheckbox.checked) accessories.push('WiFi');
-                        if (babySeatCheckbox.checked) accessories.push('Baby Seat');
-                        if (fullTankCheckbox.checked) accessories.push('Full Tank');
-                        
-                        summaryText = `Your selected accessories (${accessories.join(', ')}) add $${additionalFees.toFixed(2)} to the total price.`;
-                    }
-                    
-                    if (pickupFee > 0 || returnFee > 0) {
-                        const locationFees = pickupFee + returnFee;
-                        summaryText += summaryText ? ' ' : '';
-                        summaryText += `Location fees add $${locationFees.toFixed(2)} to the total price.`;
-                    }
-                    
-                    if (summaryText) {
-                        priceSummaryText.textContent = summaryText;
-                        priceSummary.style.display = 'block';
-                    } else {
-                        priceSummary.style.display = 'none';
-                    }
-                } else if (!additionalFees && !pickupFee && !returnFee) {
-                    priceSummary.style.display = 'none';
-                }
+                // Add fees to total
+                totalPrice += pickupFee + returnFee;
                 
                 // Update total price
-                const totalPriceElement = document.getElementById('total-price');
-                const oldPrice = parseFloat(totalPriceElement.textContent.replace('$', '')) || 0;
-                
-                // Update total price with animation if changed
-                if (totalPrice !== oldPrice) {
-                    totalPriceElement.classList.add('text-primary');
-                    totalPriceElement.style.transition = 'all 0.3s';
-                    totalPriceElement.style.transform = 'scale(1.1)';
-                    
-                    setTimeout(() => {
-                        totalPriceElement.textContent = '$' + totalPrice.toFixed(2);
-                        totalPriceElement.style.transform = 'scale(1)';
-                    }, 150);
-                } else {
-                    totalPriceElement.textContent = '$' + totalPrice.toFixed(2);
-                }
-                
+                document.getElementById('total-price').textContent = '$' + totalPrice.toFixed(2);
                 document.getElementById('prix_total').value = totalPrice.toFixed(2);
             }
             

@@ -70,9 +70,46 @@
                                                 <p>{{ \Carbon\Carbon::parse($reservation->date_fin)->format('M d, Y') }}</p>
                                             </div>
                                         </div>
+                                        <div class="row mt-2">
+                                            <div class="col-6">
+                                                <p class="mb-1"><strong>Pick-up Location:</strong></p>
+                                                <p>{{ $reservation->pickup_location }}</p>
+                                                @if($reservation->pickup_fee > 0)
+                                                    <span class="badge bg-info text-white">+${{ number_format($reservation->pickup_fee, 2) }} fee</span>
+                                                @endif
+                                            </div>
+                                            <div class="col-6">
+                                                <p class="mb-1"><strong>Return Location:</strong></p>
+                                                <p>{{ $reservation->return_location }}</p>
+                                                @if($reservation->return_fee > 0)
+                                                    <span class="badge bg-info text-white">+${{ number_format($reservation->return_fee, 2) }} fee</span>
+                                                @endif
+                                            </div>
+                                        </div>
                                         <hr>
                                         <p><strong>Duration:</strong> {{ $days }} {{ Str::plural('day', $days) }}</p>
                                         <p><strong>Daily Rate:</strong> ${{ number_format($reservation->car->prix_journalier, 2) }}</p>
+                                        
+                                        <!-- Price breakdown -->
+                                        <div class="price-breakdown bg-white p-2 rounded mb-2">
+                                            <div class="d-flex justify-content-between">
+                                                <span>Car Rental ({{ $days }} {{ Str::plural('day', $days) }}):</span>
+                                                <span>${{ number_format($reservation->car->prix_journalier * $days, 2) }}</span>
+                                            </div>
+                                            @if($reservation->pickup_fee > 0)
+                                            <div class="d-flex justify-content-between">
+                                                <span>Pickup Location Fee:</span>
+                                                <span>${{ number_format($reservation->pickup_fee, 2) }}</span>
+                                            </div>
+                                            @endif
+                                            @if($reservation->return_fee > 0)
+                                            <div class="d-flex justify-content-between">
+                                                <span>Return Location Fee:</span>
+                                                <span>${{ number_format($reservation->return_fee, 2) }}</span>
+                                            </div>
+                                            @endif
+                                        </div>
+                                        
                                         <p><strong>Total Amount:</strong> <span class="fw-bold text-primary">${{ number_format($reservation->prix_total, 2) }}</span></p>
                                     </div>
                                 </div>

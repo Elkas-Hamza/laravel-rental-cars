@@ -119,12 +119,23 @@ class ReservationController extends BaseController
             'date_debut' => 'required|date|after_or_equal:today',
             'date_fin' => 'required|date|after:date_debut',
             'prix_total' => 'required|numeric|min:0',
+            'pickup_location' => 'required|string',
+            'return_location' => 'required|string',
+            'pickup_fee' => 'required|numeric|min:0',
+            'return_fee' => 'required|numeric|min:0',
         ]);
 
         // Create a new reservation
-        $reservation = new Reservation($validatedData);
+        $reservation = new Reservation();
         $reservation->user_id = Auth::id();
         $reservation->car_id = $car->id;
+        $reservation->date_debut = $validatedData['date_debut'];
+        $reservation->date_fin = $validatedData['date_fin'];
+        $reservation->prix_total = $validatedData['prix_total'];
+        $reservation->pickup_location = $validatedData['pickup_location'];
+        $reservation->return_location = $validatedData['return_location'];
+        $reservation->pickup_fee = $validatedData['pickup_fee'];
+        $reservation->return_fee = $validatedData['return_fee'];
         $reservation->status = 'pending';
         $reservation->save();
 

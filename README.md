@@ -55,6 +55,9 @@ Laravel Rental Cars is a web application for managing car rentals. This project 
 
 1. Open your browser and navigate to `http://localhost:8000`.
 2. Register a new user or log in with an existing account.
+    `admine@exemple.com` password is `password`
+    `test@exemple.com` password is `password`
+    (you have to run the seeders before)
 3. Start managing cars, customers, and rentals.
 
 ## Contributing

@@ -78,4 +78,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Contact
 
-For any inquiries or feedback, please contact [Elkas-Hamza](https://github.com/Elkas-Hamza).
+For any inquiries or feedback, please contact [Elkas-Hamza](https://github.com/Elkas-Hamza) or [ikbaiss-abdelghafour](https://github.com/ikbaissabdelghafour)

@@ -132,12 +132,12 @@
                                             onclick="window.location.href='{{ route('reservations.show', $reservation->id) }}'">
                                             <div class="card-body">
                                                 <div class="d-flex justify-content-between align-items-start mb-3">
-                                                    <h5 class="card-title mb-0">{{ $reservation->car->marque }} {{ $reservation->car->model }}</h5>
+                                                    <h5 class="card-title mb-0">{{ $reservation->car->name }}</h5>
                                                     <span class="status-badge status-active">Active</span>
                                                 </div>
 
-                                                <img src="{{ asset($reservation->car->image ? 'images/cars/' . $reservation->car->image : 'images/no-image.jpg') }}"
-                                                    alt="{{ $reservation->car->marque }} {{ $reservation->car->model }}" class="car-image mb-3">
+                                                <img src="{{ asset($reservation->car->image) }}"
+                                                    alt="{{ $reservation->car->name }}" class="car-image mb-3">
 
                                                 <div class="rental-dates">
                                                     <div class="text-center">
@@ -151,20 +151,15 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="pickup-location mt-2">
-                                                    <i class="fas fa-map-marker-alt"></i>
-                                                    <span>{{ $reservation->pickup_location }}</span>
-                                                </div>
-
                                                 <div class="d-flex justify-content-between mt-3">
                                                     <div>
-                                                        <small class="text-muted d-block">Total</small>
-                                                        <span
-                                                            class="fw-bold">${{ number_format($reservation->prix_total, 2) }}</span>
+                                                        <small class="text-muted d-block">Location</small>
+                                                        <span>{{ $reservation->pickupLocation->name }}</span>
                                                     </div>
                                                     <div class="text-end">
-                                                        <a href="{{ route('reservations.show', $reservation->id) }}"
-                                                            class="btn btn-sm btn-primary">View Details</a>
+                                                        <small class="text-muted d-block">Total</small>
+                                                        <span
+                                                            class="fw-bold">${{ number_format($reservation->total_price, 2) }}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -194,12 +189,12 @@
                                             onclick="window.location.href='{{ route('reservations.show', $reservation->id) }}'">
                                             <div class="card-body">
                                                 <div class="d-flex justify-content-between align-items-start mb-3">
-                                                    <h5 class="card-title mb-0">{{ $reservation->car->marque }} {{ $reservation->car->model }}</h5>
+                                                    <h5 class="card-title mb-0">{{ $reservation->car->name }}</h5>
                                                     <span class="status-badge status-pending">Upcoming</span>
                                                 </div>
 
-                                                <img src="{{ asset($reservation->car->image ? 'images/cars/' . $reservation->car->image : 'images/no-image.jpg') }}"
-                                                    alt="{{ $reservation->car->marque }} {{ $reservation->car->model }}" class="car-image mb-3">
+                                                <img src="{{ asset($reservation->car->image) }}"
+                                                    alt="{{ $reservation->car->name }}" class="car-image mb-3">
 
                                                 <div class="rental-dates">
                                                     <div class="text-center">
@@ -213,20 +208,15 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="pickup-location mt-2">
-                                                    <i class="fas fa-map-marker-alt"></i>
-                                                    <span>{{ $reservation->pickup_location }}</span>
-                                                </div>
-
                                                 <div class="d-flex justify-content-between mt-3">
                                                     <div>
-                                                        <small class="text-muted d-block">Total</small>
-                                                        <span
-                                                            class="fw-bold">${{ number_format($reservation->prix_total, 2) }}</span>
+                                                        <small class="text-muted d-block">Location</small>
+                                                        <span>{{ $reservation->pickupLocation->name }}</span>
                                                     </div>
                                                     <div class="text-end">
-                                                        <a href="{{ route('reservations.show', $reservation->id) }}"
-                                                            class="btn btn-sm btn-primary">View Details</a>
+                                                        <small class="text-muted d-block">Total</small>
+                                                        <span
+                                                            class="fw-bold">${{ number_format($reservation->total_price, 2) }}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -256,12 +246,12 @@
                                             onclick="window.location.href='{{ route('reservations.show', $reservation->id) }}'">
                                             <div class="card-body">
                                                 <div class="d-flex justify-content-between align-items-start mb-3">
-                                                    <h5 class="card-title mb-0">{{ $reservation->car->marque }} {{ $reservation->car->model }}</h5>
+                                                    <h5 class="card-title mb-0">{{ $reservation->car->name }}</h5>
                                                     <span class="status-badge status-completed">Completed</span>
                                                 </div>
 
-                                                <img src="{{ asset($reservation->car->image ? 'images/cars/' . $reservation->car->image : 'images/no-image.jpg') }}"
-                                                    alt="{{ $reservation->car->marque }} {{ $reservation->car->model }}" class="car-image mb-3">
+                                                <img src="{{ asset($reservation->car->image) }}"
+                                                    alt="{{ $reservation->car->name }}" class="car-image mb-3">
 
                                                 <div class="rental-dates">
                                                     <div class="text-center">
@@ -275,20 +265,15 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="pickup-location mt-2">
-                                                    <i class="fas fa-map-marker-alt"></i>
-                                                    <span>{{ $reservation->pickup_location }}</span>
-                                                </div>
-
                                                 <div class="d-flex justify-content-between mt-3">
                                                     <div>
-                                                        <small class="text-muted d-block">Total</small>
-                                                        <span
-                                                            class="fw-bold">${{ number_format($reservation->prix_total, 2) }}</span>
+                                                        <small class="text-muted d-block">Location</small>
+                                                        <span>{{ $reservation->pickupLocation->name }}</span>
                                                     </div>
                                                     <div class="text-end">
-                                                        <a href="{{ route('reservations.show', $reservation->id) }}"
-                                                            class="btn btn-sm btn-primary">View Details</a>
+                                                        <small class="text-muted d-block">Total</small>
+                                                        <span
+                                                            class="fw-bold">${{ number_format($reservation->total_price, 2) }}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -318,12 +303,12 @@
                                             onclick="window.location.href='{{ route('reservations.show', $reservation->id) }}'">
                                             <div class="card-body">
                                                 <div class="d-flex justify-content-between align-items-start mb-3">
-                                                    <h5 class="card-title mb-0">{{ $reservation->car->marque }} {{ $reservation->car->model }}</h5>
+                                                    <h5 class="card-title mb-0">{{ $reservation->car->name }}</h5>
                                                     <span class="status-badge status-cancelled">Cancelled</span>
                                                 </div>
 
-                                                <img src="{{ asset($reservation->car->image ? 'images/cars/' . $reservation->car->image : 'images/no-image.jpg') }}"
-                                                    alt="{{ $reservation->car->marque }} {{ $reservation->car->model }}" class="car-image mb-3">
+                                                <img src="{{ asset($reservation->car->image) }}"
+                                                    alt="{{ $reservation->car->name }}" class="car-image mb-3">
 
                                                 <div class="rental-dates">
                                                     <div class="text-center">
@@ -337,20 +322,15 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="pickup-location mt-2">
-                                                    <i class="fas fa-map-marker-alt"></i>
-                                                    <span>{{ $reservation->pickup_location }}</span>
-                                                </div>
-
                                                 <div class="d-flex justify-content-between mt-3">
                                                     <div>
-                                                        <small class="text-muted d-block">Total</small>
-                                                        <span
-                                                            class="fw-bold">${{ number_format($reservation->prix_total, 2) }}</span>
+                                                        <small class="text-muted d-block">Location</small>
+                                                        <span>{{ $reservation->pickupLocation->name }}</span>
                                                     </div>
                                                     <div class="text-end">
-                                                        <a href="{{ route('reservations.show', $reservation->id) }}"
-                                                            class="btn btn-sm btn-primary">View Details</a>
+                                                        <small class="text-muted d-block">Total</small>
+                                                        <span
+                                                            class="fw-bold">${{ number_format($reservation->total_price, 2) }}</span>
                                                     </div>
                                                 </div>
                                             </div>

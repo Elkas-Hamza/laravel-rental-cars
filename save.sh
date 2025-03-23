@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Check if a commit message was provided as an argument
+# Check if a commit message was provided as an argumentgit 
 if [ -z "$1" ]; then
   # If no commit message is provided, use the default message with the current date and time
   commit_message="Change something at $(date '+%Y-%m-%d %H:%M:%S')"

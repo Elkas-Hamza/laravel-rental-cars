@@ -123,18 +123,7 @@ class ReservationController extends BaseController
             'return_location' => 'required|string',
             'pickup_fee' => 'required|numeric|min:0',
             'return_fee' => 'required|numeric|min:0',
-            'accessories_fee' => 'required|numeric|min:0',
-            'add_gps' => 'sometimes|boolean',
-            'add_wifi' => 'sometimes|boolean',
-            'add_baby_seat' => 'sometimes|boolean',
-            'add_full_tank' => 'sometimes|boolean',
         ]);
-
-        // Calculate rental days
-        $startDate = new \DateTime($validatedData['date_debut']);
-        $endDate = new \DateTime($validatedData['date_fin']);
-        $interval = $startDate->diff($endDate);
-        $days = $interval->days ?: 1; // Minimum 1 day
 
         // Create a new reservation
         $reservation = new Reservation();
@@ -147,11 +136,6 @@ class ReservationController extends BaseController
         $reservation->return_location = $validatedData['return_location'];
         $reservation->pickup_fee = $validatedData['pickup_fee'];
         $reservation->return_fee = $validatedData['return_fee'];
-        $reservation->add_gps = $request->has('add_gps');
-        $reservation->add_wifi = $request->has('add_wifi');
-        $reservation->add_baby_seat = $request->has('add_baby_seat');
-        $reservation->add_full_tank = $request->has('add_full_tank');
-        $reservation->accessories_fee = $validatedData['accessories_fee'];
         $reservation->status = 'pending';
         $reservation->save();
 
@@ -193,21 +177,12 @@ class ReservationController extends BaseController
         
         // Validate payment details
         $request->validate([
-            'card_number' => 'required|string',
+            'card_number' => 'required|string|size:16',
             'card_holder' => 'required|string|max:255',
             'expiry_month' => 'required|string|size:2',
             'expiry_year' => 'required|string|size:2',
             'cvv' => 'required|string|size:3',
         ]);
-        
-        // Validate expiration date is in the future
-        $expiryMonth = $request->input('expiry_month');
-        $expiryYear = $request->input('expiry_year');
-        $expiryDate = \Carbon\Carbon::createFromDate('20'.$expiryYear, $expiryMonth, 1)->endOfMonth();
-        
-        if ($expiryDate->isPast()) {
-            return redirect()->back()->withErrors(['expiry_date' => 'The expiration date must be in the future.'])->withInput();
-        }
         
         // In a real application, you would process the payment with a payment gateway here
         // For demo purposes, we'll just mark the reservation as confirmed

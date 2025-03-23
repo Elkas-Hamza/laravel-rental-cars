@@ -9,6 +9,8 @@ else
   commit_message="$1"
 fi
 
+# pull changes 
+git pull
 # Add all changes to the staging area
 git add .
 

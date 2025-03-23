@@ -17,11 +17,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;300;400;600;700&display=swap"
         rel="stylesheet">
+        <link rel="stylesheet" href="{{ asset('css/tooplate-moso-interior.css') }}">
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
     <link href="{{ asset('css/owl.carousel.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/tooplate-moso-interior.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/home.css') }}" rel="stylesheet">
+    @yield("style")
     <link rel="shortcut icon" type="x-icon" href="{{ asset('icon/car-rental.png') }}">
     <style>
         .top_bar {
@@ -227,10 +230,27 @@
                             </a>
                         </li>
 
+              
+
+                        <!-- New Links -->
                         <li class="nav-item">
-                            <a class="nav-link {{ Request::is('cars/available') ? 'active' : '' }}"
-                                href="{{ route('cars.available') }}">
-                                <i class="fas fa-check-circle me-1"></i>Available Cars
+                            <a class="nav-link {{ Request::is('about') ? 'active' : '' }}" href="{{ route('about') }}">
+                                <i class="fas fa-info-circle me-1"></i>About
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::is('faq') ? 'active' : '' }}" href="{{ route('faq') }}">
+                                <i class="fas fa-question-circle me-1"></i>FAQ
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::is('contact') ? 'active' : '' }}" href="{{ route('contact') }}">
+                                <i class="fas fa-envelope me-1"></i>Contact Us
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::is('support') ? 'active' : '' }}" href="{{ route('support') }}">
+                                <i class="fas fa-life-ring me-1"></i>Support
                             </a>
                         </li>
                     </ul>
@@ -328,60 +348,7 @@
 
     <!-- Slideshow -->
     @if (Request::is('/') || Request::is('home'))
-        <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
-                    aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
-                    aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
-                    aria-label="Slide 3"></button>
-                <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3"
-                    aria-label="Slide 4"></button>
-            </div>
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="{{ asset('images/slideshow/give_key.jpg') }}" class="d-block w-100"
-                        alt="Car Key Handover">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h2>Premium Car Rental Services</h2>
-                        <p>Experience the luxury of our premium car rental services</p>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img src="{{ asset('images/slideshow/open_car.jpg') }}" class="d-block w-100" alt="Open Car">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h2>Wide Range of Vehicles</h2>
-                        <p>Choose from our extensive fleet of vehicles for any occasion</p>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img src="{{ asset('images/slideshow/key_merci.jpg') }}" class="d-block w-100"
-                        alt="Mercedes Key">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h2>Luxury Brands Available</h2>
-                        <p>Drive the luxury car of your dreams</p>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img src="{{ asset('images/slideshow/mercidice.jpeg') }}" class="d-block w-100" alt="Mercedes">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h2>Premium Mercedes Collection</h2>
-                        <p>Explore our exclusive Mercedes collection</p>
-                    </div>
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
-                data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
-                data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
+
     @endif
 
     <main>
@@ -398,111 +365,112 @@
         @endif
 
         @yield('content')
-    </main>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#36363e" fill-opacity="1" d="M0,96L40,117.3C80,139,160,181,240,186.7C320,192,400,160,480,149.3C560,139,640,149,720,176C800,203,880,245,960,250.7C1040,256,1120,224,1200,229.3C1280,235,1360,277,1400,298.7L1440,320L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"></path></svg>            
+        </main>
 
-    <footer class="site-footer">
+        <footer class="site-footer" style="background-color: #36363e;">
         <div class="container">
             <div class="row">
-                <div class="col-lg-4 col-12 mb-4">
-                    <h5 class="site-footer-title mb-3">Quick Links</h5>
+            <div class="col-lg-4 col-12 mb-4">
+                <h5 class="site-footer-title mb-3">Quick Links</h5>
 
-                    <ul class="footer-menu">
-                        <li class="footer-menu-item"><a href="{{ route('home') }}" class="footer-menu-link">Home</a>
-                        </li>
-                        <li class="footer-menu-item"><a href="{{ route('cars.index') }}"
-                                class="footer-menu-link">Browse Cars</a></li>
-                        <li class="footer-menu-item"><a href="{{ route('cars.available') }}"
-                                class="footer-menu-link">Available Cars</a></li>
-                        @auth
-                            <li class="footer-menu-item"><a href="{{ route('reservations.index') }}"
-                                    class="footer-menu-link">My Reservations</a></li>
-                            <li class="footer-menu-item"><a href="{{ route('profile') }}" class="footer-menu-link">My
-                                    Profile</a></li>
-                        @else
-                            <li class="footer-menu-item"><a href="{{ route('login') }}"
-                                    class="footer-menu-link">Login</a></li>
-                            <li class="footer-menu-item"><a href="{{ route('register') }}" class="footer-menu-link">Sign
-                                    Up</a></li>
-                        @endauth
-                    </ul>
-                </div>
-
-                @if (isset($agence))
-                    <div class="col-lg-4 col-md-6 col-12 mb-4">
-                        <h5 class="site-footer-title mb-3">Contact</h5>
-
-                        <p class="text-white d-flex mb-2">
-                            <i class="fas fa-phone me-2"></i>
-                            <a href="tel:{{ $agence->tele }}" class="site-footer-link">{{ $agence->tele }}</a>
-                        </p>
-
-                        <p class="text-white d-flex">
-                            <i class="fas fa-envelope me-2"></i>
-                            <a href="mailto:{{ $agence->email }}" class="site-footer-link">{{ $agence->email }}</a>
-                        </p>
-
-                        <p class="text-white d-flex mt-3">
-                            <i class="fas fa-map-marker-alt me-2"></i>
-                            {{ $agence->adresse }}
-                        </p>
-                    </div>
+                <ul class="footer-menu">
+                <li class="footer-menu-item"><a href="{{ route('home') }}" class="footer-menu-link">Home</a>
+                </li>
+                <li class="footer-menu-item"><a href="{{ route('cars.index') }}"
+                    class="footer-menu-link">Browse Cars</a></li>
+                <li class="footer-menu-item"><a href="{{ route('cars.available') }}"
+                    class="footer-menu-link">Available Cars</a></li>
+                @auth
+                    <li class="footer-menu-item"><a href="{{ route('reservations.index') }}"
+                        class="footer-menu-link">My Reservations</a></li>
+                    <li class="footer-menu-item"><a href="{{ route('profile') }}" class="footer-menu-link">My
+                        Profile</a></li>
                 @else
-                    <div class="col-lg-4 col-md-6 col-12 mb-4">
-                        <h5 class="site-footer-title mb-3">Contact</h5>
+                    <li class="footer-menu-item"><a href="{{ route('login') }}"
+                        class="footer-menu-link">Login</a></li>
+                    <li class="footer-menu-item"><a href="{{ route('register') }}" class="footer-menu-link">Sign
+                        Up</a></li>
+                @endauth
+                </ul>
+            </div>
 
-                        <p class="text-white d-flex mb-2">
-                            <i class="fas fa-phone me-2"></i>
-                            <a href="tel:+1234567890" class="site-footer-link">+1 (234) 567-890</a>
-                        </p>
+            @if (isset($agence))
+                <div class="col-lg-4 col-md-6 col-12 mb-4">
+                <h5 class="site-footer-title mb-3">Contact</h5>
 
-                        <p class="text-white d-flex">
-                            <i class="fas fa-envelope me-2"></i>
-                            <a href="mailto:info@carrentals.com" class="site-footer-link">info@carrentals.com</a>
-                        </p>
+                <p class="text-white d-flex mb-2">
+                    <i class="fas fa-phone me-2"></i>
+                    <a href="tel:{{ $agence->tele }}" class="site-footer-link">{{ $agence->tele }}</a>
+                </p>
 
-                        <p class="text-white d-flex mt-3">
-                            <i class="fas fa-map-marker-alt me-2"></i>
-                            123 Rental Street, City, Country
-                        </p>
-                    </div>
-                @endif
+                <p class="text-white d-flex">
+                    <i class="fas fa-envelope me-2"></i>
+                    <a href="mailto:{{ $agence->email }}" class="site-footer-link">{{ $agence->email }}</a>
+                </p>
 
-                <div class="col-lg-4 col-md-6 col-12 mx-auto">
-                    <h5 class="site-footer-title mb-3">Follow Us</h5>
-
-                    <ul class="social-icon">
-                        <li class="social-icon-item"><a href="#" class="social-icon-link"><i
-                                    class="fab fa-facebook-f"></i></a></li>
-                        <li class="social-icon-item"><a href="#" class="social-icon-link"><i
-                                    class="fab fa-twitter"></i></a></li>
-                        <li class="social-icon-item"><a href="#" class="social-icon-link"><i
-                                    class="fab fa-instagram"></i></a></li>
-                        <li class="social-icon-item"><a href="#" class="social-icon-link"><i
-                                    class="fab fa-linkedin-in"></i></a></li>
-                        <li class="social-icon-item"><a href="#" class="social-icon-link"><i
-                                    class="fab fa-youtube"></i></a></li>
-                    </ul>
-
-                    <h5 class="site-footer-title mb-3 mt-4">Need Help?</h5>
-                    <p class="text-white d-flex">
-                        <a href="#" class="btn btn-outline-light mt-2"><i
-                                class="fas fa-question-circle me-2"></i>FAQ & Support</a>
-                    </p>
+                <p class="text-white d-flex mt-3">
+                    <i class="fas fa-map-marker-alt me-2"></i>
+                    {{ $agence->adresse }}
+                </p>
                 </div>
+            @else
+                <div class="col-lg-4 col-md-6 col-12 mb-4">
+                <h5 class="site-footer-title mb-3">Contact</h5>
+
+                <p class="text-white d-flex mb-2">
+                    <i class="fas fa-phone me-2"></i>
+                    <a href="tel:+1234567890" class="site-footer-link">+1 (234) 567-890</a>
+                </p>
+
+                <p class="text-white d-flex">
+                    <i class="fas fa-envelope me-2"></i>
+                    <a href="mailto:info@carrentals.com" class="site-footer-link">info@carrentals.com</a>
+                </p>
+
+                <p class="text-white d-flex mt-3">
+                    <i class="fas fa-map-marker-alt me-2"></i>
+                    123 Rental Street, City, Country
+                </p>
+                </div>
+            @endif
+
+            <div class="col-lg-4 col-md-6 col-12 mx-auto">
+                <h5 class="site-footer-title mb-3">Follow Us</h5>
+
+                <ul class="social-icon">
+                <li class="social-icon-item"><a href="#" class="social-icon-link"><i
+                        class="fab fa-facebook-f"></i></a></li>
+                <li class="social-icon-item"><a href="#" class="social-icon-link"><i
+                        class="fab fa-twitter"></i></a></li>
+                <li class="social-icon-item"><a href="#" class="social-icon-link"><i
+                        class="fab fa-instagram"></i></a></li>
+                <li class="social-icon-item"><a href="#" class="social-icon-link"><i
+                        class="fab fa-linkedin-in"></i></a></li>
+                <li class="social-icon-item"><a href="#" class="social-icon-link"><i
+                        class="fab fa-youtube"></i></a></li>
+                </ul>
+
+                <h5 class="site-footer-title mb-3 mt-4">Need Help?</h5>
+                <p class="text-white d-flex">
+                <a href="{{ route('faq') }}" class="btn btn-outline-light mt-2"><i
+                    class="fas fa-question-circle me-2"></i>FAQ & Support</a>
+                </p>
+            </div>
             </div>
         </div>
 
         <div class="site-footer-bottom">
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 col-md-7 col-12">
-                        <p class="copyright-text mb-0">© {{ date('Y') }} <strong>Car Rental System</strong> - All
-                            Rights Reserved</p>
-                    </div>
+            <div class="row">
+                <div class="col-lg-6 col-md-7 col-12">
+                <p class="copyright-text mb-0">© {{ date('Y') }} <strong>Car Rental System</strong> - All
+                    Rights Reserved</p>
                 </div>
             </div>
+            </div>
         </div>
-    </footer>
+        </footer>
 
     <!-- Scripts -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>

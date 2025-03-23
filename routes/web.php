@@ -81,3 +81,4 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
 // Public routes
 Route::get('/cars/available', [App\Http\Controllers\CarController::class, 'available'])->name('cars.available');
 Route::get('/cars/{car}', [App\Http\Controllers\CarController::class, 'show'])->name('cars.show');
+Route::view('/test',"index");

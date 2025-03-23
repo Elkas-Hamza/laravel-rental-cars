@@ -75,7 +75,7 @@ class HomeController extends Controller
     /**
      * Display the about page
      */
-    public function about()
+    public function     about()
     {
         $agence = Agence::first();
         return view('pages.about', compact('agence'));

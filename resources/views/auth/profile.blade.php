@@ -4,15 +4,26 @@
 
 @section('styles')
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f7fa;
+            color: #333;
+        }
+
         .profile-container {
             max-width: 800px;
             margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .profile-card {
             border: none;
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-            border-radius: 0.5rem;
+            box-shadow: none;
         }
 
         .profile-image {
@@ -21,16 +32,42 @@
             object-fit: cover;
             border-radius: 50%;
             border: 4px solid #fff;
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         .form-control {
             padding: 0.75rem 1rem;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
         }
 
         .profile-btn {
             padding: 0.75rem 1rem;
             font-weight: 600;
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .profile-btn:hover {
+            background-color: #0056b3;
+            color: #fff;
+        }
+
+        .alert {
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .img-thumbnail {
+            border-radius: 4px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
         }
     </style>
 @endsection

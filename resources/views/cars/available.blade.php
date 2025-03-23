@@ -91,7 +91,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 text-center mb-4">
-                    <h1>Available Cars</h1>
+                    <h1>Available Cars</h1> 
                     <p>Cars available for rent during your selected dates: {{ $startDate }} to {{ $endDate }}</p>
                 </div>
 

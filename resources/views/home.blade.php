@@ -1,512 +1,364 @@
 @extends('layouts.app')
 
 @section('title', 'Home - Car Rental System')
-
 @section('style')
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', sans-serif;
-        }
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        /* Hero Section */
-        .hero {
-            width: 100vw;
-            height: 100vh;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7));
-            z-index: 1;
-            animation: fadeBackground 10s infinite;
-        }
-
-        @keyframes fadeBackground {
-            0% { background-image: url('https://images.unsplash.com/photo-1485291571150-772bcfc10da5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80'); }
-            33% { background-image: url('https://images.unsplash.com/photo-1504215680853-026ed2a45def?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80'); }
-            66% { background-image: url('https://images.unsplash.com/photo-1511407397940-d57f68e81203?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80'); }
-            100% { background-image: url('https://images.unsplash.com/photo-1485291571150-772bcfc10da5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80'); }
-        }
-
-        .reservation-form {
-            position: relative;
-            z-index: 2;
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            padding: 2rem;
-            border-radius: 15px;
-            width: 100%;
-            max-width: 600px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-        }
-
-        .form-control {
-            background: rgba(255,255,255,0.9);
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            margin: 8px 0;
-        }
-
-        .btn-primary {
-            background: #2563eb;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .btn-primary:hover {
-            background: #1d4ed8;
-            transform: translateY(-2px);
-        }
-
-        /* Our Story Section */
-        .our-story {
-            padding: 5rem 2rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2rem;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 248, 255, 1) 100%);
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        .story-content {
-            flex: 1;
-            min-width: 300px;
-            color: #333;
-            text-align: left;
-        }
-
-        .story-content h2 {
-            font-size: 2.5rem;
-            color: #2563eb;
-            margin-bottom: 1rem;
-        }
-
-        .story-content h3 {
-            font-size: 1.8rem;
-            color: #1d4ed8;
-            margin-bottom: 1rem;
-        }
-
-        .story-content p {
-            font-size: 1.2rem;
-            line-height: 1.6;
-            color: #555;
-        }
-
-        .story-images {
-            flex: 1;
-            min-width: 300px;
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            align-items: flex-start;
-        }
-
-        .story-image {
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
-            height: 300px;
-            width: 45%;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .story-image:nth-child(2) {
-            margin-top: 15px;
-        }
-
-        .story-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-
-        .story-image:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .story-image:hover img {
-            transform: scale(1.1);
-        }
-
-        /* Our Service Section */
-        .our-service {
-            padding: 5rem 2rem;
-            text-align: center;
-            background: #f8fafc;
-        }
-
-        .our-service h2 {
-            font-size: 2.5rem;
-            color: #2563eb;
-            margin-bottom: 1rem;
-        }
-
-        .our-service p {
-            font-size: 1.2rem;
-            line-height: 1.6;
-            color: #555;
-        }
-
-        /* Agency Info Section */
-        .agency-info {
-            padding: 3rem 2rem;
-            background: white;
-            text-align: center;
-        }
-
-        .time-info {
-            display: inline-flex;
-            gap: 2rem;
-            background: #f8fafc;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        /* Reviews Section */
-        .reviews {
-            padding: 5rem 2rem;
-            background: #f1f5f9;
-            overflow: hidden;
-        }
-
-        .reviews-container {
-            display: flex;
-            gap: 2rem;
-            animation: scroll 30s linear infinite;
-        }
-
-        .review-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            min-width: 300px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
-        }
-
-        .reviews-container {
-            display: flex;
-            flex-wrap: nowrap;
-            animation: scroll 30s linear infinite;
-            width: 100%;
-        }
-
-        .review-card {
-            flex: 0 0 auto;
-        }
-
-        .review-card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        /* Updated Cars Gallery */
-        .cars-gallery {
-            padding: 5rem 2rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .car-item {
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
-
-        .car-item:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-        }
-
-        .car-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .car-item:hover img {
-            transform: scale(1.1);
-        }
-
-        /* Updated Contact Section */
-        .contact {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 3rem;
-            padding: 5rem 2rem;
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .map-container {
-            flex: 1;
-            min-width: 300px;
-            height: 500px;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-
-        .contact-form {
-            flex: 1;
-            min-width: 300px;
-            background: white;
-            padding: 3rem;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-
-        .input-group {
-            position: relative;
-            margin-bottom: 1.5rem;
-        }
-
-        .input-group i {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #64748b;
-        }
-
-        .input-group input,
-        .input-group textarea {
-            width: 100%;
-            padding: 1rem 1rem 1rem 3rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .input-group textarea {
-            padding-top: 1rem;
-            min-height: 120px;
-        }
-
-        .input-group input:focus,
-        .input-group textarea:focus {
-            border-color: #2563eb;
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-            outline: none;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 1rem;
-            background: #2563eb;
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .submit-btn:hover {
-            background: #1d4ed8;
-            transform: translateY(-2px);
-        }
-
-        @media (max-width: 768px) {
-            .reviews-container {
-                animation: none;
-            }
-
-            .review-card {
-                min-width: 100%;
-            }
-
-            .story-images {
-                grid-template-columns: 1fr;
-            }
-
-            .time-info {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .cars-gallery {
-                grid-template-columns: 1fr;
-                grid-template-rows: repeat(5, 250px);
-            }
-
-            .car-item:nth-child(n) {
-                grid-column: 1 / -1;
-                grid-row: auto;
-            }
-        }
-    </style>
 @endsection
 
 @section('content')
+   
+</head>
+<body>
     <!-- Hero Section with Reservation Form -->
-    <div class="hero">
-        <form method="post" action="{{ route('search.cars') }}" class="reservation-form">
-            @csrf
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <label for="departureDate" class="form-label text-white">Date de départ</label>
-                    <input required name="date_de_location" min="{{ date('Y-m-d') }}" value="{{ date('Y-m-d') }}" type="date" class="form-control" id="departureDate">
-                </div>
-                <div class="col-md-6">
-                    <label for="returnDate" class="form-label text-white">Date de retour</label>
-                    <input required name="date_de_retour" min="{{ date('Y-m-d') }}" type="date" class="form-control" id="returnDate">
+    <div class="container-fluid hero-section">
+        <div class="row">
+            <!-- Left Side: Text & Booking Form -->
+            <div class="col-md-6 d-flex align-items-center">
+                <div class="text-center text-md-start p-5">
+                    <h1 class="display-4 fw-bold" style="color: #042825;">Fast And Easy Way To Rent A Car</h1>
+                    <p class="lead text-muted" style="max-width: 500px;">Sed volutpat sed nunc vel porttitor. Integer euismod, nisi vel consectetur interdum, nisl nisi aliquet nunc, eget facilisis ligula nisi eget ligula.</p>
+                    <form method="post" action="{{ route('search.cars') }}" class="mt-4">
+                     
+                     @csrf
+                        
+                        <div class="mb-3">
+                            <input type="date" class="p-2 col-12 rounded-lg shadow-md" required name="date_de_location" min="{{ date('Y-m-d') }}" value="{{ date('Y-m-d') }}"    >
+                        </div>
+                        <div class="mb-3">
+                            <input required name="date_de_retour" min="{{ date('Y-m-d') }}" value="{{ date('Y-m-d') }}" type="date"  class="p-2 col-12 rounded-lg shadow-md">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="background-color: #FF6B00; border-color: #FF6B00;">Search Cars</button>
+                    </form>
                 </div>
             </div>
-            <button type="submit" class="mt-3 btn btn-primary w-100 shadow">RECHERCHER</button>
-        </form>
+            <!-- Right Side: Car Image Slider -->
+            <div class="col-md-6 p-0">
+                <div id="carCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="{{ asset("images/slideshow/key_merci.jpg") }}" class="d-block w-100" alt="Car 1">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{{ asset("images/slideshow/interior-wall-mockup-with-sofa-cabinet-living-room-with-empty-white-wall-background-3d-rendering.jpg") }}" class="d-block w-100" alt="Car 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{{ asset("images/slideshow/wood-sideboard-living-room-interior-with-copy-space.jpg") }}" class="d-block w-100" alt="Car 3">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Our Story Section -->
-    <section class="our-story">
-        <div class="story-content">
-            <h2>Our Story</h2>
-            <h3>Introducing Car Rental</h3>
-            <p>Discover top-notch vehicle rentals with Car Rental. Enjoy competitive rates, flexible terms, and exceptional service.</p>
-        </div>
-        <div class="story-images">
-            <div class="story-image">
-                <img src="{{ asset('images/camry/2021-toyota-camry-hybrid-xle-138-1603151483.jpg') }}" alt="Car 1">
+        <!-- Main Section -->
+        <section class="main-section py-20 bg-gray-50 text-center">
+            <h2 class="text-3xl font-bold text-blue-500 mb-8">Best Services and Luxuries Cars</h2>
+            <p class="text-gray-700 mb-12">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-8">
+                <img src="https://via.placeholder.com/400" alt="Vehicle" class="w-full md:w-1/2 rounded-lg shadow-md">
+                <div class="services-list flex flex-col gap-8">
+                    <div class="service-item flex items-center gap-4">
+                        <div class="icon bg-gray-200 p-4 rounded-lg">
+                            <i class="bi bi-car-front text-blue-500 text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold">Service 1</h3>
+                            <p class="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        </div>
+                    </div>
+                    <div class="service-item flex items-center gap-4">
+                        <div class="icon bg-gray-200 p-4 rounded-lg">
+                            <i class="bi bi-gear text-blue-500 text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold">Service 2</h3>
+                            <p class="text-gray-600">Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                        </div>
+                    </div>
+                    <div class="service-item flex items-center gap-4">
+                        <div class="icon bg-gray-200 p-4 rounded-lg">
+                            <i class="bi bi-shield-check text-blue-500 text-2xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold">Service 3</h3>
+                            <p class="text-gray-600">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="story-image">
-                <img src="{{ asset('images/civic/2022-honda-civic-sedan-112-1623810389.jpg') }}" alt="Car 2">
-            </div>
-        </div>
-    </section>
-
-    <!-- Our Service Section -->
-    <section class="our-service">
-        <h2>Our Service</h2>
-        <p>Discover top-notch vehicle rentals with Car Rental. Enjoy competitive rates, flexible terms, and exceptional service. With years of experience in the industry, we ensure a seamless and enjoyable rental experience for all our customers.</p>
-    </section>
-
-    <!-- Agency Info Section -->
+        </section>
+        
+        {{-- working Hours  --}}
     @if (isset($agence))
-    <section class="agency-info">
-        <div class="time-info">
-            <p><i class="bi-clock me-2"></i> Morning: <strong>{{ $agence->temp_debut }}</strong></p>
-            <p><i class="bi-clock me-2"></i> Evening: <strong>{{ $agence->temp_fin }}</strong></p>
+    <section class="working-hours py-20 bg-white text-center px-10 mx-10 ">
+        <h2 class="text-3xl font-bold text-blue-500 mb-8">Working Hours</h2>
+        <div class="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16">
+            
+            <!-- Left Column: Business Hours & Contact Info -->
+            <div class="flex flex-col gap-6 w-full md:w-1/2">
+                <!-- Business Hours -->
+                <div class="info-box bg-gray-100 p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-bold text-blue-500 mb-2">Business Hours</h3>
+                    <p>Monday - Friday:  <strong>{{ $agence->temp_debut }}</strong> AM - <strong>{{ $agence->temp_fin }}</strong> PM</p>
+                    <p>Week End: Closed</p>
+                </div>
+    
+                <!-- Contact Information -->
+                <div class="info-box bg-gray-100 p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-bold text-blue-500 mb-2">Contact Us</h3>
+                    <p>📍 {{ $agence->adresse }}</p>
+                    <p>📞 {{ $agence->tele }}</p>
+                    <p>✉️ {{ $agence->email }}</p>
+                </div>
+            </div>
+    
+            <!-- Right Column: Image -->
+            <div class="w-full md:w-1/2">
+                <img src="your-photo-url.jpg" alt="Working Hours Image" class="w-full rounded-lg shadow-md">
+            </div>
+    
         </div>
     </section>
+    
     @endif
+    
+
 
     <!-- Reviews Section -->
+
     <section class="reviews">
-        <div class="reviews-container">
-            @foreach ($reviews as $review)
-                <div class="review-card">
-                    <h4>{{ $review->date_coment }}</h4>
-                    <p>{{ $review->message }}</p>
-                    <p><strong>{{ $review->first_name }}</strong>, <small>{{ $review->last_name }}</small></p>
-                </div>
-            @endforeach
+    <div class="reviews-container">
+        @foreach ($reviews as $review)
+            <div class="review-card">
+                <h4>{{ $review->date_coment }}</h4>
+                <p>{{ $review->message }}</p>
+                <p><strong>{{ $review->first_name }}</strong>, <small>{{ $review->last_name }}</small></p>
+            </div>
+        @endforeach
+    </div>
+</section>
+
+
+
+    <!-- Partner Brands Section -->
+    <section class="partner-brands py-20 bg-white text-center">
+        <h2 class="text-3xl font-bold text-blue-500 mb-8">Our Partner Brands</h2>
+        <div class="flex flex-wrap justify-center gap-8">
+            <img src="https://via.placeholder.com/100" alt="Ford" class="w-24 h-24">
+            <img src="https://via.placeholder.com/100" alt="Mercedes" class="w-24 h-24">
+            <img src="https://via.placeholder.com/100" alt="Honda" class="w-24 h-24">
+            <img src="https://via.placeholder.com/100" alt="Jeep" class="w-24 h-24">
+            <img src="https://via.placeholder.com/100" alt="Volvo" class="w-24 h-24">
+            <img src="https://via.placeholder.com/100" alt="Mitsubishi" class="w-24 h-24">
+            <img src="https://via.placeholder.com/100" alt="Volkswagen" class="w-24 h-24">
+            <img src="https://via.placeholder.com/100" alt="Audi" class="w-24 h-24">
+            <img src="https://via.placeholder.com/100" alt="Hyundai" class="w-24 h-24">
         </div>
     </section>
 
-    <!-- Updated Cars Gallery -->
-    <section class="cars-gallery">
-        <div class="car-item">
-            <img src="{{ asset('images/camry/2021-toyota-camry-hybrid-xle-138-1603151483.jpg') }}" alt="Luxury Car 1">
-        </div>
-        <div class="car-item">
-            <img src="{{ asset('images/camry/2021-toyota-camry-hybrid-xle-138-1603151483.jpg') }}" alt="Luxury Car 2">
-        </div>
-        <div class="car-item">
-            <img src="{{ asset('images/camry/2021-toyota-camry-hybrid-xle-138-1603151483.jpg') }}" alt="Luxury Car 3">
-        </div>
-        <div class="car-item">
-            <img src="{{ asset('images/camry/2021-toyota-camry-hybrid-xle-138-1603151483.jpg') }}" alt="Luxury Car 4">
-        </div>
-        <div class="car-item">
-            <img src="{{ asset('images/camry/2021-toyota-camry-hybrid-xle-138-1603151483.jpg') }}" alt="Luxury Car 5">
+    <!-- Top Rental Cars Section -->
+    <section class="top-rental-cars py-20 bg-white text-center">
+        <div class="container">
+            <h2 class="text-3xl font-bold text-blue-500 mb-8">Top Rental Cars</h2>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+           
+                <a  class="btn btn-primary" href="{{ route('cars.index') }}">Explore all cars</a>
+            </div>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="https://via.placeholder.com/400" class="card-img-top" alt="Car">
+                        <div class="card-body">
+                            <h5 class="card-title">Toyota Camry</h5>
+                            <p class="card-text">Sedan</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="https://via.placeholder.com/400" class="card-img-top" alt="Car">
+                        <div class="card-body">
+                            <h5 class="card-title">Ford Explorer</h5>
+                            <p class="card-text">SUV</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="https://via.placeholder.com/400" class="card-img-top" alt="Car">
+                        <div class="card-body">
+                            <h5 class="card-title">BMW 5 Series</h5>
+                            <p class="card-text">Luxury</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="https://via.placeholder.com/400" class="card-img-top" alt="Car">
+                        <div class="card-body">
+                            <h5 class="card-title">Honda CR-V</h5>
+                            <p class="card-text">SUV</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- Updated Contact Section -->
-    <section class="contact">
-        <div class="map-container">
-            <!-- Add your Google Maps embed code here -->
+    <!-- Latest Car Reviews Section -->
+    <section class="latest-car-reviews py-20 bg-white text-center">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="text-3xl font-bold text-blue-500">Latest Car Reviews</h2>
+                <button type="button" class="btn btn-primary">Read more reviews</button>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <img src="https://via.placeholder.com/600x400" class="card-img-top" alt="Review">
+                        <div class="card-body">
+                            <h5 class="card-title">Excellent Service</h5>
+                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row row-cols-1 g-4">
+                        <div class="col">
+                            <div class="card h-100">
+                                <img src="https://via.placeholder.com/150" class="card-img-top" alt="Review">
+                                <div class="card-body">
+                                    <h5 class="card-title">Great Experience</h5>
+                                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100">
+                                <img src="https://via.placeholder.com/150" class="card-img-top" alt="Review">
+                                <div class="card-body">
+                                    <h5 class="card-title">Highly Recommend</h5>
+                                    <p class="card-text">Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100">
+                                <img src="https://via.placeholder.com/150" class="card-img-top" alt="Review">
+                                <div class="card-body">
+                                    <h5 class="card-title">Best Rental Service</h5>
+                                    <p class="card-text">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <form class="contact-form" action="{{ route('reviews.store') }}" method="post">
-            @csrf
-            <div class="row" style="display: flex; gap: 1.5rem; margin-bottom: 1.5rem;">
-                <div class="input-group" style="flex: 1;">
-                    <i class="bi bi-person"></i>
-                    <input type="text" name="first_name" placeholder="First Name" required>
-                </div>
-                <div class="input-group" style="flex: 1;">
-                    <i class="bi bi-person"></i>
-                    <input type="text" name="last_name" placeholder="Last Name" required>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                <i class="bi bi-envelope"></i>
-                <input type="email" name="email" placeholder="Email" required>
-            </div>
-            
-            <div class="input-group">
-                <i class="bi bi-chat-dots"></i>
-                <textarea name="message" placeholder="Your Message" required></textarea>
-            </div>
-            
-            <button type="submit" class="submit-btn">
-                <i class="bi bi-send me-2"></i>
-                Submit Review
-            </button>
-        </form>
     </section>
 
-    <script>
-        // Add smooth scrolling for reviews
-        const reviewsContainer = document.querySelector('.reviews-container');
-        const clonedReviews = reviewsContainer.innerHTML;
-        reviewsContainer.innerHTML += clonedReviews;
+    <!-- Customer Highlights Section -->
+    <section class="customer-highlights py-20 bg-white text-center">
+        <div class="container">
+            <h2 class="text-3xl font-bold text-blue-500 mb-8">Customer Highlights</h2>
+            <div class="card mb-4">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="https://via.placeholder.com/150" class="img-fluid rounded-start" alt="Customer">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Jane Smith</h5>
+                            <p class="card-text">⭐⭐⭐⭐⭐</p>
+                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="highlightsCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img src="https://via.placeholder.com/600x400" class="d-block w-100" alt="Highlight">
+                            </div>
+                            <div class="col-md-6 d-flex align-items-center">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5>Memorable Trip</h5>
+                                    <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        // Add date validation
-        const departureDate = document.getElementById('departureDate');
-        const returnDate = document.getElementById('returnDate');
+    <!-- Statistics Section -->
+    <section class="statistics py-20 bg-white text-center">
+        <h2 class="text-3xl font-bold text-blue-500 mb-8">Key Platform Statistics</h2>
+        <div class="stats-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="stat-item bg-gray-100 p-8 rounded-lg shadow-md">
+                <i class="bi bi-car-front text-green-500 text-4xl mb-4"></i>
+                <h3 class="text-2xl font-bold text-blue-500 mb-2">15,500+</h3>
+                <p>Cars for Rent</p>
+            </div>
+            <div class="stat-item bg-gray-100 p-8 rounded-lg shadow-md">
+                <i class="bi bi-people text-green-500 text-4xl mb-4"></i>
+                <h3 class="text-2xl font-bold text-blue-500 mb-2">1,750+</h3>
+                <p>Visitors per Day</p>
+            </div>
+            <div class="stat-item bg-gray-100 p-8 rounded-lg shadow-md">
+                <i class="bi bi-star text-green-500 text-4xl mb-4"></i>
+                <h3 class="text-2xl font-bold text-blue-500 mb-2">3,500+</h3>
+                <p>Customer Reviews</p>
+            </div>
+            <div class="stat-item bg-gray-100 p-8 rounded-lg shadow-md">
+                <i class="bi bi-award text-green-500 text-4xl mb-4"></i>
+                <h3 class="text-2xl font-bold text-blue-500 mb-2">250+</h3>
+                <p>Verified Partners</p>
+            </div>
+        </div>
+    </section>
 
-        departureDate.addEventListener('change', function() {
-            returnDate.min = this.value;
-        });
-    </script>
+    <!-- Contact Section -->
+    <section class="contact py-20 bg-white text-center px-10 mx-10">
+        <div class="flex flex-col md:flex-row justify-center items-center gap-8">
+            
+            <!-- Left: Map -->
+            <div class="map-container w-full md:w-1/2 h-96 rounded-lg shadow-md">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.019112497918!2d144.9630583153169!3d-37.81410797975195!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf577d1b6b1b1b1b1!2sFederation%20Square!5e0!3m2!1sen!2sau!4v1611811234567!5m2!1sen!2sau"
+                    width="100%" height="100%" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0">
+                </iframe>
+            </div>
+
+            <!-- Right: Contact Form -->
+            <form class="contact-form w-full md:w-1/2 bg-gray-100 p-8 rounded-lg shadow-md" action="{{ route('reviews.store') }}" method="post">
+                @csrf
+                <div class="input-group mb-4">
+                    <input type="text" name="first_name" placeholder="First Name" required class="w-full p-2 rounded-lg shadow-md">
+                </div>
+                <div class="input-group mb-4">
+                    <input type="text" name="last_name" placeholder="Last Name" required class="w-full p-2 rounded-lg shadow-md">
+                </div>
+                <div class="input-group mb-4">
+                    <input type="email" name="email" placeholder="Email" required class="w-full p-2 rounded-lg shadow-md">
+                </div>
+                <div class="input-group mb-4">
+                    <textarea name="message" placeholder="Message" required class="w-full p-2 rounded-lg shadow-md"></textarea>
+                </div>
+                <button type="submit" class="w-full p-2 bg-green-500 text-white font-bold rounded-lg shadow-md">Submit</button>
+            </form>
+
+        </div>
+    </section>
+
+
+
 @endsection

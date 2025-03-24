@@ -91,7 +91,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-12 text-center mb-4">
-                    <h1>Available Cars</h1> 
+                    <h1>Available Cars</h1>
                     <p>Cars available for rent during your selected dates: {{ $startDate }} to {{ $endDate }}</p>
                 </div>
 
@@ -103,11 +103,14 @@
                                 <div class="col-md-8">
                                     <div class="input-group">
                                         <span class="input-group-text bg-white"><i class="fas fa-search"></i></span>
-                                        <input type="text" class="form-control" name="search" placeholder="Search by brand, model, or year..." value="{{ request('search') }}">
+                                        <input type="text" class="form-control" name="search"
+                                            placeholder="Search by brand, model, or year..."
+                                            value="{{ request('search') }}">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <button type="submit" class="btn btn-primary w-100"><i class="fas fa-search me-2"></i>Search</button>
+                                    <button type="submit" class="btn btn-primary w-100"><i
+                                            class="fas fa-search me-2"></i>Search</button>
                                 </div>
                             </form>
                         </div>
@@ -120,14 +123,15 @@
 
                         <form action="{{ route('cars.available') }}" method="GET" id="filter-form">
                             <div class="mb-3">
-                                <label for="marque" class="form-label">Brand</label>
-                                <select class="form-select" id="marque" name="marque">
+                                <label for="brand" class="form-label">Brand</label>
+                                <select class="form-select" id="brand" name="brand">
                                     <option value="">All Brands</option>
                                     @php
-                                        $brands = $cars->pluck('marque')->unique()->sort();
+                                        $brands = $cars->pluck('brand')->unique()->sort();
                                     @endphp
                                     @foreach ($brands as $brand)
-                                        <option value="{{ $brand }}" {{ request('marque') == $brand ? 'selected' : '' }}>{{ $brand }}</option>
+                                        <option value="{{ $brand }}"
+                                            {{ request('brand') == $brand ? 'selected' : '' }}>{{ $brand }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -140,11 +144,12 @@
                                         $models = $cars->pluck('model')->unique()->sort();
                                     @endphp
                                     @foreach ($models as $model)
-                                        <option value="{{ $model }}" {{ request('model') == $model ? 'selected' : '' }}>{{ $model }}</option>
+                                        <option value="{{ $model }}"
+                                            {{ request('model') == $model ? 'selected' : '' }}>{{ $model }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            
+
                             <div class="mb-3">
                                 <label for="fuel_type" class="form-label">Fuel Type</label>
                                 <select class="form-select" id="fuel_type" name="fuel_type">
@@ -153,7 +158,9 @@
                                         $fuelTypes = $cars->pluck('fuel_type')->unique()->sort();
                                     @endphp
                                     @foreach ($fuelTypes as $type)
-                                        <option value="{{ $type }}" {{ request('fuel_type') == $type ? 'selected' : '' }}>{{ ucfirst($type) }}</option>
+                                        <option value="{{ $type }}"
+                                            {{ request('fuel_type') == $type ? 'selected' : '' }}>{{ ucfirst($type) }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -162,17 +169,21 @@
                             <h6 class="mb-3">Price Range (per day)</h6>
                             <div class="mb-3">
                                 <label for="price_min" class="form-label">Min Price ($)</label>
-                                <input type="number" class="form-control" id="price_min" name="price_min" min="0" value="{{ request('price_min') }}">
+                                <input type="number" class="form-control" id="price_min" name="price_min" min="0"
+                                    value="{{ request('price_min') }}">
                             </div>
 
                             <div class="mb-3">
                                 <label for="price_max" class="form-label">Max Price ($)</label>
-                                <input type="number" class="form-control" id="price_max" name="price_max" min="0" value="{{ request('price_max') }}">
+                                <input type="number" class="form-control" id="price_max" name="price_max" min="0"
+                                    value="{{ request('price_max') }}">
                             </div>
 
                             <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary"><i class="fas fa-filter me-2"></i>Apply Filters</button>
-                                <a href="{{ route('cars.available') }}" class="btn btn-outline-secondary"><i class="fas fa-redo me-2"></i>Reset Filters</a>
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-filter me-2"></i>Apply
+                                    Filters</button>
+                                <a href="{{ route('cars.available') }}" class="btn btn-outline-secondary"><i
+                                        class="fas fa-redo me-2"></i>Reset Filters</a>
                             </div>
                         </form>
                     </div>
@@ -183,7 +194,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <i class="fas fa-calendar-check me-2"></i>
-                                <strong>{{ $cars->count() }}</strong> cars available from 
+                                <strong>{{ $cars->count() }}</strong> cars available from
                                 <strong>{{ $startDate }}</strong> to <strong>{{ $endDate }}</strong>
                             </div>
                             <a href="{{ route('home') }}" class="btn btn-sm btn-outline-primary">
@@ -191,24 +202,30 @@
                             </a>
                         </div>
                     </div>
-                
+
                     <div class="row">
                         @if ($cars->count() > 0)
                             @foreach ($cars as $car)
                                 <div class="col-lg-4 col-md-6 col-12 mb-4">
                                     <div class="card h-100 shadow-sm">
-                                        <img src="{{ $car->image ? asset('images/cars/' . $car->image) : asset('images/no-image.jpg') }}"
-                                            class="card-img-top" alt="{{ $car->marque }} {{ $car->model }}" style="height: 200px; object-fit: cover;">
+                                        <img src="{{ asset($car->image) }}" class="card-img-top"
+                                            alt="{{ $car->brand }} {{ $car->model }}"
+                                            style="height: 200px; object-fit: cover;">
                                         <div class="card-body">
-                                            <h5 class="card-title">{{ $car->marque }} {{ $car->model }}</h5>
+                                            <h5 class="card-title">{{ $car->brand }} {{ $car->model }}</h5>
                                             <p class="card-text mb-3">
-                                                <div class="car-feature"><i class="fas fa-calendar-alt"></i> {{ $car->year }}</div>
-                                                <div class="car-feature"><i class="fas fa-palette"></i> {{ $car->color }}</div>
-                                                <div class="car-feature"><i class="fas fa-gas-pump"></i> {{ $car->fuel_type }}</div>
-                                                <div class="car-feature"><i class="fas fa-dollar-sign"></i> ${{ number_format($car->prix_journalier, 2) }}/day</div>
+                                            <div class="car-feature"><i class="fas fa-calendar-alt"></i>
+                                                {{ $car->year }}</div>
+                                            <div class="car-feature"><i class="fas fa-palette"></i> {{ $car->color }}
+                                            </div>
+                                            <div class="car-feature"><i class="fas fa-gas-pump"></i>
+                                                {{ $car->fuel_type }}</div>
+                                            <div class="car-feature"><i class="fas fa-dollar-sign"></i>
+                                                ${{ number_format($car->price_per_day, 2) }}/day</div>
                                             </p>
                                             <div class="d-grid">
-                                                <a href="{{ route('cars.show', $car) }}" class="btn btn-primary">View Details</a>
+                                                <a href="{{ route('cars.show', $car) }}" class="btn btn-primary">View
+                                                    Details</a>
                                             </div>
                                         </div>
                                         <div class="card-footer text-center">
@@ -222,7 +239,8 @@
                         @else
                             <div class="col-12 text-center">
                                 <div class="alert alert-warning">
-                                    <i class="fas fa-exclamation-triangle me-2"></i> No cars available for the selected dates. Please try different dates.
+                                    <i class="fas fa-exclamation-triangle me-2"></i> No cars available for the selected
+                                    dates. Please try different dates.
                                 </div>
                             </div>
                         @endif
@@ -273,20 +291,20 @@
                 if (cars.length > 0) {
                     cars.forEach(car => {
                         const carImage = car.image ?
-                            `{{ asset('images/cars/') }}/${car.image}` :
+                            `{{ asset('/') }}${car.image}` :
                             '{{ asset('images/no-image.jpg') }}';
 
                         const carCard = `
                         <div class="col-lg-4 col-md-6 col-12 mb-4">
                             <div class="card h-100 shadow-sm">
-                                <img src="${carImage}" class="card-img-top" alt="${car.marque} ${car.model}" style="height: 200px; object-fit: cover;">
+                                <img src="${carImage}" class="card-img-top" alt="${car.brand} ${car.model}" style="height: 200px; object-fit: cover;">
                                 <div class="card-body">
-                                    <h5 class="card-title">${car.marque} ${car.model}</h5>
+                                    <h5 class="card-title">${car.brand} ${car.model}</h5>
                                     <p class="card-text mb-3">
                                         <div class="car-feature"><i class="fas fa-calendar-alt"></i> ${car.year}</div>
                                         <div class="car-feature"><i class="fas fa-palette"></i> ${car.color}</div>
                                         <div class="car-feature"><i class="fas fa-gas-pump"></i> ${car.fuel_type}</div>
-                                        <div class="car-feature"><i class="fas fa-dollar-sign"></i> $${parseFloat(car.prix_journalier).toFixed(2)}/day</div>
+                                        <div class="car-feature"><i class="fas fa-dollar-sign"></i> $${parseFloat(car.price_per_day).toFixed(2)}/day</div>
                                     </p>
                                     <div class="d-grid">
                                         <a href="/cars/${car.id}" class="btn btn-primary">View Details</a>

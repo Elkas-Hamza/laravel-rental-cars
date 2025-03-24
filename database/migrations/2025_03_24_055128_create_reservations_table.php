@@ -17,6 +17,10 @@ return new class extends Migration
             $table->foreignId('car_id')->constrained()->onDelete('cascade');
             $table->date('date_debut');
             $table->date('date_fin');
+            $table->string('pickup_location')->nullable();
+            $table->string('return_location')->nullable();
+            $table->decimal('pickup_fee', 8, 2)->default(0);
+            $table->decimal('return_fee', 8, 2)->default(0);
             $table->decimal('prix_total', 10, 2);
             $table->enum('status', ['pending', 'confirmed', 'cancelled'])->default('pending');
             $table->timestamps();

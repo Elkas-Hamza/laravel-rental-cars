@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Carbon\Carbon;
 
 class ReservationController extends BaseController
 {
@@ -97,20 +98,19 @@ class ReservationController extends BaseController
      */
     public function create(Car $car)
     {
-        if (!session('date_de_location') || !session('date_de_retour')) {
-            return redirect()->route('home')->with('error', 'Please select dates first');
-        }
+        $startDate = session('date_de_location', now()->format('Y-m-d'));
+        $endDate = session('date_de_retour', now()->addDay()->format('Y-m-d'));
 
-        $startDate = session('date_de_location');
-        $endDate = session('date_de_retour');
+        // Calculate number of days
+        $start = Carbon::parse($startDate);
+        $end = Carbon::parse($endDate);
+        $days = $end->diffInDays($start);
+        $days = $days > 0 ? $days : 1; // At least 1 day
 
-        // Calculate the number of days
-        $days = (strtotime($endDate) - strtotime($startDate)) / (60 * 60 * 24);
+        // Calculate total price
+        $totalPrice = $car->price_per_day * $days;
 
-        // Calculate the total price
-        $totalPrice = $car->prix_journalier * $days;
-
-        return view('client.reservations.create', compact('car', 'startDate', 'endDate', 'totalPrice', 'days'));
+        return view('client.reservations.create', compact('car', 'startDate', 'endDate', 'days', 'totalPrice'));
     }
 
     /**
@@ -118,19 +118,49 @@ class ReservationController extends BaseController
      */
     public function store(Request $request, Car $car)
     {
-        $validatedData = $request->validate([
+        $validated = $request->validate([
             'date_debut' => 'required|date|after_or_equal:today',
             'date_fin' => 'required|date|after:date_debut',
-            'prix_total' => 'required|numeric|min:0',
+            'pickup_location' => 'nullable|string|max:255',
+            'return_location' => 'nullable|string|max:255',
         ]);
 
-        $reservation = new Reservation($validatedData);
-        $reservation->user_id = Auth::id();
+        $start = Carbon::parse($validated['date_debut']);
+        $end = Carbon::parse($validated['date_fin']);
+        $days = $end->diffInDays($start);
+        $days = $days > 0 ? $days : 1; // At least 1 day
+
+        // Calculate total price
+        $totalPrice = $car->price_per_day * $days;
+
+        // Add pickup/return fees if applicable
+        if ($request->filled('pickup_location')) {
+            $totalPrice += 25.00; // Example pickup fee
+        }
+
+        if ($request->filled('return_location')) {
+            $totalPrice += 25.00; // Example return fee
+        }
+
+        $reservation = new Reservation();
+        $reservation->user_id = auth()->id();
         $reservation->car_id = $car->id;
+        $reservation->date_debut = $validated['date_debut'];
+        $reservation->date_fin = $validated['date_fin'];
+        $reservation->pickup_location = $validated['pickup_location'] ?? null;
+        $reservation->return_location = $validated['return_location'] ?? null;
+        $reservation->pickup_fee = $request->filled('pickup_location') ? 25.00 : 0;
+        $reservation->return_fee = $request->filled('return_location') ? 25.00 : 0;
+        $reservation->prix_total = $totalPrice;
         $reservation->status = 'pending';
         $reservation->save();
 
-        return redirect()->route('reservations.index')->with('success', 'Reservation created successfully!');
+        // Mark car as unavailable
+        // $car->disponible = false;
+        // $car->save();
+
+        return redirect()->route('client.reservations.show', $reservation)
+            ->with('success', 'Your reservation has been created successfully!');
     }
 
     /**

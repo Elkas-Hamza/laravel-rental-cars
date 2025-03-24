@@ -11,17 +11,24 @@ return new class extends Migration
      */
     public function up(): void
     {
+
         Schema::create('cars', function (Blueprint $table) {
             $table->id();
-            $table->string('marque');
+            $table->string('brand');
             $table->string('model');
-            $table->string('color');
-            $table->string('fuel_type');
+            $table->string('color')->default('White');
+            $table->string('fuel_type')->default('gasoline');
             $table->year('year');
-            $table->decimal('prix_journalier', 10, 2);
+            $table->decimal('price_per_day', 10, 2)->default(0);
             $table->boolean('disponible')->default(true);
             $table->string('image')->nullable();
+            $table->json('images')->nullable();
+            $table->string('category')->nullable();
+            $table->string('transmission')->default('automatic');
+            $table->integer('seats')->default(5);
+            $table->boolean('air_conditioner')->default(true);
             $table->text('description')->nullable();
+            $table->string('status')->default('available');
             $table->timestamps();
         });
     }

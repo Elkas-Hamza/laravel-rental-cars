@@ -1,103 +1,96 @@
-<p align="center">
-  <a href="#">
-    <img src="https://yourwebsite.com/images/logo.png" width="400" alt="Rental Cars Logo">
-  </a>
-</p>
-
-<p align="center">
-  <a href="#"><img src="https://img.shields.io/badge/Build-Passing-brightgreen" alt="Build Status"></a>
-  <a href="#"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License"></a>
-  <a href="#"><img src="https://img.shields.io/badge/Contributions-Welcome-orange.svg" alt="Contributions Welcome"></a>
-</p>
-
----
-
-# 🚗 Rental Cars - Your Ultimate Car Rental Platform
-
-Rental Cars is a modern web platform designed to make car rentals effortless and accessible. Whether you need a car for a weekend getaway or a business trip, we've got you covered with a seamless booking experience.
-
-## 🌟 Features
-
-- 🚘 **Wide Selection of Vehicles** - From economy to luxury cars.
-- 🏷 **Competitive Pricing** - Transparent pricing with no hidden fees.
-- 📍 **Location-Based Search** - Find cars near your desired pickup location.
-- 💳 **Easy Online Payments** - Secure payment options for a hassle-free experience.
-- 📅 **Flexible Booking Options** - Rent for a day, a week, or even a month.
-- 🔔 **Real-Time Notifications** - Get updates on bookings and availability.
-- 📞 **24/7 Customer Support** - We're here to assist you anytime.
-
-## 🛠 Technology Stack
-
-- **Backend:** Laravel (PHP Framework)
-- **Frontend:** Vue.js / React.js
-- **Database:** MySQL / PostgreSQL
-- **Payment Gateway:** Stripe / PayPal
-- **Hosting:** AWS / Digital Ocean
-
-## 📖 Getting Started
-
-### Prerequisites
-- PHP 8.x
-- Composer
-- Node.js & npm
-- MySQL / PostgreSQL
-
-### Installation
-```bash
-# Clone the repository
-git clone https://github.com/yourrepo/rental-cars.git
-
-# Navigate to the project directory
-cd rental-cars
-
-# Install dependencies
-composer install
-npm install
-
-# Set up environment variables
-cp .env.example .env
-
-# Generate application key
-php artisan key:generate
-
-# Run migrations
-php artisan migrate --seed
-
-# Start development server
-php artisan serve
-```
-
-## 🚀 Deployment
-To deploy the application, follow these steps:
-1. Set up a web server (Nginx / Apache) and configure it for Laravel.
-2. Run database migrations and optimizations.
-3. Use Laravel Forge / Envoyer for smooth deployment.
-
-## 📷 Screenshots
-Here are some example images of our platform:
-
-### Homepage
-![Homepage](https://yourwebsite.com/images/homepage.png)
-
-### Car Listing
-![Car Listing](https://yourwebsite.com/images/car-listing.png)
-
-### Booking Page
-![Booking Page](https://yourwebsite.com/images/booking-page.png)
-
-## 🤝 Contributing
-We welcome contributions! Please follow these steps:
-1. Fork the repository.
-2. Create a feature branch (`feature-new-feature`).
-3. Commit your changes.
-4. Push to your branch and submit a pull request.
-
-## 📜 License
-This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
-
-## 📞 Support
-For any queries, contact us at [support@rentalcars.com](mailto:support@rentalcars.com) or visit our [website](https://rentalcars.com).
-
----
-<p align="center">🚗 Happy Renting! 🚗</p>
-
+# Laravel Rental Cars
+ 
+ Laravel Rental Cars is a web application for managing car rentals. This project is built using the Laravel framework and provides a robust solution for car rental businesses to manage their vehicles, customers, and rental transactions.
+ 
+ ## Features
+ 
+ - User authentication and authorization
+ - Car management (add, edit, delete, view)
+ - Customer management (add, edit, delete, view)
+ - Rental transaction management (create, update, delete, view)
+ - Search and filter functionality
+ - Responsive design
+ 
+ ## Installation
+ 
+ 1. **Clone the repository:**
+     ```sh
+     git clone https://github.com/Elkas-Hamza/laravel-rental-cars.git
+     cd laravel-rental-cars
+     ```
+ 
+ 2. **Install dependencies:**
+     ```sh
+     composer install
+     npm install
+     ```
+ 
+ 3. **Set up environment variables:**
+     Copy the `.env.example` file to `.env` and update the environment variables as needed:
+     ```sh
+     cp .env.example .env
+     ```
+ 
+ 4. **Generate application key:**
+     ```sh
+     php artisan key:generate
+     ```
+ 
+ 5. **Run migrations and seed the database:**
+     ```sh
+     php artisan migrate --seed
+     ```
+ 
+ 6. **Build front-end assets:**
+     ```sh
+     npm run dev
+     ```
+ 
+ 7. **Start the development server:**
+     ```sh
+     php artisan serve
+     ```
+ 
+ ## Usage
+ 
+ 1. Open your browser and navigate to `http://localhost:8000`.
+ 2. Register a new user or log in with an existing account.<br>
+     `admine@exemple.com` password is `password`<br>
+     `test@exemple.com` password is `password`<br>
+     (you have to run the seeders before)
+ 3. Start managing cars, customers, and rentals.
+ 
+ ## Contributing
+ 
+ Contributions are welcome! Please follow these steps to contribute:
+ 
+ 1. Fork the repository.
+ 2. Create a new branch (`git checkout -b feature/your-feature-name`).
+ 3. Commit your changes (`git commit -am 'Add some feature'`).
+ 4. Push to the branch (`git push origin feature/your-feature-name`).
+ 2. Create a new branch 
+      ```sh
+         git checkout -b feature/your-feature-name
+      ```
+ 3. Commit your changes 
+      ```sh
+         git commit -am 'Add some feature'
+      ```
+ 4. Push to the branch 
+      ```sh
+         git push origin feature/your-feature-name
+      ```
+ 5. Create a new Pull Request.
+ 
+ ## License
+ 
+ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+ 
+ ## Acknowledgements
+ 
+ - [Laravel](https://laravel.com/) - The PHP framework for web artisans.
+ - [Bootstrap](https://getbootstrap.com/) - The most popular HTML, CSS, and JavaScript framework for developing responsive, mobile-first projects on the web.
+ 
+ ## Contact
+ 
+ For any inquiries or feedback, please contact [Elkas-Hamza](https://github.com/Elkas-Hamza) or [ikbaiss-abdelghafour](https://github.com/ikbaissabdelghafour)

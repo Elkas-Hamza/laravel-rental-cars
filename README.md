@@ -57,7 +57,7 @@
  2. Register a new user or log in with an existing account.<br>
      `admine@exemple.com` password is `password`<br>
      `test@exemple.com` password is `password`<br>
-     (you have to run the seeders before)
+     ( ⚠️ Don't forget to run the seeders )
  3. Start managing cars, customers, and rentals.
  
  ## Contributing

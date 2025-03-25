@@ -38,11 +38,11 @@ class ReservationController extends Controller
             $query->where(function($q) use ($search) {
                 $q->where('id', 'like', "%{$search}%")
                   ->orWhereHas('user', function($q) use ($search) {
-                      $q->where('name', 'like', "%{$search}%")
+                      $q->where('model', 'like', "%{$search}%")
                         ->orWhere('email', 'like', "%{$search}%");
                   })
                   ->orWhereHas('car', function($q) use ($search) {
-                      $q->where('name', 'like', "%{$search}%")
+                      $q->where('model', 'like', "%{$search}%")
                         ->orWhere('license_plate', 'like', "%{$search}%");
                   });
             });
@@ -52,7 +52,7 @@ class ReservationController extends Controller
 
         // Get users and cars for filter dropdowns
         $users = User::where('is_admin', false)->orderBy('name')->get();
-        $cars = Car::orderBy('name')->get();
+        $cars = Car::orderBy('model')->get();
         $statuses = ['all', 'pending', 'active', 'completed', 'cancelled'];
 
         return view('admin.reservations.index', compact('reservations', 'users', 'cars', 'statuses'));
@@ -74,7 +74,7 @@ class ReservationController extends Controller
     {
         $reservation->load(['user', 'car']);
         $users = User::where('is_admin', false)->orderBy('name')->get();
-        $cars = Car::where('status', 'available')->orWhere('id', $reservation->car_id)->orderBy('name')->get();
+        $cars = Car::where('status', 'available')->orWhere('id', $reservation->car_id)->orderBy('model')->get();
         $statuses = ['pending', 'active', 'completed', 'cancelled'];
 
         return view('admin.reservations.edit', compact('reservation', 'users', 'cars', 'statuses'));

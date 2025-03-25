@@ -17,13 +17,14 @@ return new class extends Migration
             $table->string('brand');
             $table->string('model');
             $table->string('color')->default('White');
-            $table->string('fuel_type')->default('gasoline');
+            $table->string('fuel_type');
             $table->year('year');
             $table->decimal('price_per_day', 10, 2)->default(0);
             $table->boolean('disponible')->default(true);
             $table->string('image')->nullable();
             $table->json('images')->nullable();
             $table->string('category')->nullable();
+            $table->string('license_plate')->unique();
             $table->string('transmission')->default('automatic');
             $table->integer('seats')->default(5);
             $table->boolean('air_conditioner')->default(true);

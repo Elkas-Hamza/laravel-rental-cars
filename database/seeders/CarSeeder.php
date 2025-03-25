@@ -30,6 +30,7 @@ class CarSeeder extends Seeder
                 'seats' => 5,
                 'fuel_type' => 'Gasoline',
                 'air_conditioner' => true,
+                'license_plate' => 'ArtC123',
                 'image' => 'images/camry/2021-toyota-camry-hybrid-xle-121-1603151471.jpg',
                 'images' => json_encode([
                     'images/camry/2021-toyota-camry-hybrid-xle-121-1603151471.jpg',
@@ -53,6 +54,7 @@ class CarSeeder extends Seeder
                 'seats' => 5,
                 'fuel_type' => 'Gasoline',
                 'air_conditioner' => true,
+                'license_plate' => 'ABC123',
                 'image' => 'images/civic/2022-honda-civic-sedan-110-1623810388.jpg',
                 'images' => json_encode([
                     'images/civic/2022-honda-civic-sedan-110-1623810388.jpg',
@@ -74,6 +76,7 @@ class CarSeeder extends Seeder
                 'seats' => 4,
                 'fuel_type' => 'Gasoline',
                 'air_conditioner' => true,
+                'license_plate' => 'XYZ789',
                 'image' => 'images/mustang/2021-ford-mustang-mach-1-109-1592231891.jpg',
                 'images' => json_encode([
                     'images/mustang/2021-ford-mustang-mach-1-109-1592231891.jpg',
@@ -95,6 +98,7 @@ class CarSeeder extends Seeder
                 'seats' => 5,
                 'fuel_type' => 'Hybrid',
                 'air_conditioner' => true,
+                'license_plate' => 'DEF456',
                 'image' => 'images/3series/2020-bmw-330e-101-1565802976.jpg',
                 'images' => json_encode([
                     'images/3series/2020-bmw-330e-101-1565802976.jpg',
@@ -117,6 +121,7 @@ class CarSeeder extends Seeder
                 'seats' => 5,
                 'fuel_type' => 'Electric',
                 'air_conditioner' => true,
+                'license_plate' => 'GHI789',
                 'image' => 'images/model3/2019-tesla-model-3-dual-motor-ltwrap-simari-883-1651164161.jpg',
                 'images' => json_encode([
                     'images/model3/2019-tesla-model-3-dual-motor-ltwrap-simari-883-1651164161.jpg',
@@ -138,6 +143,7 @@ class CarSeeder extends Seeder
                 'seats' => 4,
                 'fuel_type' => 'Gasoline',
                 'air_conditioner' => false,
+                'license_plate' => 'JKL012',
                 'image' => 'images/wrangler/2018-jeep-jl-wrangler-sport-102-1525800589.jpg',
                 'images' => json_encode([
                     'images/wrangler/2018-jeep-jl-wrangler-sport-102-1525800589.jpg',

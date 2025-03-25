@@ -24,5 +24,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
             'password' => bcrypt('password'),
         ]);
+        $this->command->info('Test user created with email: test@example.com and password: password');
     }
 }

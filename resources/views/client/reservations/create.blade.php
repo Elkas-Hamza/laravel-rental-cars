@@ -270,9 +270,9 @@
                                     <label for="return_location" class="form-label">Return Location</label>
                                     <select class="form-select" id="return_location" name="return_location" required>
                                         <option value="">Select location</option>
-                                        <option value="Main Office">Main Office - 123 Main St</option>
+                                        <option value="Main Office">Main Office</option>
                                         <option value="Airport">Airport Terminal</option>
-                                        <option value="Downtown">Downtown Branch - 456 City Center</option>
+                                        <option value="Downtown">Your Location</option>
                                     </select>
                                 </div>
                             </div>

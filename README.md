@@ -53,7 +53,7 @@
  
  ## Usage
  
- 1. Open your browser and navigate to `http://localhost:8000`.
+ 1. Open your browser and navigate to `http://localhost:8000`
  2. Register a new user or log in with an existing account.<br>
      `admine@exemple.com` password is `password`<br>
      `test@exemple.com` password is `password`<br>
